@@ -6,7 +6,9 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { AiOutlineLike } from "react-icons/ai";
 
 interface InterviewCardProps {
   videoTitle: string;
@@ -18,35 +20,30 @@ interface InterviewCardProps {
 
 const InterviewCard = ({ videoTitle, time, numOfLike, tags, thumbnailUrl }: InterviewCardProps) => {
   return (
-    <Card>
+    <Card className="flex flex-col justify-between">
       <CardHeader>
         <CardTitle>{videoTitle}</CardTitle>
-        <CardDescription className="text-sm text-gray-500">{time}</CardDescription>
-        <Separator className="w-full my-2" />
       </CardHeader>
-      <CardContent>
-        <div className="mb-4 w-full rounded">
-          <img src={thumbnailUrl} alt="thumbnail" className="w-full h-48 object-cover mb-4" />
-        </div>
+      <CardContent className="h-full">
+        <img src={thumbnailUrl} alt="thumbnail" className="w-full h-40 object-cover" />
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <div className="flex flex-wrap">
+      <CardFooter className="flex-col items-start justify-start">
+        <div className="flex flex-wrap mb-4">
           {tags.map((tag, index) => (
-            <span
-              key={index}
-              className="text-sm text-gray-500 mr-2 bg-gray-100 rounded-lg px-2 py-1"
-            >
+            <Badge key={index} className="mt-2 px-3 py-1 text-sm mr-1" variant="secondary">
               #{tag}
-            </span>
+            </Badge>
           ))}
         </div>
-        <p
-          className="text-sm text-gray-500 ml-2
-        
-        "
-        >
-          좋아요 {numOfLike}개
-        </p>
+        <div className="flex w-full justify-between items-center">
+          <p className="text-gray-600 text-sm mt-2">{time}</p>
+          <div className="flex mt-2">
+            <div className="flex items-center">
+              <AiOutlineLike className="text-gray-500 mr-1" />
+              <span className="text-gray-700">{numOfLike}</span>
+            </div>
+          </div>
+        </div>
       </CardFooter>
     </Card>
   );
