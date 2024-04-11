@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { AiOutlineSearch } from "react-icons/ai";
 
-interface SelectQuestionSectionProps {
+interface QuestionSelectionSectionProps {
   setStep: (step: number) => void;
   questionId: number;
   questionTitle: string;
@@ -87,49 +87,34 @@ const questionList = [
   },
 ];
 
-const SelectQuestionSection = ({
+const QuestionSelectionSection = ({
   setStep,
   questionId,
   questionTitle,
-}: SelectQuestionSectionProps) => {
+}: QuestionSelectionSectionProps) => {
   return (
     <div className="h-dvh flex-col w-full ml-2">
-      <div className="rounded-md border w-full h-96 overflow-y-auto ">
-        <header className="px-2 py-3 flex flex-row items-center border-b transition-colors hover:bg-muted/50">
+      <div className="rounded-md border w-full h-96 overflow-y-auto">
+        <header className="px-4 py-3 flex flex-row items-center border-b transition-colors hover:bg-muted/50">
           <input
-            className="peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+            className="cursor-pointer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
             type="checkbox"
           />
-          <p className="ml-4 text-gray-500">{questionTitle}</p>
+          <label className="ml-12 text-gray-500 cursor-pointer">{questionTitle}</label>
         </header>
         <ul>
           {questionList.map((question) => (
-            <li
+            <QuestionItem
               key={question.questionId}
-              className="px-2 py-4 flex items-center border-b transition-colors hover:bg-muted/50 group"
-            >
-              <input
-                id={question.questionId.toString()}
-                className="peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                type="checkbox"
-              />
-              <label
-                htmlFor={question.questionId.toString()}
-                className="ml-4 cursor-pointer"
-                onClick={() => {}}
-              >
-                {question.questionContent}
-              </label>
-              <AiOutlineSearch
-                className="ml-auto cursor-pointer opacity-0 group-hover:opacity-100"
-                onClick={() => {}}
-              />
-            </li>
+              id={question.questionId}
+              content={question.questionContent}
+              onSelect={(id) => questionId === id}
+            />
           ))}
         </ul>
       </div>
       <footer className="flex justify-between mt-4">
-        <span className="text-gray-500 text-sm">0 of 5 row(s) selected.</span>
+        <span className="text-gray-500 text-sm">0 of 13 row(s) selected.</span>
         <Button className="ml-auto" disabled variant="outline" onClick={() => setStep(1)}>
           이전
         </Button>
@@ -147,4 +132,27 @@ const SelectQuestionSection = ({
   );
 };
 
-export default SelectQuestionSection;
+interface QuestionItemProps {
+  id: number;
+  content: string;
+  onSelect: (id: number) => void;
+}
+
+const QuestionItem = ({ id, content, onSelect }: QuestionItemProps) => {
+  return (
+    <li className="px-4 py-4 flex items-center border-b transition-colors hover:bg-muted/50 group">
+      <input
+        id={id.toString()}
+        className="cursor-pointer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+        type="checkbox"
+        onChange={() => onSelect(id)}
+      />
+      <label htmlFor={id.toString()} className="ml-12 cursor-pointer">
+        {content}
+      </label>
+      <AiOutlineSearch className="ml-auto cursor-pointer opacity-0 group-hover:opacity-100" />
+    </li>
+  );
+};
+
+export default QuestionSelectionSection;
