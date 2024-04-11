@@ -56,7 +56,7 @@ const RecordSetting = ({ setStep }: RecordSettingProps) => {
           ref={videoContainerRef}
         />
       </div>
-      <div className="w-full flex flex-row justify-center mt-4">
+      <div className="w-full flex flex-col md:flex-row mt-4 md:justify-center">
         <select
           className="border border-gray-300 rounded-md p-2 text-sm"
           value={selectedCameraDevice}
@@ -69,7 +69,7 @@ const RecordSetting = ({ setStep }: RecordSettingProps) => {
           ))}
         </select>
         <select
-          className="border border-gray-300 rounded-md p-2 ml-4 text-sm"
+          className="border border-gray-300 rounded-md p-2 text-sm md:ml-2 mt-2 md:mt-0"
           value={selectedAudioDevice}
           onChange={(e) => handleAudioDeviceChange(e.target.value)}
         >
