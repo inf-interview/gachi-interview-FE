@@ -26,7 +26,7 @@ const QuestionPick = ({ setStep }: QuestionPickProps) => {
   const [selectedQuestionId, setSelectedQuestionId] = useState<number>(questionList[0].listId);
 
   return (
-    <div className="flex h-dvh w-full py-20 px-12">
+    <div className="flex h-dvh w-full py-20 px-12 flex-col sm:flex-row">
       <ul>
         {questionList.map((question) => (
           <li
