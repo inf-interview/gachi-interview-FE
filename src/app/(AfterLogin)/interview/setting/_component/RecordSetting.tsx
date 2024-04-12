@@ -44,7 +44,7 @@ const RecordSetting = ({ setStep }: RecordSettingProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center py-20 px-12 w-full">
+    <div className="flex flex-col items-center w-full">
       <div className="w-full h-96 rounded overflow-hidden relative">
         <AiOutlineReload
           className="absolute z-10 bg-inherit cursor-pointer text-white transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full top-1/2 left-1/2"
