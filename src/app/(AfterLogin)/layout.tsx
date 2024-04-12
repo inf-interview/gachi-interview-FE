@@ -8,7 +8,7 @@ import { CgProfile } from "react-icons/cg";
 export default function AfterLoginLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex">
-      <div className="flex h-screen">
+      <div className="flex min-h-screen">
         <div className="flex flex-col justify-between w-64 bg-white shadow-lg">
           <div className="flex items-center justify-center h-20 bg-gray-100 text-black font-bold text-xl">
             <img src="/logo.png" alt="logo" className="w-20" />
@@ -36,7 +36,7 @@ export default function AfterLoginLayout({ children }: { children: ReactNode }) 
               커뮤니티
             </Link>
             <Link
-              href="my"
+              href="/my"
               className="flex items-center py-4 px-6 text-sm text-black hover:bg-gray-200 hover:text-gray-700"
             >
               <CgProfile className="mr-4" />
