@@ -1,21 +1,29 @@
+"use client";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import InterviewReview from "./_component/InterviewReview";
-import GetStudy from "./_component/GetStudy";
 import { Button } from "@/components/ui/button";
 import { BsPlusCircle } from "react-icons/bs";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import InterviewReview from "./_component/InterviewReview";
+import GetStudy from "./_component/GetStudy";
 
 export default function Page() {
+  const tabParams = useSearchParams().get("tab") || undefined;
   return (
-    <Tabs defaultValue="reviews" className="w-full px-10 py-5">
+    <Tabs defaultValue={tabParams} className="w-full px-10 py-5">
       <div className="flex">
         <div className="flex-1">
           <TabsList>
-            <TabsTrigger value="reviews">면접 후기</TabsTrigger>
-            <TabsTrigger value="studies">스터디 모집</TabsTrigger>
+            <Link href="/community?tab=reviews">
+              <TabsTrigger value="reviews">면접 후기</TabsTrigger>
+            </Link>
+            <Link href="/community?tab=studies">
+              <TabsTrigger value="studies">스터디 모집</TabsTrigger>
+            </Link>
           </TabsList>
         </div>
-        <Link href="/community/create">
+        <Link href="/community/create?tab=reviews">
           <Button>
             <BsPlusCircle className="mr-2" />
             글쓰기
