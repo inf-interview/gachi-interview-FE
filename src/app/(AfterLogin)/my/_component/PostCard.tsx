@@ -1,12 +1,7 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { FaRegComment } from "react-icons/fa";
+import { AiOutlineLike } from "react-icons/ai";
 
 interface PostProps {
   postId: number;
@@ -15,36 +10,45 @@ interface PostProps {
   content: string;
   time: string;
   tags: string[];
+  likeCount: number;
 }
 
-const PostCard = ({ postId, title, commentCount, content, time, tags }: PostProps) => {
+const PostCard = ({ postId, title, commentCount, content, time, tags, likeCount }: PostProps) => {
   return (
-    <Card>
+    <Card className="flex flex-col">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        <CardDescription className="text-sm text-gray-500">{time}</CardDescription>
-        <Separator className="w-full my-2" />
       </CardHeader>
-      <CardContent className="h-40">{content}</CardContent>
-
-      <CardFooter className="flex justify-between">
-        <div className="flex flex-wrap">
+      <CardContent className="h-full">
+        <p
+          className="
+            h-32
+          text-gray-600 text-sm overflow-hidden
+            
+          "
+        >
+          {content}
+        </p>
+        <div className="flex flex-wrap my-4">
           {tags.map((tag, index) => (
-            <span
-              key={index}
-              className="text-sm text-gray-500 mr-2 bg-gray-100 rounded-lg px-2 py-1
-            "
-            >
+            <Badge key={index} className="mt-2 px-3 py-1 text-sm mr-1" variant="secondary">
               #{tag}
-            </span>
+            </Badge>
           ))}
         </div>
-        <p
-          className="text-sm text-gray-500 ml-2
-        "
-        >
-          댓글 {commentCount}개
-        </p>
+      </CardContent>
+      <CardFooter className="flex-row items-center mt-auto justify-between">
+        <p className="text-gray-600 text-sm">{time}</p>
+        <div className="flex mt-2">
+          <div className="flex items-center">
+            <AiOutlineLike className="text-gray-500 mr-1" />
+            <span className="text-gray-700">{likeCount}</span>
+          </div>
+          <div className="flex items-center ml-3">
+            <FaRegComment className="text-gray-500 mr-1" />
+            <span className="text-gray-700">{commentCount}</span>
+          </div>
+        </div>
       </CardFooter>
     </Card>
   );

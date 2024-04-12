@@ -1,12 +1,7 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardFooter, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { AiOutlineLike } from "react-icons/ai";
 
 interface InterviewCardProps {
   videoTitle: string;
@@ -18,35 +13,30 @@ interface InterviewCardProps {
 
 const InterviewCard = ({ videoTitle, time, numOfLike, tags, thumbnailUrl }: InterviewCardProps) => {
   return (
-    <Card>
+    <Card className="flex flex-col">
       <CardHeader>
         <CardTitle>{videoTitle}</CardTitle>
-        <CardDescription className="text-sm text-gray-500">{time}</CardDescription>
-        <Separator className="w-full my-2" />
       </CardHeader>
       <CardContent>
-        <div className="mb-4 w-full rounded">
-          <img src={thumbnailUrl} alt="thumbnail" className="w-full h-48 object-cover mb-4" />
+        <div className="flex justify-center rounded-lg overflow-hidden">
+          <img src={thumbnailUrl} alt="thumbnail" className="w-full h-40 object-cover" />
         </div>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <div className="flex flex-wrap">
+        <div className="flex flex-wrap my-4">
           {tags.map((tag, index) => (
-            <span
-              key={index}
-              className="text-sm text-gray-500 mr-2 bg-gray-100 rounded-lg px-2 py-1"
-            >
+            <Badge key={index} className="mt-1 px-3 py-1 text-sm mr-1" variant="secondary">
               #{tag}
-            </span>
+            </Badge>
           ))}
         </div>
-        <p
-          className="text-sm text-gray-500 ml-2
-        
-        "
-        >
-          좋아요 {numOfLike}개
-        </p>
+      </CardContent>
+      <CardFooter className="flex-row items-center mt-auto justify-between">
+        <p className="text-gray-600 text-sm">{time}</p>
+        <div className="flex mt-2">
+          <div className="flex items-center">
+            <AiOutlineLike className="text-gray-500 mr-1" />
+            <span className="text-gray-700">{numOfLike}</span>
+          </div>
+        </div>
       </CardFooter>
     </Card>
   );
