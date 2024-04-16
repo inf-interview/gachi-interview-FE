@@ -11,7 +11,7 @@ import GetStudy from "./_component/GetStudy";
 export default function Page() {
   const tabParams = useSearchParams().get("tab") || undefined;
   return (
-    <Tabs defaultValue={tabParams} className="w-full px-10 py-5">
+    <Tabs defaultValue={tabParams}>
       <div className="flex">
         <div className="flex-1">
           <TabsList>
@@ -30,25 +30,23 @@ export default function Page() {
           </Button>
         </Link>
       </div>
-      <TabsContent
-        value="reviews"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4"
-      >
-        <InterviewReview />
-        <InterviewReview />
-        <InterviewReview />
-        <InterviewReview />
-        <InterviewReview />
+      <TabsContent value="reviews">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <InterviewReview />
+          <InterviewReview />
+          <InterviewReview />
+          <InterviewReview />
+          <InterviewReview />
+        </div>
       </TabsContent>
-      <TabsContent
-        value="studies"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4"
-      >
-        <GetStudy />
-        <GetStudy />
-        <GetStudy />
-        <GetStudy />
-        <GetStudy />
+      <TabsContent value="studies">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <GetStudy />
+          <GetStudy />
+          <GetStudy />
+          <GetStudy />
+          <GetStudy />
+        </div>
       </TabsContent>
     </Tabs>
   );

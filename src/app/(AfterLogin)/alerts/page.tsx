@@ -23,7 +23,7 @@ const AlertsData = [
 
 const Alerts = () => {
   return (
-    <section className="p-8">
+    <section>
       <h2 className="text-2xl font-bold mb-4">새로운 알림</h2>
       {AlertsData.map((alert, index) => (
         <article key={index} className="mb-4">

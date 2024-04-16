@@ -45,7 +45,7 @@ export default function AfterLoginLayout({ children }: { children: ReactNode }) 
           </nav>
         </div>
       </div>
-      {children}
+      <div className="w-full mt-20 px-4">{children}</div>
     </div>
   );
 }

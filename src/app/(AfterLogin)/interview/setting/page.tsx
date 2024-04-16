@@ -8,7 +8,7 @@ const Setting = () => {
   const [step, setStep] = useState(1);
 
   return (
-    <div className="w-full py-20 px-12">
+    <div>
       {step === 1 && <QuestionPick setStep={setStep} />}
       {step === 2 && <RecordSetting setStep={setStep} />}
     </div>

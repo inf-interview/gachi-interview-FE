@@ -93,7 +93,7 @@ const QuestionSelectionSection = ({
   questionTitle,
 }: QuestionSelectionSectionProps) => {
   return (
-    <div className="h-dvh flex-col w-full ml-2">
+    <div className="flex-col w-full ml-2">
       <div className="rounded-md border w-full h-96 overflow-y-auto">
         <header className="px-4 py-3 flex flex-row items-center border-b transition-colors hover:bg-muted/50">
           <input
