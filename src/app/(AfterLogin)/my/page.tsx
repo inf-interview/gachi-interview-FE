@@ -92,7 +92,7 @@ const CommentData = [
 const My = () => {
   const tabParams = useSearchParams().get("tab") || undefined;
   return (
-    <section className="p-8">
+    <section>
       <Tabs defaultValue={tabParams}>
         <TabsList className="mx-auto my-0 inline-block">
           <Link href="/my?tab=videos">
