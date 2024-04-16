@@ -9,7 +9,7 @@ import Link from "next/link";
 export default function Page() {
   const tabParams = useSearchParams().get("tab") || undefined;
   return (
-    <Tabs defaultValue={tabParams} className="w-full px-10 py-5">
+    <Tabs defaultValue={tabParams} className="w-full">
       <TabsList>
         <Link href="/community/create?tab=reviews">
           <TabsTrigger value="reviews">면접 후기</TabsTrigger>

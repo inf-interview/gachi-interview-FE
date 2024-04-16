@@ -6,6 +6,8 @@ import CommentCard from "./_component/CommentCard";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
+import { Button } from "@/components/ui/button";
 
 const InterViewData = [
   {
@@ -94,17 +96,22 @@ const My = () => {
   return (
     <section>
       <Tabs defaultValue={tabParams}>
-        <TabsList className="mx-auto my-0 inline-block">
-          <Link href="/my?tab=videos">
-            <TabsTrigger value="videos">내 인터뷰 영상</TabsTrigger>
-          </Link>
-          <Link href="/my?tab=posts">
-            <TabsTrigger value="posts">내 게시글</TabsTrigger>
-          </Link>
-          <Link href="/my?tab=comments">
-            <TabsTrigger value="comments">내 댓글</TabsTrigger>
-          </Link>
-        </TabsList>
+        <div className="flex">
+          <div className="flex-1">
+            <TabsList className="mx-auto my-0 inline-block">
+              <Link href="/my?tab=videos">
+                <TabsTrigger value="videos">내 인터뷰 영상</TabsTrigger>
+              </Link>
+              <Link href="/my?tab=posts">
+                <TabsTrigger value="posts">내 게시글</TabsTrigger>
+              </Link>
+              <Link href="/my?tab=comments">
+                <TabsTrigger value="comments">내 댓글</TabsTrigger>
+              </Link>
+            </TabsList>
+          </div>
+          <Button onClick={() => signOut()}>로그아웃</Button>
+        </div>
         <TabsContent value="videos">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {InterViewData.map((data, index) => (

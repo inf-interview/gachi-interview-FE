@@ -3,7 +3,7 @@ import { AiOutlineLike, AiOutlineShareAlt } from "react-icons/ai";
 
 const VideoIdPage = () => {
   return (
-    <div className="w-full">
+    <div className="h-dvh">
       <div className="flex justify-center w-full">
         <img
           className="w-full object-cover rounded-lg"
