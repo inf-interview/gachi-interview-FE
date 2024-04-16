@@ -89,7 +89,7 @@ const CommentData = [
 
 const My = () => {
   return (
-    <section className="p-8">
+    <section>
       <Tabs defaultValue="video">
         <TabsList className="mx-auto my-0 inline-block">
           <TabsTrigger value="video">내 인터뷰 영상</TabsTrigger>

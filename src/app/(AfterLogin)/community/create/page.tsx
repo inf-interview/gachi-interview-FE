@@ -4,7 +4,7 @@ import StudyPostForm from "./_component/StudyPostForm";
 
 export default function Page() {
   return (
-    <Tabs defaultValue="reviews" className="w-full px-10 py-5">
+    <Tabs defaultValue="reviews">
       <TabsList>
         <TabsTrigger value="reviews">면접 후기</TabsTrigger>
         <TabsTrigger value="studies">스터디 모집</TabsTrigger>

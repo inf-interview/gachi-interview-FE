@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function Page() {
   return (
-    <Tabs defaultValue="reviews" className="w-full px-10 py-5">
+    <Tabs defaultValue="reviews" className="w-full">
       <div className="flex">
         <div className="flex-1">
           <TabsList>
