@@ -29,14 +29,14 @@ export default function AfterLoginLayout({ children }: { children: ReactNode }) 
               면접 영상 목록
             </Link>
             <Link
-              href="/community/reviews"
+              href="/community?tab=reviews"
               className="flex items-center py-4 px-6 text-sm text-black hover:bg-gray-200 hover:text-gray-700"
             >
               <MdGroups className="mr-4" />
               커뮤니티
             </Link>
             <Link
-              href="/my"
+              href="/my?tab=videos"
               className="flex items-center py-4 px-6 text-sm text-black hover:bg-gray-200 hover:text-gray-700"
             >
               <CgProfile className="mr-4" />

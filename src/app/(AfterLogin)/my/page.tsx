@@ -4,6 +4,8 @@ import InterviewCard from "./_component/InterviewCard";
 import PostCard from "./_component/PostCard";
 import CommentCard from "./_component/CommentCard";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 const InterViewData = [
   {
@@ -88,22 +90,29 @@ const CommentData = [
 ];
 
 const My = () => {
+  const tabParams = useSearchParams().get("tab") || undefined;
   return (
     <section>
-      <Tabs defaultValue="video">
+      <Tabs defaultValue={tabParams}>
         <TabsList className="mx-auto my-0 inline-block">
-          <TabsTrigger value="video">내 인터뷰 영상</TabsTrigger>
-          <TabsTrigger value="post">내 게시글</TabsTrigger>
-          <TabsTrigger value="comments">내 댓글</TabsTrigger>
+          <Link href="/my?tab=videos">
+            <TabsTrigger value="videos">내 인터뷰 영상</TabsTrigger>
+          </Link>
+          <Link href="/my?tab=posts">
+            <TabsTrigger value="posts">내 게시글</TabsTrigger>
+          </Link>
+          <Link href="/my?tab=comments">
+            <TabsTrigger value="comments">내 댓글</TabsTrigger>
+          </Link>
         </TabsList>
-        <TabsContent value="video">
+        <TabsContent value="videos">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {InterViewData.map((data, index) => (
               <InterviewCard key={index} {...data} />
             ))}
           </div>
         </TabsContent>
-        <TabsContent value="post">
+        <TabsContent value="posts">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {PostData.map((data, index) => (
               <PostCard key={index} {...data} />
