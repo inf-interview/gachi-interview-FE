@@ -4,7 +4,7 @@ export interface Post {
   postId: number;
   User: User;
   postTitle: string;
-  postContent: string;
+  content: string;
   category: string;
   updateTime: Date;
   numOfLike: number;

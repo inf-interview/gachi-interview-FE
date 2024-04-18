@@ -18,7 +18,7 @@ export default function PostCard({
         <CardHeader>
           <CardTitle>{post.postTitle}</CardTitle>
           <hr />
-          <CardDescription>{post.postContent}</CardDescription>
+          <CardDescription>{post.content}</CardDescription>
         </CardHeader>
         {post.tags.map((tag, index) => (
           <Badge

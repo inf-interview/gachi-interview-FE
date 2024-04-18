@@ -5,6 +5,86 @@ const User = {
   userName: "이승학",
   image: "/noneProfile.jpg",
 };
+const posts = [
+  {
+    postId: 1,
+    User: User,
+    postTitle: "글 제목 부분",
+    content: "글 내용 부분",
+    category: "studies",
+    updateTime: new Date(),
+    numOfLike: 20,
+    numOfComment: 5,
+    tags: ["삼성", "네이버", "카카오", "BE"],
+  },
+  {
+    postId: 2,
+    User: User,
+    postTitle: "글 제목 부분",
+    content: "글 내용 부분",
+    category: "studies",
+    updateTime: new Date(),
+    numOfLike: 20,
+    numOfComment: 5,
+    tags: ["삼성", "네이버", "카카오", "BE"],
+  },
+  {
+    postId: 3,
+    User: User,
+    postTitle: "글 제목 부분",
+    content: "글 내용 부분",
+    category: "studies",
+    updateTime: new Date(),
+    numOfLike: 20,
+    numOfComment: 5,
+    tags: ["삼성", "네이버", "카카오", "BE"],
+  },
+  {
+    postId: 4,
+    User: User,
+    postTitle: "글 제목 부분",
+    content: "글 내용 부분",
+    category: "reviews",
+    updateTime: new Date(),
+    numOfLike: 20,
+    numOfComment: 5,
+    tags: ["삼성", "네이버", "카카오", "BE"],
+  },
+  {
+    postId: 5,
+    User: User,
+    postTitle: "글 제목 부분",
+    content: "글 내용 부분",
+    category: "reviews",
+    updateTime: new Date(),
+    numOfLike: 20,
+    numOfComment: 5,
+    tags: ["삼성", "네이버", "카카오", "BE"],
+  },
+  {
+    postId: 6,
+    User: User,
+    postTitle: "글 제목 부분",
+    content: "글 내용 부분",
+    category: "reviews",
+    updateTime: new Date(),
+    numOfLike: 20,
+    numOfComment: 5,
+    tags: ["삼성", "네이버", "카카오", "BE"],
+  },
+  {
+    postId: 7,
+    User: User,
+    postTitle: "글 제목 부분",
+    content: "글 내용 부분",
+    category: "reviews",
+    updateTime: new Date(),
+    numOfLike: 20,
+    numOfComment: 5,
+    tags: ["삼성", "네이버", "카카오", "BE"],
+  },
+];
+
 export const handlers = [
   http.post("/api/login", () => {
     console.log("로그인");
@@ -31,102 +111,50 @@ export const handlers = [
   }),
 
   http.get("/api/board/list", async ({ request }) => {
-    return HttpResponse.json([
-      {
-        postId: 1,
-        User: User,
-        postTitle: "글 제목 부분",
-        postContent: "글 내용 부분",
-        category: "study",
-        updateTime: new Date(),
-        numOfLike: 20,
-        numOfComment: 5,
-        tags: ["삼성", "네이버", "카카오", "BE"],
-      },
-      {
-        postId: 2,
-        User: User,
-        postTitle: "글 제목 부분",
-        postContent: "글 내용 부분",
-        category: "study",
-        updateTime: new Date(),
-        numOfLike: 20,
-        numOfComment: 5,
-        tags: ["삼성", "네이버", "카카오", "BE"],
-      },
-      {
-        postId: 3,
-        User: User,
-        postTitle: "글 제목 부분",
-        postContent: "글 내용 부분",
-        category: "study",
-        updateTime: new Date(),
-        numOfLike: 20,
-        numOfComment: 5,
-        tags: ["삼성", "네이버", "카카오", "BE"],
-      },
-      {
-        postId: 4,
-        User: User,
-        postTitle: "글 제목 부분",
-        postContent: "글 내용 부분",
-        category: "study",
-        updateTime: new Date(),
-        numOfLike: 20,
-        numOfComment: 5,
-        tags: ["삼성", "네이버", "카카오", "BE"],
-      },
-    ]);
+    const queryParams = new URLSearchParams(request.url);
+    const category = queryParams.get("category");
+    const filteredPosts = posts.filter((post) => post.category === category);
+
+    return HttpResponse.json(filteredPosts);
   }),
 
   http.get("/api/board/:postId", ({ request, params }) => {
     const { postId } = params;
+    const queryParams = new URLSearchParams(request.url);
+    const category = queryParams.get("category");
+
     return HttpResponse.json({
       postId,
       User: User,
       postTitle: "글 제목 부분",
-      postContent: "글 내용 부분",
-      category: "reviews",
+      content: "글 내용 부분",
+      category,
       updateTime: new Date(),
       numOfLike: 20,
       numOfComment: 5,
       tags: ["삼성", "네이버", "카카오", "BE"],
     });
   }),
-  // http.get("/api/posts/:postId/comments", async ({ request, params }) => {
-  //   const { postId } = params;
-  //   return HttpResponse.json([
-  //     {
-  //       postId: 1,
-  //       User: User[0],
-  //       content: `${1} 게시글 ${postId}의 답글`,
-  //       // Images: [{ imageId: 1, link: faker.image.urlLoremFlickr() }],
-  //       createdAt: new Date(),
-  //     },
-  //     {
-  //       postId: 2,
-  //       User: User[1],
-  //       content: `${2} 게시글 ${postId}의 답글`,
-  //       // Images: [
-  //       //   { imageId: 1, link: faker.image.urlLoremFlickr() },
-  //       //   { imageId: 2, link: faker.image.urlLoremFlickr() },
-  //       // ],
-  //       createdAt: new Date(),
-  //     },
-  //     {
-  //       postId: 3,
-  //       User: User[2],
-  //       content: `${3} 게시글 ${postId}의 답글`,
-  //       Images: [],
-  //       createdAt: new Date(),
-  //     },
-  //     {
-  //       postId: 4,
-  //       User: User[2],
-  //       content: `${4} 게시글 ${postId}의 답글`,
-  //       Images: [],
-  //       createdAt: new Date(),
-  //     },
-  //   ]);
-  // }),
+  http.post("/api/board/write", async ({ request }) => {
+    const bodyString = await request.text();
+    const { postTitle, content, tag, category } = JSON.parse(bodyString);
+
+    const newPost = {
+      postId: posts.length + 1,
+      User: User,
+      postTitle,
+      content,
+      category,
+      updateTime: new Date(),
+      numOfLike: 20,
+      numOfComment: 5,
+      tags: Array.isArray(tag) ? tag : [tag],
+    };
+
+    posts.push(newPost);
+
+    return HttpResponse.json({
+      ...newPost,
+    });
+  }),
 ];

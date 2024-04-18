@@ -15,8 +15,11 @@ export default function Page() {
   const tabParams = useSearchParams().get("tab") || undefined;
   const queryClient = new QueryClient();
   const dehydratedState = dehydrate(queryClient);
-  queryClient.prefetchQuery({ queryKey: ["community", "reviews"], queryFn: getReviews });
-  queryClient.prefetchQuery({ queryKey: ["community", "studies"], queryFn: getStudies });
+
+  if (tabParams !== undefined) {
+    queryClient.prefetchQuery({ queryKey: ["community", tabParams], queryFn: getReviews });
+    queryClient.prefetchQuery({ queryKey: ["community", tabParams], queryFn: getStudies });
+  }
 
   return (
     <HydrationBoundary state={dehydratedState}>
@@ -32,7 +35,7 @@ export default function Page() {
               </Link>
             </TabsList>
           </div>
-          <Link href="/community/create?tab=reviews">
+          <Link href={`/community/create?tab=${tabParams}`}>
             <Button>
               <BsPlusCircle className="mr-2" />
               글쓰기

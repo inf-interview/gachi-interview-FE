@@ -2,18 +2,25 @@
 
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
+import postBoard from "../_lib/postBoard";
+import { useSearchParams } from "next/navigation";
 
 export default function StudyPostForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
+  const category = useSearchParams().get("tab");
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  if (!category) return null;
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(title);
     console.log(content);
     console.log(tags);
+    const postData = await postBoard({ title, content, tags, category });
+    console.log("postData", postData);
   };
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
