@@ -16,10 +16,7 @@ export default function CommentForm() {
     setComment(e.target.value);
   };
   return (
-    <form
-      onSubmit={onSubmit}
-      className="bottom-1 flex w-2/3 m-5 p-4 border border-gray-300 rounded-md"
-    >
+    <form onSubmit={onSubmit} className="bottom-1 flex w-2/3 p-4 border border-gray-300 rounded-md">
       <input
         type="text"
         value={comment}
