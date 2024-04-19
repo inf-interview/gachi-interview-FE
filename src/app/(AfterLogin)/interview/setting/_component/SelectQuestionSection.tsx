@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/button";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
+import { InterviewOptionType } from "../page";
 
 interface QuestionSelectionSectionProps {
   setStep: (step: number) => void;
   questionId: number;
   questionTitle: string;
+  setInterviewOption: Dispatch<SetStateAction<InterviewOptionType>>;
+  interviewOption: InterviewOptionType;
 }
 
 const questionList = [
@@ -91,7 +95,33 @@ const QuestionSelectionSection = ({
   setStep,
   questionId,
   questionTitle,
+  setInterviewOption,
+  interviewOption,
 }: QuestionSelectionSectionProps) => {
+  const selectAllQuestions = () => {
+    setInterviewOption((prev) => {
+      if (questionList.every((question) => prev.questions.includes(question.questionId))) {
+        return {
+          ...prev,
+          questions: prev.questions.filter(
+            (prevQuestion) =>
+              !questionList.map((question) => question.questionId).includes(prevQuestion),
+          ),
+        };
+      }
+      return { ...prev, questions: questionList.map((question) => question.questionId) };
+    });
+  };
+
+  const selectQuestion = (id: number) => {
+    setInterviewOption((prev) => {
+      if (prev.questions.includes(id)) {
+        return { ...prev, questions: prev.questions.filter((question) => question !== id) };
+      }
+      return { ...prev, questions: [...prev.questions, id] };
+    });
+  };
+
   return (
     <div className="flex-col w-full ml-2">
       <div className="rounded-md border w-full h-96 overflow-y-auto">
@@ -99,6 +129,10 @@ const QuestionSelectionSection = ({
           <input
             className="cursor-pointer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
             type="checkbox"
+            onChange={selectAllQuestions}
+            checked={questionList.every((question) =>
+              interviewOption.questions.includes(question.questionId),
+            )}
           />
           <label className="ml-12 text-gray-500 cursor-pointer">{questionTitle}</label>
         </header>
@@ -108,7 +142,8 @@ const QuestionSelectionSection = ({
               key={question.questionId}
               id={question.questionId}
               content={question.questionContent}
-              onSelect={(id) => questionId === id}
+              onSelect={selectQuestion}
+              checked={interviewOption.questions.includes(question.questionId)}
             />
           ))}
         </ul>
@@ -135,16 +170,18 @@ const QuestionSelectionSection = ({
 interface QuestionItemProps {
   id: number;
   content: string;
+  checked: boolean;
   onSelect: (id: number) => void;
 }
 
-const QuestionItem = ({ id, content, onSelect }: QuestionItemProps) => {
+const QuestionItem = ({ id, content, onSelect, checked }: QuestionItemProps) => {
   return (
     <li className="px-4 py-4 flex items-center border-b transition-colors hover:bg-muted/50 group">
       <input
         id={id.toString()}
         className="cursor-pointer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         type="checkbox"
+        checked={checked}
         onChange={() => onSelect(id)}
       />
       <label htmlFor={id.toString()} className="ml-12 cursor-pointer">

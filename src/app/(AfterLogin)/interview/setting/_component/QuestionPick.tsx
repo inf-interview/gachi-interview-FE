@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import SelectQuestionSection from "./SelectQuestionSection";
+import { InterviewOptionType } from "../page";
 
 interface QuestionPickProps {
   setStep: (step: number) => void;
+  setInterviewOption: Dispatch<SetStateAction<InterviewOptionType>>;
+  interviewOption: InterviewOptionType;
 }
 
-const questionList = [
+const questionSetList = [
   {
     listId: 1,
     question: "이것만 알면 FE면접 끝!",
@@ -22,13 +25,13 @@ const questionList = [
   },
 ];
 
-const QuestionPick = ({ setStep }: QuestionPickProps) => {
-  const [selectedQuestionId, setSelectedQuestionId] = useState<number>(questionList[0].listId);
+const QuestionPick = ({ setStep, setInterviewOption, interviewOption }: QuestionPickProps) => {
+  const [selectedQuestionId, setSelectedQuestionId] = useState<number>(questionSetList[0].listId);
 
   return (
     <div className="flex flex-col sm:flex-row">
       <ul>
-        {questionList.map((question) => (
+        {questionSetList.map((question) => (
           <li
             key={question.listId}
             className={`${
@@ -42,9 +45,11 @@ const QuestionPick = ({ setStep }: QuestionPickProps) => {
       </ul>
       <SelectQuestionSection
         setStep={setStep}
+        setInterviewOption={setInterviewOption}
+        interviewOption={interviewOption}
         questionId={selectedQuestionId}
         questionTitle={
-          questionList.find((question) => question.listId === selectedQuestionId)?.question || ""
+          questionSetList.find((question) => question.listId === selectedQuestionId)?.question || ""
         }
       />
     </div>
