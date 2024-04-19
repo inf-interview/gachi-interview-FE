@@ -6,7 +6,7 @@ import PostCard from "./PostCard";
 import { Post } from "@/model/Post";
 
 export default function InterviewReview({ tabParams }: { tabParams: string | undefined }) {
-  const { data } = useQuery<Post[]>({
+  const { data } = useQuery<Post[], Object, Post[], [_1: string, _2: string]>({
     queryKey: ["community", "reviews"],
     queryFn: getReviews,
     staleTime: 60 * 1000,

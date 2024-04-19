@@ -6,7 +6,7 @@ import { Post } from "@/model/Post";
 import getStudies from "../_lib/getStudies";
 
 export default function GetStudy({ tabParams }: { tabParams: string | undefined }) {
-  const { data } = useQuery<Post[]>({
+  const { data } = useQuery<Post[], Object, Post[], [_1: string, _2: string]>({
     queryKey: ["community", "studies"],
     queryFn: getStudies,
     staleTime: 60 * 1000,

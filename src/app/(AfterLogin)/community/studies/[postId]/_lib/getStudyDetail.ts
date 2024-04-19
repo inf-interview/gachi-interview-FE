@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function getStudyDetail({
   queryKey,
 }: {
-  queryKey: [_1: string, _2: string, _3: string];
+  queryKey: [_1: string, _2: string, _3: number];
 }) {
   const [_1, _2, postId] = queryKey;
   try {

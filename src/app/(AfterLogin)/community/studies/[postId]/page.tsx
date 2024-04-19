@@ -1,12 +1,13 @@
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
 import getStudyDetail from "./_lib/getStudyDetail";
 import GetStudyDetail from "./_component/GetStudyDetail";
+import Comments from "@/app/(AfterLogin)/_component/Comments";
 
 export default async function Page({
   params,
 }: {
   params: {
-    postId: string;
+    postId: number;
   };
 }) {
   const { postId } = params;
@@ -20,6 +21,7 @@ export default async function Page({
   return (
     <HydrationBoundary state={dehydratedState}>
       <GetStudyDetail postId={postId} />
+      <Comments postId={postId} />
     </HydrationBoundary>
   );
 }

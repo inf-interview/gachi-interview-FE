@@ -5,6 +5,7 @@ const User = {
   userName: "이승학",
   image: "/noneProfile.jpg",
 };
+
 const posts = [
   {
     postId: 1,
@@ -85,6 +86,37 @@ const posts = [
   },
 ];
 
+const comments = [
+  {
+    postId: 1,
+    commentId: 1,
+    User: User,
+    content: `게시글 댓글 내용1`,
+    updateTime: new Date(),
+  },
+  {
+    postId: 2,
+    commentId: 2,
+    User: User,
+    content: `게시글 댓글 내용2`,
+    updateTime: new Date(),
+  },
+  {
+    postId: 3,
+    commentId: 3,
+    User: User,
+    content: `게시글 댓글 내용3`,
+    updateTime: new Date(),
+  },
+  {
+    postId: 4,
+    commentId: 4,
+    User: User,
+    content: `게시글 댓글 내용4`,
+    updateTime: new Date(),
+  },
+];
+
 export const handlers = [
   http.post("/api/login", () => {
     console.log("로그인");
@@ -101,6 +133,7 @@ export const handlers = [
       },
     );
   }),
+
   http.post("/api/logout", () => {
     console.log("로그아웃");
     return HttpResponse.json(null, {
@@ -135,6 +168,7 @@ export const handlers = [
       tags: ["삼성", "네이버", "카카오", "BE"],
     });
   }),
+
   http.post("/api/board/write", async ({ request }) => {
     const bodyString = await request.text();
     const { postTitle, content, tag, category } = JSON.parse(bodyString);
@@ -155,6 +189,32 @@ export const handlers = [
 
     return HttpResponse.json({
       ...newPost,
+    });
+  }),
+
+  http.get("/api/board/:postId/comments", ({ request, params }) => {
+    const { postId } = params;
+    const filteredComments = comments.filter((post) => post.postId === +postId);
+    return HttpResponse.json(filteredComments);
+  }),
+
+  http.post("/api/board/:postId/submit", async ({ request, params }) => {
+    const { postId } = params;
+    const bodyString = await request.text();
+    const { content } = JSON.parse(bodyString);
+
+    const newComment = {
+      postId: +postId,
+      commentId: 1,
+      User: User,
+      content,
+      updateTime: new Date(),
+    };
+
+    comments.unshift(newComment);
+
+    return HttpResponse.json({
+      ...newComment,
     });
   }),
 ];

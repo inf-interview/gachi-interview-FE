@@ -1,4 +1,3 @@
-import Comment from "@/app/(AfterLogin)/_component/Comment";
 import CreateComment from "@/app/(AfterLogin)/_component/CommentForm";
 import { Badge } from "@/components/ui/badge";
 import { Post } from "@/model/Post";
@@ -8,7 +7,7 @@ import { FaRegComment } from "react-icons/fa";
 export default function PostDetail({ post }: { post: Post }) {
   return (
     <div className="flex-col">
-      <div className="w-2/3 px-6 pt-4 pb-2 border border-gray-300 rounded-md">
+      <div className="w-2/3 px-6 pt-4 pb-2 mb-5 border border-gray-300 rounded-md">
         <span className="text-2xl font-bold">{post.postTitle}</span>
         <hr className="mt-2" />
         <p className="my-5">{post.content}</p>
@@ -37,12 +36,7 @@ export default function PostDetail({ post }: { post: Post }) {
           </div>
         </div>
       </div>
-      <Comment />
-      <Comment />
-      <Comment />
-      <Comment />
-      <Comment />
-      <CreateComment />
+      <CreateComment postId={post.postId} />
     </div>
   );
 }

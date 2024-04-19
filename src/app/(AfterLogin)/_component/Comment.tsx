@@ -1,9 +1,7 @@
-export default function Comment() {
+import { Post } from "@/model/Post";
+
+export default function Comment({ comment }: { comment: Post }) {
   return (
-    // <div className="w-2/3 m-5 p-4 border border-gray-300 rounded-md">
-    //   <span>성 이름</span>
-    //   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-    // </div>
     <div className="flex flex-col w-2/3 my-5 p-4 border border-gray-300 rounded-md">
       <div className="flex items-center">
         <img
@@ -12,11 +10,11 @@ export default function Comment() {
           alt="프로필 이미지"
         />
         <div className="flex flex-col ml-4">
-          <span className="font-bold">이영재</span>
-          <span className="text-gray-500">3분 전</span>
+          <span className="font-bold">{comment.User.userName}</span>
+          <span className="text-gray-500">{comment.updateTime.toLocaleString()}</span>
         </div>
       </div>
-      <p className="mt-2">잘했어요!</p>
+      <p className="mt-2">{comment.content}</p>
     </div>
   );
 }
