@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineReload } from "react-icons/ai";
+import { getMedia } from "@/lib/utills/media";
 
 interface RecordSettingProps {
   setStep: (step: number) => void;
@@ -31,16 +32,11 @@ const RecordSetting = ({ setStep }: RecordSettingProps) => {
   };
 
   const startRecording = () => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: { deviceId: selectedAudioDevice } })
-      .then((stream) => {
-        if (videoContainerRef.current) {
-          videoContainerRef.current.srcObject = stream;
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    getMedia().then((media) => {
+      if (media) {
+        videoContainerRef.current!.srcObject = media;
+      }
+    });
   };
 
   return (
@@ -53,6 +49,8 @@ const RecordSetting = ({ setStep }: RecordSettingProps) => {
         <video
           className="w-full h-full rounded block scale-x-[-1] object-contain overflow-clip bg-black"
           autoPlay
+          playsInline
+          muted
           ref={videoContainerRef}
         />
       </div>

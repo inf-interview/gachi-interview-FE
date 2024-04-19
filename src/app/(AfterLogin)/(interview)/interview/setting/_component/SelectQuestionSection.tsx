@@ -1,14 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { InterviewOptionType } from "../page";
+import { useInterviewOption } from "../../../_lib/contexts/InterviewOptionContext";
 
 interface QuestionSelectionSectionProps {
   setStep: (step: number) => void;
   questionId: number;
   questionTitle: string;
-  setInterviewOption: Dispatch<SetStateAction<InterviewOptionType>>;
-  interviewOption: InterviewOptionType;
 }
 
 const questionList = [
@@ -95,9 +93,9 @@ const QuestionSelectionSection = ({
   setStep,
   questionId,
   questionTitle,
-  setInterviewOption,
-  interviewOption,
 }: QuestionSelectionSectionProps) => {
+  const { setInterviewOption, interviewOption } = useInterviewOption();
+
   const selectAllQuestions = () => {
     setInterviewOption((prev) => {
       if (questionList.every((question) => prev.questions.includes(question.questionId))) {

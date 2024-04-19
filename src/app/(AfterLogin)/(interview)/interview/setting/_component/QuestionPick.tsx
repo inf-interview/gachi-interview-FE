@@ -1,13 +1,10 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import SelectQuestionSection from "./SelectQuestionSection";
-import { InterviewOptionType } from "../page";
 
 interface QuestionPickProps {
   setStep: (step: number) => void;
-  setInterviewOption: Dispatch<SetStateAction<InterviewOptionType>>;
-  interviewOption: InterviewOptionType;
 }
 
 const questionSetList = [
@@ -25,7 +22,7 @@ const questionSetList = [
   },
 ];
 
-const QuestionPick = ({ setStep, setInterviewOption, interviewOption }: QuestionPickProps) => {
+const QuestionPick = ({ setStep }: QuestionPickProps) => {
   const [selectedQuestionId, setSelectedQuestionId] = useState<number>(questionSetList[0].listId);
 
   return (
@@ -45,8 +42,6 @@ const QuestionPick = ({ setStep, setInterviewOption, interviewOption }: Question
       </ul>
       <SelectQuestionSection
         setStep={setStep}
-        setInterviewOption={setInterviewOption}
-        interviewOption={interviewOption}
         questionId={selectedQuestionId}
         questionTitle={
           questionSetList.find((question) => question.listId === selectedQuestionId)?.question || ""
