@@ -7,47 +7,52 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import InterviewReview from "./_component/InterviewReview";
 import GetStudy from "./_component/GetStudy";
+import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
+import getReviews from "./_lib/getReviews";
+import getStudies from "./_lib/getStudies";
 
 export default function Page() {
   const tabParams = useSearchParams().get("tab") || undefined;
+  const queryClient = new QueryClient();
+  const dehydratedState = dehydrate(queryClient);
+
+  if (tabParams !== undefined) {
+    queryClient.prefetchQuery({ queryKey: ["community", tabParams], queryFn: getReviews });
+    queryClient.prefetchQuery({ queryKey: ["community", tabParams], queryFn: getStudies });
+  }
+
   return (
-    <Tabs defaultValue={tabParams}>
-      <div className="flex">
-        <div className="flex-1">
-          <TabsList>
-            <Link href="/community?tab=reviews">
-              <TabsTrigger value="reviews">면접 후기</TabsTrigger>
-            </Link>
-            <Link href="/community?tab=studies">
-              <TabsTrigger value="studies">스터디 모집</TabsTrigger>
-            </Link>
-          </TabsList>
+    <HydrationBoundary state={dehydratedState}>
+      <Tabs defaultValue={tabParams}>
+        <div className="flex">
+          <div className="flex-1">
+            <TabsList>
+              <Link href="/community?tab=reviews">
+                <TabsTrigger value="reviews">면접 후기</TabsTrigger>
+              </Link>
+              <Link href="/community?tab=studies">
+                <TabsTrigger value="studies">스터디 모집</TabsTrigger>
+              </Link>
+            </TabsList>
+          </div>
+          <Link href={`/community/create?tab=${tabParams}`}>
+            <Button>
+              <BsPlusCircle className="mr-2" />
+              글쓰기
+            </Button>
+          </Link>
         </div>
-        <Link href="/community/create?tab=reviews">
-          <Button>
-            <BsPlusCircle className="mr-2" />
-            글쓰기
-          </Button>
-        </Link>
-      </div>
-      <TabsContent value="reviews">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <InterviewReview />
-          <InterviewReview />
-          <InterviewReview />
-          <InterviewReview />
-          <InterviewReview />
-        </div>
-      </TabsContent>
-      <TabsContent value="studies">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <GetStudy />
-          <GetStudy />
-          <GetStudy />
-          <GetStudy />
-          <GetStudy />
-        </div>
-      </TabsContent>
-    </Tabs>
+        <TabsContent value="reviews">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <InterviewReview tabParams={tabParams} />
+          </div>
+        </TabsContent>
+        <TabsContent value="studies">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <GetStudy tabParams={tabParams} />
+          </div>
+        </TabsContent>
+      </Tabs>
+    </HydrationBoundary>
   );
 }

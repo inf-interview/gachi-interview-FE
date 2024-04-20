@@ -2,27 +2,26 @@
 
 import { Button } from "@/components/ui/button";
 import { ChangeEvent, FormEvent, useState } from "react";
+import postComment from "../community/_lib/postComment";
 
-export default function CommentForm() {
-  const [comment, setComment] = useState("");
+export default function CommentForm({ postId }: { postId: number }) {
+  const [content, setContent] = useState("");
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setComment("");
-    console.log(comment);
+    setContent("");
+    const commentData = await postComment({ content, postId });
+    console.log("commentData", commentData);
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setComment(e.target.value);
+    setContent(e.target.value);
   };
   return (
-    <form
-      onSubmit={onSubmit}
-      className="bottom-1 flex w-2/3 m-5 p-4 border border-gray-300 rounded-md"
-    >
+    <form onSubmit={onSubmit} className="bottom-1 flex w-2/3 p-4 border border-gray-300 rounded-md">
       <input
         type="text"
-        value={comment}
+        value={content}
         onChange={onChange}
         placeholder="댓글을 작성해주세요."
         className="flex-1 w-full h-full focus:outline-none"

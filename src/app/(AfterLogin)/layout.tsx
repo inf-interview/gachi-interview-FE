@@ -4,6 +4,7 @@ import { SlCamrecorder } from "react-icons/sl";
 import { MdOutlinePlaylistPlay } from "react-icons/md";
 import { MdGroups } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
+import RQProvider from "./_component/RQProvider";
 
 export default function AfterLoginLayout({ children }: { children: ReactNode }) {
   return (
@@ -45,7 +46,9 @@ export default function AfterLoginLayout({ children }: { children: ReactNode }) 
           </nav>
         </div>
       </div>
-      <div className="w-full mt-20 px-4">{children}</div>
+      <div className="w-full mt-20 px-4">
+        <RQProvider>{children}</RQProvider>
+      </div>
     </div>
   );
 }
