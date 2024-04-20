@@ -2,17 +2,15 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineReload } from "react-icons/ai";
 import { getMedia } from "@/lib/utills/media";
+import { useStep } from "../../../_lib/contexts/StepContext";
 
-interface RecordSettingProps {
-  setStep: (step: number) => void;
-}
-
-const RecordSetting = ({ setStep }: RecordSettingProps) => {
+const RecordSetting = () => {
   const videoContainerRef = useRef<HTMLVideoElement>(null);
   const [audioDevices, setAudioDevices] = useState<MediaDeviceInfo[]>([]);
   const [cameraDevices, setCameraDevices] = useState<MediaDeviceInfo[]>([]);
   const [selectedAudioDevice, setSelectedAudioDevice] = useState<string>("");
   const [selectedCameraDevice, setSelectedCameraDevice] = useState<string>("");
+  const { handleNextStep, handlePrevStep } = useStep();
 
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then((devices) => {
@@ -50,7 +48,6 @@ const RecordSetting = ({ setStep }: RecordSettingProps) => {
           className="w-full h-full rounded block scale-x-[-1] object-contain overflow-clip bg-black"
           autoPlay
           playsInline
-          muted
           ref={videoContainerRef}
         />
       </div>
@@ -79,10 +76,10 @@ const RecordSetting = ({ setStep }: RecordSettingProps) => {
         </select>
       </div>
       <div className="ml-auto mt-4">
-        <Button onClick={() => setStep(1)} variant="outline">
+        <Button onClick={() => handlePrevStep()} variant="outline">
           이전
         </Button>
-        <Button onClick={() => setStep(3)} className="ml-2" variant="outline">
+        <Button onClick={() => handleNextStep()} className="ml-2" variant="outline">
           다음
         </Button>
       </div>

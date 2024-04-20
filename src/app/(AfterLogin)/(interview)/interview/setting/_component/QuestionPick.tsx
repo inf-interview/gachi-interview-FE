@@ -3,10 +3,6 @@
 import { useState } from "react";
 import SelectQuestionSection from "./SelectQuestionSection";
 
-interface QuestionPickProps {
-  setStep: (step: number) => void;
-}
-
 const questionSetList = [
   {
     listId: 1,
@@ -22,7 +18,7 @@ const questionSetList = [
   },
 ];
 
-const QuestionPick = ({ setStep }: QuestionPickProps) => {
+const QuestionPick = () => {
   const [selectedQuestionId, setSelectedQuestionId] = useState<number>(questionSetList[0].listId);
 
   return (
@@ -41,7 +37,6 @@ const QuestionPick = ({ setStep }: QuestionPickProps) => {
         ))}
       </ul>
       <SelectQuestionSection
-        setStep={setStep}
         questionId={selectedQuestionId}
         questionTitle={
           questionSetList.find((question) => question.listId === selectedQuestionId)?.question || ""

@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useInterviewOption } from "../../../_lib/contexts/InterviewOptionContext";
+import { useStep } from "../../../_lib/contexts/StepContext";
 
 interface QuestionSelectionSectionProps {
-  setStep: (step: number) => void;
   questionId: number;
   questionTitle: string;
 }
@@ -89,12 +89,9 @@ const questionList = [
   },
 ];
 
-const QuestionSelectionSection = ({
-  setStep,
-  questionId,
-  questionTitle,
-}: QuestionSelectionSectionProps) => {
+const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelectionSectionProps) => {
   const { setInterviewOption, interviewOption } = useInterviewOption();
+  const { handleNextStep, handlePrevStep } = useStep();
 
   const selectAllQuestions = () => {
     setInterviewOption((prev) => {
@@ -148,16 +145,10 @@ const QuestionSelectionSection = ({
       </div>
       <footer className="flex justify-between mt-4">
         <span className="text-gray-500 text-sm">0 of 13 row(s) selected.</span>
-        <Button className="ml-auto" disabled variant="outline" onClick={() => setStep(1)}>
+        <Button className="ml-auto" disabled variant="outline" onClick={() => handlePrevStep()}>
           이전
         </Button>
-        <Button
-          className="ml-2"
-          variant="outline"
-          onClick={() => {
-            setStep(2);
-          }}
-        >
+        <Button className="ml-2" variant="outline" onClick={() => handleNextStep()}>
           다음
         </Button>
       </footer>
