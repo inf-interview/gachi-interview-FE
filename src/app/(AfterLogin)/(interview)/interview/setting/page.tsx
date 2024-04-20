@@ -3,6 +3,7 @@
 import QuestionPick from "./_component/QuestionPick";
 import RecordSetting from "./_component/RecordSetting";
 import { useStep } from "../../_lib/contexts/StepContext";
+import RecordSettingVerification from "./_component/RecordSettingVerification";
 
 const SettingPage = () => {
   const { step } = useStep();
@@ -12,6 +13,7 @@ const SettingPage = () => {
     <div>
       {step === 1 && <QuestionPick />}
       {step === 2 && <RecordSetting />}
+      {step === 3 && <RecordSettingVerification />}
     </div>
   );
 };
