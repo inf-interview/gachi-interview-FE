@@ -1,16 +1,61 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineReload } from "react-icons/ai";
-import { getMedia } from "@/lib/utills/media";
+import { closeMedia, getMedia } from "@/lib/utills/media";
 import { useStep } from "../../../_lib/contexts/StepContext";
+import { useInterviewOption } from "../../../_lib/contexts/InterviewOptionContext";
 
 const RecordSetting = () => {
+  // TODO: 커스텀 훅으로 분리한다.
   const videoContainerRef = useRef<HTMLVideoElement>(null);
   const [audioDevices, setAudioDevices] = useState<MediaDeviceInfo[]>([]);
   const [cameraDevices, setCameraDevices] = useState<MediaDeviceInfo[]>([]);
   const [selectedAudioDevice, setSelectedAudioDevice] = useState<string>("");
   const [selectedCameraDevice, setSelectedCameraDevice] = useState<string>("");
   const { handleNextStep, handlePrevStep } = useStep();
+  const { mediaOption, setMediaOption } = useInterviewOption();
+
+  const handleAudioDeviceChange = (deviceId: string) => {
+    closeMedia(mediaOption.media);
+    setSelectedAudioDevice(deviceId);
+    getMedia(deviceId, selectedCameraDevice).then((media) => {
+      if (media) {
+        setMediaOption({
+          ...mediaOption,
+          media,
+        });
+      }
+    });
+  };
+
+  const handleCameraDeviceChange = (deviceId: string) => {
+    closeMedia(mediaOption.media);
+    setSelectedCameraDevice(deviceId);
+    getMedia(selectedAudioDevice, deviceId).then((media) => {
+      if (media) {
+        setMediaOption({
+          ...mediaOption,
+          media,
+        });
+      }
+    });
+  };
+
+  const reloadRecording = () => {
+    closeMedia(mediaOption.media);
+    getMedia().then((media) => {
+      if (media) {
+        setMediaOption({
+          ...mediaOption,
+          media,
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    videoContainerRef.current!.srcObject = mediaOption.media;
+  }, [mediaOption.media]);
 
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then((devices) => {
@@ -19,31 +64,30 @@ const RecordSetting = () => {
       setAudioDevices(audioInputDevices);
       setCameraDevices(videoInputDevices);
     });
-  }, []);
 
-  const handleAudioDeviceChange = (deviceId: string) => {
-    setSelectedAudioDevice(deviceId);
-  };
-
-  const handleCameraDeviceChange = (deviceId: string) => {
-    setSelectedCameraDevice(deviceId);
-  };
-
-  const startRecording = () => {
     getMedia().then((media) => {
       if (media) {
-        videoContainerRef.current!.srcObject = media;
+        setMediaOption({
+          ...mediaOption,
+          media,
+        });
       }
     });
-  };
+
+    return () => {
+      closeMedia(mediaOption.media);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col items-center w-full">
       <div className="w-full h-96 rounded overflow-hidden relative">
-        <AiOutlineReload
-          className="absolute z-10 bg-inherit cursor-pointer text-white transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full top-1/2 left-1/2"
-          onClick={startRecording}
-        />
+        {!mediaOption.media && (
+          <AiOutlineReload
+            className="absolute z-10 bg-inherit cursor-pointer text-white transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full top-1/2 left-1/2"
+            onClick={reloadRecording}
+          />
+        )}
         <video
           className="w-full h-full rounded block scale-x-[-1] object-contain overflow-clip bg-black"
           autoPlay
@@ -66,7 +110,9 @@ const RecordSetting = () => {
         <select
           className="border border-gray-300 rounded-md p-2 text-sm md:ml-2 mt-2 md:mt-0"
           value={selectedAudioDevice}
-          onChange={(e) => handleAudioDeviceChange(e.target.value)}
+          onChange={(e) => {
+            handleAudioDeviceChange(e.target.value);
+          }}
         >
           {audioDevices.map((device) => (
             <option key={device.deviceId} value={device.deviceId}>

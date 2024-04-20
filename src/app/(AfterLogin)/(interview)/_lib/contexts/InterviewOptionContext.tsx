@@ -9,10 +9,18 @@ export interface InterviewOptionType {
   tags: string[];
 }
 
+export interface MediaOptionType {
+  media: MediaStream | null;
+  selectedMimeType: string;
+  mediaRecorderRef: React.MutableRefObject<MediaRecorder | null>;
+}
+
 const InterviewOptionContext = createContext<
   | {
       interviewOption: InterviewOptionType;
       setInterviewOption: React.Dispatch<React.SetStateAction<InterviewOptionType>>;
+      mediaOption: MediaOptionType;
+      setMediaOption: React.Dispatch<React.SetStateAction<MediaOptionType>>;
     }
   | undefined
 >(undefined);
@@ -33,10 +41,16 @@ export const InterviewOptionProvider = ({ children }: InterviewOptionProviderPro
     tags: [],
   });
 
+  const [mediaOption, setMediaOption] = useState<MediaOptionType>({
+    media: null,
+    selectedMimeType: "",
+    mediaRecorderRef: { current: null },
+  });
+
+  const value = { interviewOption, setInterviewOption, mediaOption, setMediaOption };
+
   return (
-    <InterviewOptionContext.Provider value={{ interviewOption, setInterviewOption }}>
-      {children}
-    </InterviewOptionContext.Provider>
+    <InterviewOptionContext.Provider value={value}>{children}</InterviewOptionContext.Provider>
   );
 };
 
