@@ -12,6 +12,7 @@ interface QuestionSelectionSectionProps {
   questionTitle: string;
 }
 
+// TODO: 컴포넌트 분리하기
 const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelectionSectionProps) => {
   const { setInterviewOption, interviewOption } = useInterviewOption();
   const { handleNextStep, handlePrevStep } = useStep();
@@ -81,7 +82,6 @@ const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelecti
               </label>
             )}
             <Button
-              className="mt-4"
               variant="outline"
               onClick={() =>
                 openModal(
@@ -130,7 +130,7 @@ interface QuestionItemProps {
 }
 
 const QuestionItem = ({ id, content, answer, onSelect, checked }: QuestionItemProps) => {
-  const { openModal, closeModal } = useModal();
+  const { openModal } = useModal();
 
   const handleSearch = () => {
     openModal(
@@ -176,6 +176,21 @@ interface AddQuestionModalProps {
 const AddQuestionModal = ({ closeModal, onSubmit }: AddQuestionModalProps) => {
   const [questionContent, setContent] = useState("");
   const [answerContent, setAnswer] = useState("");
+  const [error, setError] = useState("");
+
+  const validate = () => {
+    if (questionContent === "") {
+      setError("질문은 필수입니다.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleCreate = () => {
+    if (!validate()) return;
+    onSubmit(questionContent, answerContent);
+    closeModal();
+  };
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setContent(e.target.value);
@@ -183,7 +198,7 @@ const AddQuestionModal = ({ closeModal, onSubmit }: AddQuestionModalProps) => {
 
   return (
     <Modal
-      header="질문 추가"
+      header="질문 & 답변 추가"
       footer={
         <>
           <Button
@@ -194,14 +209,7 @@ const AddQuestionModal = ({ closeModal, onSubmit }: AddQuestionModalProps) => {
           >
             취소
           </Button>
-          <Button
-            onClick={() => {
-              onSubmit(questionContent, answerContent);
-              closeModal();
-            }}
-          >
-            추가
-          </Button>
+          <Button onClick={handleCreate}>추가</Button>
         </>
       }
     >
@@ -213,6 +221,7 @@ const AddQuestionModal = ({ closeModal, onSubmit }: AddQuestionModalProps) => {
         className="w-full p-2 border border-gray-300 rounded-md mt-4"
         required
       />
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
       <textarea
         placeholder="예시 답변을 입력해주세요."
         value={answerContent}
