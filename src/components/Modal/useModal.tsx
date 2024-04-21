@@ -5,6 +5,7 @@ import Backdrop from "../Backdrop";
 import { createPortal } from "react-dom";
 import { useContext, ReactNode } from "react";
 import { ModalContext } from "./context";
+import { Button } from "../ui/button";
 
 export const useModal = () => {
   const { modal, setModal } = useContext(ModalContext);
@@ -24,7 +25,7 @@ export const useErrorModal = () => {
   const { openModal, closeModal } = useModal();
   const openErrorModal = (message: string) => {
     openModal(
-      <Modal header="😭" footer={<button onClick={closeModal}>확인</button>}>
+      <Modal header="😭" footer={<Button onClick={closeModal}>확인</Button>}>
         {message}
       </Modal>,
     );
