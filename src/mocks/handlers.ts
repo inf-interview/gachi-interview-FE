@@ -1,4 +1,5 @@
 import { HttpResponse, http } from "msw";
+import * as data from "./data";
 
 const User = {
   userId: 1,
@@ -216,5 +217,31 @@ export const handlers = [
     return HttpResponse.json({
       ...newComment,
     });
+  }),
+
+  http.get("/api/interview/question/list", async () => {
+    return HttpResponse.json(data.questionList);
+  }),
+
+  http.get("/api/interview/question/:listId", async ({ params }) => {
+    const { listId } = params;
+
+    if (typeof listId !== "string" || isNaN(+listId)) {
+      return new HttpResponse(null, {
+        status: 400,
+        statusText: "Bad Request",
+      });
+    }
+
+    const existQuestions = data.questions.hasOwnProperty(listId);
+
+    if (!existQuestions) {
+      return new HttpResponse(null, {
+        status: 404,
+        statusText: "Not Found",
+      });
+    }
+
+    return HttpResponse.json(data.questions[listId]);
   }),
 ];

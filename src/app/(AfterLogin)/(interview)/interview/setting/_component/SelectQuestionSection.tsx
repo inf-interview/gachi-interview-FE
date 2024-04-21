@@ -1,99 +1,22 @@
 import { Button } from "@/components/ui/button";
-import { Dispatch, SetStateAction, useEffect } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useInterviewOption } from "../../../_lib/contexts/InterviewOptionContext";
 import { useStep } from "../../../_lib/contexts/StepContext";
+import useGetQuestions from "../_lib/queries/useGetQuestions";
 
 interface QuestionSelectionSectionProps {
   questionId: number;
   questionTitle: string;
 }
 
-const questionList = [
-  {
-    questionId: 1,
-    questionContent: "질문내용입니다.1",
-    answerId: 1,
-    answerContent: "답변내용입니다.1",
-  },
-  {
-    questionId: 2,
-    questionContent: "질문내용입니다.2",
-    answerId: 2,
-    answerContent: "답변내용입니다.2",
-  },
-  {
-    questionId: 3,
-    questionContent: "질문내용입니다.3",
-    answerId: 3,
-    answerContent: "답변내용입니다.3",
-  },
-  {
-    questionId: 4,
-    questionContent: "질문내용입니다.4",
-    answerId: 4,
-    answerContent: "답변내용입니다.4",
-  },
-  {
-    questionId: 5,
-    questionContent: "질문내용입니다.5",
-    answerId: 5,
-    answerContent: "답변내용입니다.5",
-  },
-  {
-    questionId: 6,
-    questionContent: "질문내용입니다.6",
-    answerId: 6,
-    answerContent: "답변내용입니다.6",
-  },
-  {
-    questionId: 7,
-    questionContent: "질문내용입니다.7",
-    answerId: 7,
-    answerContent: "답변내용입니다.7",
-  },
-  {
-    questionId: 8,
-    questionContent: "질문내용입니다.8",
-    answerId: 8,
-    answerContent: "답변내용입니다.8",
-  },
-  {
-    questionId: 9,
-    questionContent: "질문내용입니다.9",
-    answerId: 9,
-    answerContent: "답변내용입니다.9",
-  },
-  {
-    questionId: 10,
-    questionContent: "질문내용입니다.10",
-    answerId: 10,
-    answerContent: "답변내용입니다.10",
-  },
-  {
-    questionId: 11,
-    questionContent: "질문내용입니다.11",
-    answerId: 11,
-    answerContent: "답변내용입니다.11",
-  },
-  {
-    questionId: 12,
-    questionContent: "질문내용입니다.12",
-    answerId: 12,
-    answerContent: "답변내용입니다.12",
-  },
-  {
-    questionId: 13,
-    questionContent: "질문내용입니다.13",
-    answerId: 13,
-  },
-];
-
 const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelectionSectionProps) => {
   const { setInterviewOption, interviewOption } = useInterviewOption();
   const { handleNextStep, handlePrevStep } = useStep();
+  const { data: questionList, isLoading } = useGetQuestions({ interviewId: questionId });
 
   const selectAllQuestions = () => {
+    if (!questionList) return;
+
     setInterviewOption((prev) => {
       if (questionList.every((question) => prev.questions.includes(question.questionId))) {
         return {
@@ -117,6 +40,9 @@ const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelecti
     });
   };
 
+  // TODO: 로딩 컴포넌트
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <div className="flex-col w-full ml-2">
       <div className="rounded-md border w-full h-96 overflow-y-auto">
@@ -125,14 +51,15 @@ const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelecti
             className="cursor-pointer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
             type="checkbox"
             onChange={selectAllQuestions}
-            checked={questionList.every((question) =>
+            checked={questionList?.every((question) =>
               interviewOption.questions.includes(question.questionId),
             )}
+            value="all"
           />
           <label className="ml-12 text-gray-500 cursor-pointer">{questionTitle}</label>
         </header>
         <ul>
-          {questionList.map((question) => (
+          {questionList?.map((question) => (
             <QuestionItem
               key={question.questionId}
               id={question.questionId}
@@ -172,6 +99,7 @@ const QuestionItem = ({ id, content, onSelect, checked }: QuestionItemProps) => 
         type="checkbox"
         checked={checked}
         onChange={() => onSelect(id)}
+        value={id}
       />
       <label htmlFor={id.toString()} className="ml-12 cursor-pointer">
         {content}

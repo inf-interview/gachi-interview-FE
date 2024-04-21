@@ -2,29 +2,21 @@
 
 import { useState } from "react";
 import SelectQuestionSection from "./SelectQuestionSection";
-
-const questionSetList = [
-  {
-    listId: 1,
-    question: "이것만 알면 FE면접 끝!",
-  },
-  {
-    listId: 2,
-    question: "이것만 알면 BE면접 끝!",
-  },
-  {
-    listId: 3,
-    question: "이것만 알면 FullStack면접 끝!",
-  },
-];
+import useGetQuestionList from "../_lib/queries/useGetQuestionList";
 
 const QuestionPick = () => {
-  const [selectedQuestionId, setSelectedQuestionId] = useState<number>(questionSetList[0].listId);
+  const { data: questionList } = useGetQuestionList();
+  const [selectedQuestionId, setSelectedQuestionId] = useState<number>(
+    questionList?.[0]?.listId || 1,
+  );
+
+  // TODO: Loading 컴포넌트 추가
+  if (!questionList) return null;
 
   return (
     <div className="flex flex-col sm:flex-row">
       <ul>
-        {questionSetList.map((question) => (
+        {questionList.map((question) => (
           <li
             key={question.listId}
             className={`${
@@ -32,14 +24,14 @@ const QuestionPick = () => {
             } flex-col items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 h-9 px-4 py-2 justify-start cursor-pointer`}
             onClick={() => setSelectedQuestionId(question.listId)}
           >
-            {question.question}
+            {question.title}
           </li>
         ))}
       </ul>
       <SelectQuestionSection
         questionId={selectedQuestionId}
         questionTitle={
-          questionSetList.find((question) => question.listId === selectedQuestionId)?.question || ""
+          questionList.find((question) => question.listId === selectedQuestionId)?.title || ""
         }
       />
     </div>
