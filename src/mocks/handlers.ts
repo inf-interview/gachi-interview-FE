@@ -244,4 +244,70 @@ export const handlers = [
 
     return HttpResponse.json(data.questions[listId]);
   }),
+
+  http.post("/api/interview/question", async ({ request }) => {
+    const bodyString = await request.text();
+    const { userId, title } = JSON.parse(bodyString);
+
+    const nextId =
+      data.questionList.reduce((acc, cur) => {
+        if (acc < cur.listId) {
+          return cur.listId;
+        }
+        return acc;
+      }, 0) + 1;
+
+    const newQuestionList = {
+      listId: nextId,
+      userId,
+      title,
+    };
+
+    data.questionList.push(newQuestionList);
+
+    return HttpResponse.json({
+      ...newQuestionList,
+    });
+  }),
+
+  http.post("/api/interview/question/:listId", async ({ request, params }) => {
+    const { listId } = params;
+    const bodyString = await request.text();
+    const { userId, questionContent, answerContent } = JSON.parse(bodyString);
+
+    if (typeof listId !== "string" || isNaN(+listId)) {
+      return new HttpResponse(null, {
+        status: 400,
+        statusText: "Bad Request",
+      });
+    }
+
+    let nextId = 1;
+    for (const key in data.questions) {
+      nextId = Math.max(
+        data.questions[key].reduce((acc: any, cur: any) => {
+          if (acc < cur.questionId) {
+            return cur.questionId;
+          }
+          return acc;
+        }, 0),
+        nextId,
+      );
+    }
+    nextId += 1;
+
+    const newQuestion = {
+      questionId: nextId,
+      userId,
+      questionContent,
+      answerContent,
+    };
+
+    data.questions[listId] = data.questions[listId] || [];
+    data.questions[listId].push(newQuestion);
+
+    return HttpResponse.json({
+      ...newQuestion,
+    });
+  }),
 ];

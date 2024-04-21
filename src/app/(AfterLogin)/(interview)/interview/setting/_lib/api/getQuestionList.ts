@@ -5,6 +5,7 @@ const getQuestionList = async () => {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/interview/question/list`);
     return res.data;
   } catch (error) {
+    console.error(error);
     throw new Error("Failed to fetch data");
   }
 };

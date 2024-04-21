@@ -11,6 +11,7 @@ const getQuestions = async ({ interviewId }: getQuestionsProps) => {
     );
     return res.data;
   } catch (error) {
+    console.error(error);
     throw new Error("Failed to fetch data");
   }
 };

@@ -2,7 +2,10 @@ import { Button } from "@/components/ui/button";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useInterviewOption } from "../../../_lib/contexts/InterviewOptionContext";
 import { useStep } from "../../../_lib/contexts/StepContext";
-import useGetQuestions from "../_lib/queries/useGetQuestions";
+import { useGetQuestions, usePostQuestions } from "../_lib/queries/useQuestions";
+import { useModal } from "@/components/Modal/useModal";
+import { useState } from "react";
+import Modal from "@/components/Modal";
 
 interface QuestionSelectionSectionProps {
   questionId: number;
@@ -13,6 +16,8 @@ const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelecti
   const { setInterviewOption, interviewOption } = useInterviewOption();
   const { handleNextStep, handlePrevStep } = useStep();
   const { data: questionList, isLoading } = useGetQuestions({ interviewId: questionId });
+  const { openModal, closeModal } = useModal();
+  const { mutate } = usePostQuestions();
 
   const selectAllQuestions = () => {
     if (!questionList) return;
@@ -64,14 +69,47 @@ const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelecti
               key={question.questionId}
               id={question.questionId}
               content={question.questionContent}
+              answer={question.answerContent}
               onSelect={selectQuestion}
               checked={interviewOption.questions.includes(question.questionId)}
             />
           ))}
+          <li className="px-4 py-4 flex flex-col items-center justify-center border-b transition-colors hover:bg-muted/50 group">
+            {questionList?.length === 0 && (
+              <label className="text-gray-500">
+                등록된 질문이 없습니다. 버튼을 눌러 추가해주세요.
+              </label>
+            )}
+            <Button
+              className="mt-4"
+              variant="outline"
+              onClick={() =>
+                openModal(
+                  <AddQuestionModal
+                    closeModal={closeModal}
+                    onSubmit={(questionContent, answerContent) => {
+                      mutate({
+                        userId: 1,
+                        questionContent,
+                        answerContent,
+                        listId: questionId,
+                      });
+                      closeModal();
+                    }}
+                  />,
+                )
+              }
+            >
+              질문 & 답변 추가.
+            </Button>
+          </li>
         </ul>
       </div>
       <footer className="flex justify-between mt-4">
-        <span className="text-gray-500 text-sm">0 of 13 row(s) selected.</span>
+        <span className="text-gray-500 text-sm">
+          {interviewOption.questions.length} of {questionList?.length} row(s) selected.
+        </span>
+
         <Button className="ml-auto" disabled variant="outline" onClick={() => handlePrevStep()}>
           이전
         </Button>
@@ -86,11 +124,27 @@ const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelecti
 interface QuestionItemProps {
   id: number;
   content: string;
+  answer: string;
   checked: boolean;
   onSelect: (id: number) => void;
 }
 
-const QuestionItem = ({ id, content, onSelect, checked }: QuestionItemProps) => {
+const QuestionItem = ({ id, content, answer, onSelect, checked }: QuestionItemProps) => {
+  const { openModal, closeModal } = useModal();
+
+  const handleSearch = () => {
+    openModal(
+      <Modal header="질문 상세" footer={null}>
+        <div className="flex flex-col">
+          <label className="text-gray-500">Q.</label>
+          <p className="text-gray-700">{content}</p>
+          <label className="text-gray-500 mt-4">A.</label>
+          <p className="text-gray-700">{answer}</p>
+        </div>
+      </Modal>,
+    );
+  };
+
   return (
     <li className="px-4 py-4 flex items-center border-b transition-colors hover:bg-muted/50 group">
       <input
@@ -104,9 +158,67 @@ const QuestionItem = ({ id, content, onSelect, checked }: QuestionItemProps) => 
       <label htmlFor={id.toString()} className="ml-12 cursor-pointer">
         {content}
       </label>
-      <AiOutlineSearch className="ml-auto cursor-pointer opacity-0 group-hover:opacity-100" />
+      <AiOutlineSearch
+        onClick={handleSearch}
+        className="ml-auto cursor-pointer opacity-0 group-hover:opacity-100"
+      />
     </li>
   );
 };
 
 export default QuestionSelectionSection;
+
+interface AddQuestionModalProps {
+  closeModal: () => void;
+  onSubmit: (question: string, answer: string) => void;
+}
+
+const AddQuestionModal = ({ closeModal, onSubmit }: AddQuestionModalProps) => {
+  const [questionContent, setContent] = useState("");
+  const [answerContent, setAnswer] = useState("");
+
+  const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setContent(e.target.value);
+  };
+
+  return (
+    <Modal
+      header="질문 추가"
+      footer={
+        <>
+          <Button
+            variant="outline"
+            onClick={() => {
+              closeModal();
+            }}
+          >
+            취소
+          </Button>
+          <Button
+            onClick={() => {
+              onSubmit(questionContent, answerContent);
+              closeModal();
+            }}
+          >
+            추가
+          </Button>
+        </>
+      }
+    >
+      <input
+        type="text"
+        value={questionContent}
+        onChange={handleTitle}
+        placeholder="질문을 입력해주세요."
+        className="w-full p-2 border border-gray-300 rounded-md mt-4"
+        required
+      />
+      <textarea
+        placeholder="예시 답변을 입력해주세요."
+        value={answerContent}
+        onChange={(e) => setAnswer(e.target.value)}
+        className="w-full p-2 border border-gray-300 rounded-md mt-4 h-80"
+      />
+    </Modal>
+  );
+};
