@@ -4,8 +4,10 @@ import { useRouter } from "next/navigation";
 import { useInterviewOption } from "../../../_lib/contexts/InterviewOptionContext";
 import { useStep } from "../../../_lib/contexts/StepContext";
 import { useEffect } from "react";
+import { useErrorModal } from "@/components/Modal/useModal";
 
 const RecordSettingVerification = () => {
+  const errorModal = useErrorModal();
   const router = useRouter();
   const { interviewOption, mediaOption } = useInterviewOption();
   const { setStep } = useStep();
@@ -18,13 +20,13 @@ const RecordSettingVerification = () => {
 
     if (!interviewOption.questions.length) {
       // TODO: 에러 메시지를 띄운다.
-      alert("질문을 선택해주세요.");
+      errorModal("질문을 선택해주세요.");
       setStep(1);
       return false;
     }
 
     if (!mediaOption.media) {
-      alert("미디어 설정 오류");
+      errorModal("녹화를 위한 미디어를 설정해주세요.");
       setStep(2);
       return false;
     }
