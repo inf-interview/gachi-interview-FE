@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { MSWComponent } from "./_component/MSWComponent";
 import AuthSession from "./_component/AuthSession";
+import { ModalProvider } from "@/components/Modal/context";
+import { ModalContainer } from "@/components/Modal/useModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,10 +19,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body className={inter.className}>
         <MSWComponent />
-        <AuthSession>{children}</AuthSession>
+        <AuthSession>
+          <ModalProvider>
+            {children}
+            <ModalContainer />
+            <div id="modal-root" />
+          </ModalProvider>
+        </AuthSession>
       </body>
     </html>
   );
