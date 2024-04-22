@@ -1,11 +1,18 @@
 import React, { createContext, useState, useContext } from "react";
 
+export type QuestionType = {
+  questionId: number;
+  questionContent: string;
+  answerContent: string;
+  answerId: number;
+};
+
 export interface InterviewOptionType {
   userId: number;
   public: boolean;
   videoLink: string;
   videoTitle: string;
-  questions: number[];
+  questions: QuestionType[];
   tags: string[];
 }
 
