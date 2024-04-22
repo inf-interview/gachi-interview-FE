@@ -2,41 +2,33 @@
 
 import { useInterviewOption } from "../../_lib/contexts/InterviewOptionContext";
 import { startRecording, stopRecording, localDownload } from "@/lib/utills/record";
-
 import { getSupportedMimeTypes } from "@/lib/utills/media";
 import { useEffect, useRef, useState } from "react";
-import QuestionViewer from "./_component/QuestionViewer";
+import { QuestionViewer, AnswerViewer } from "./_component/Viewer";
+import useTimer from "./_lib/useTimer";
+import Timer from "./_component/Timer";
+import Controller from "./_component/Controller";
 
 const RecordPage = () => {
   const { interviewOption, mediaOption, setMediaOption } = useInterviewOption();
   const [recordedBlobs, setRecordedBlobs] = useState<Blob[]>([]);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const questionList = interviewOption.questions;
+  const [script, setScript] = useState<{
+    questionId: number;
+    answerId: number;
+    showAnswer: boolean;
+  }>({ questionId: 0, answerId: 0, showAnswer: false });
 
-  // const { data: questionList } = useQuery("questionList", async () => {
-  //   const response = await getQuestions();
-  //   return response.data;
-  // });
+  const { time, pause, start, reset } = useTimer({
+    endSeconds: 300,
+    onEnd: () => {
+      // console.log("end");
+    },
+  });
 
-  const questionList = [
-    {
-      questionId: 1,
-      questionContent: "질문1",
-      answerContent: "답변1",
-      answerId: 1,
-    },
-    {
-      questionId: 2,
-      questionContent: "질문2",
-      answerContent: "답변2",
-      answerId: 2,
-    },
-    {
-      questionId: 3,
-      questionContent: "질문3",
-      answerContent: "답변3",
-      answerId: 3,
-    },
-  ];
+  // TODO: 녹화 컨트롤러 커스텀 훅으로 분리
+  // 타이머, 녹화 시작, 녹화 종료, 다운로드, 현재 질문, 썸네일 캡쳐, AWS에 업로드
 
   const startRecordHandler = () => {
     const option = {
@@ -47,10 +39,14 @@ const RecordPage = () => {
     };
 
     startRecording(option);
+    start();
   };
 
   const stopRecordHandler = () => {
     stopRecording(mediaOption.mediaRecorderRef);
+    pause();
+    downloadHandler();
+    // 다운로드가 아닌 AWS에 업로드
   };
 
   const downloadHandler = () => {
@@ -66,19 +62,27 @@ const RecordPage = () => {
 
   return (
     <div>
+      <Timer seconds={time} />
       <div className="relative w-full h-full transform scale-x-[-1] rounded-lg">
-        <QuestionViewer currentQuestionId={1} questionList={questionList} />
+        <QuestionViewer questionId={script.questionId} questionList={questionList} />
         <video
-          className="display-block w-full h-full transform scale-x-[-1] rounded-lg"
+          className="display-block w-full h-full transform rounded-lg"
           ref={videoRef}
           autoPlay
           muted
           playsInline
-        ></video>
+        />
+        {script.showAnswer && (
+          <AnswerViewer answerId={script.answerId} questionList={questionList} />
+        )}
       </div>
-      <button onClick={startRecordHandler}>녹화시작</button>
-      <button onClick={stopRecordHandler}>녹화종료</button>
-      <button onClick={downloadHandler}>다운로드</button>
+      <Controller
+        setScript={setScript}
+        onStartRecord={startRecordHandler}
+        onStopRecord={stopRecordHandler}
+        questionList={questionList}
+        currentQuestionId={script.questionId}
+      />
     </div>
   );
 };
