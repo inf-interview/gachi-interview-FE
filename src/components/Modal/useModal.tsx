@@ -18,7 +18,15 @@ export const useModal = () => {
     setModal(null);
   };
 
-  return { openModal, closeModal, modal };
+  const openDialog = (message: string) => {
+    openModal(<Modal footer={<Button onClick={closeModal}>확인</Button>}>{message}</Modal>);
+  };
+
+  const closeDialog = () => {
+    setModal(null);
+  };
+
+  return { openModal, closeModal, modal, openDialog, closeDialog };
 };
 
 export const useErrorModal = () => {
