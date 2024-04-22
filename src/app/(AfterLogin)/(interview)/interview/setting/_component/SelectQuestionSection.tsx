@@ -7,12 +7,13 @@ import { useModal } from "@/components/Modal/useModal";
 import { useState } from "react";
 import Modal from "@/components/Modal";
 
+// TODO: 타입 분리
 interface QuestionSelectionSectionProps {
   questionId: number;
   questionTitle: string;
 }
 
-// TODO: 컴포넌트 분리하기
+// TODO: 컴포넌트 분리
 const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelectionSectionProps) => {
   const { setInterviewOption, interviewOption } = useInterviewOption();
   const { handleNextStep, handlePrevStep } = useStep();
@@ -24,25 +25,41 @@ const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelecti
     if (!questionList) return;
 
     setInterviewOption((prev) => {
-      if (questionList.every((question) => prev.questions.includes(question.questionId))) {
+      const prevQuestionIds = prev.questions.map((question) => question.questionId);
+      if (questionList.every((question) => prevQuestionIds.includes(question.questionId))) {
         return {
           ...prev,
           questions: prev.questions.filter(
             (prevQuestion) =>
-              !questionList.map((question) => question.questionId).includes(prevQuestion),
+              !questionList
+                .map((question) => question.questionId)
+                .includes(prevQuestion.questionId),
           ),
         };
       }
-      return { ...prev, questions: questionList.map((question) => question.questionId) };
+
+      return {
+        ...prev,
+        questions: [...prev.questions, ...questionList],
+      };
     });
   };
 
   const selectQuestion = (id: number) => {
     setInterviewOption((prev) => {
-      if (prev.questions.includes(id)) {
-        return { ...prev, questions: prev.questions.filter((question) => question !== id) };
+      const prevQuestionIds = prev.questions.map((question) => question.questionId);
+      if (prevQuestionIds.includes(id)) {
+        return {
+          ...prev,
+          questions: prev.questions.filter((question) => question.questionId !== id),
+        };
       }
-      return { ...prev, questions: [...prev.questions, id] };
+      const newQuestion = questionList.find((question) => question.questionId === id);
+      if (!newQuestion) return prev;
+      return {
+        ...prev,
+        questions: [...prev.questions, newQuestion],
+      };
     });
   };
 
@@ -58,7 +75,7 @@ const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelecti
             type="checkbox"
             onChange={selectAllQuestions}
             checked={questionList?.every((question) =>
-              interviewOption.questions.includes(question.questionId),
+              interviewOption.questions.includes(question),
             )}
             value="all"
           />
@@ -72,7 +89,7 @@ const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelecti
               content={question.questionContent}
               answer={question.answerContent}
               onSelect={selectQuestion}
-              checked={interviewOption.questions.includes(question.questionId)}
+              checked={interviewOption.questions.includes(question)}
             />
           ))}
           <li className="px-4 py-4 flex flex-col items-center justify-center border-b transition-colors hover:bg-muted/50 group">
@@ -87,8 +104,10 @@ const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelecti
                 openModal(
                   <AddQuestionModal
                     closeModal={closeModal}
+                    // TODO: 인라인 함수 제거
                     onSubmit={(questionContent, answerContent) => {
                       mutate({
+                        // TODO: userId 수정
                         userId: 1,
                         questionContent,
                         answerContent,
