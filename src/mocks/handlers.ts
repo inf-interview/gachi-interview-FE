@@ -298,7 +298,7 @@ export const handlers = [
 
     const newQuestion = {
       questionId: nextId,
-      userId,
+      answerId: nextId,
       questionContent,
       answerContent,
     };
