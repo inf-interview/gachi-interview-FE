@@ -4,7 +4,9 @@ import { SlCamrecorder } from "react-icons/sl";
 import { MdOutlinePlaylistPlay } from "react-icons/md";
 import { MdGroups } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
+import { HiOutlineBellAlert } from "react-icons/hi2";
 import RQProvider from "./_component/RQProvider";
+import AlertMessage from "./_component/AlertMessage";
 
 export default function AfterLoginLayout({ children }: { children: ReactNode }) {
   return (
@@ -43,12 +45,20 @@ export default function AfterLoginLayout({ children }: { children: ReactNode }) 
               <CgProfile className="mr-4" />
               마이페이지
             </Link>
+            <Link
+              href="/alerts"
+              className="flex items-center py-4 px-6 text-sm text-black hover:bg-gray-200 hover:text-gray-700"
+            >
+              <HiOutlineBellAlert className="mr-4" />
+              알림
+            </Link>
           </nav>
         </div>
       </div>
       <div className="w-full mt-20 px-4">
         <RQProvider>{children}</RQProvider>
       </div>
+      <AlertMessage />
     </div>
   );
 }

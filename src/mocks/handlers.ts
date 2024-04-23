@@ -117,6 +117,27 @@ const comments = [
   },
 ];
 
+const alerts = [
+  {
+    title: "알림 타입 (AI 피드백 완료 / 답글 알림)",
+    description:
+      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias reprehenderit inventore, quos reiciendis delectus excepturi nemo vitae error harum aut deserunt debitis quo eligendi est iste, temporibus illum? Sequi, quisquam.",
+    date: new Date(),
+  },
+  {
+    title: "AI 피드백",
+    description:
+      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias reprehenderit inventore, quos reiciendis delectus excepturi nemo vitae error harum aut deserunt debitis quo eligendi est iste, temporibus illum? Sequi, quisquam.",
+    date: new Date(),
+  },
+  {
+    title: "삼성전자 후기: 게시글에 답글이 달렸습니다.",
+    description:
+      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias reprehenderit inventore, quos reiciendis delectus excepturi nemo vitae error harum aut deserunt debitis quo eligendi est iste, temporibus illum? Sequi, quisquam.",
+    date: new Date(),
+  },
+];
+
 export const handlers = [
   http.post("/api/login", () => {
     console.log("로그인");
@@ -215,6 +236,25 @@ export const handlers = [
 
     return HttpResponse.json({
       ...newComment,
+    });
+  }),
+
+  http.get("/api/alert", () => {
+    return HttpResponse.json(alerts);
+  }),
+
+  http.post("/api/alert", async ({ request }) => {
+    const newAlert = {
+      title: "삼성전자 후기: 게시글에 답글이 달렸습니다.",
+      description:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias reprehenderit inventore, quos reiciendis delectus excepturi nemo vitae error harum aut deserunt debitis quo eligendi est iste, temporibus illum? Sequi, quisquam.",
+      date: new Date(),
+    };
+
+    alerts.unshift(newAlert);
+
+    return HttpResponse.json({
+      ...newAlert,
     });
   }),
 ];
