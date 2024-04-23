@@ -1,10 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useInterviewOption } from "../../../_lib/contexts/InterviewOptionContext";
-import { useStep } from "../../../_lib/contexts/StepContext";
 import { useEffect } from "react";
 import { useErrorModal } from "@/components/Modal/useModal";
+import { useInterviewOption } from "@/app/(AfterLogin)/(interview)/_lib/contexts/InterviewOptionContext";
+import { useStep } from "@/app/(AfterLogin)/(interview)/_lib/contexts/StepContext";
 
 const RecordSettingVerification = () => {
   const errorModal = useErrorModal();

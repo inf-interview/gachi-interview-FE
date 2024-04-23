@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import SelectQuestionSection from "./SelectQuestionSection";
-import { useGetQuestionList, usePostQuestionList } from "../_lib/queries/useQuestionList";
 import { useModal } from "@/components/Modal/useModal";
 import Modal from "@/components/Modal";
 import { Button } from "@/components/ui/button";
+import { useGetQuestionList, usePostQuestionList } from "../../_lib/queries/useQuestionList";
+import SelectQuestionSection from "./_component/SelectQuestionSection";
 
 // TODO: 컴포넌트 분리
 const QuestionPick = () => {

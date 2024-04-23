@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { AiOutlineSearch } from "react-icons/ai";
-import { useInterviewOption } from "../../../_lib/contexts/InterviewOptionContext";
-import { useStep } from "../../../_lib/contexts/StepContext";
-import { useGetQuestions, usePostQuestions } from "../_lib/queries/useQuestions";
+import { useInterviewOption } from "../../../../../_lib/contexts/InterviewOptionContext";
+import { useStep } from "../../../../../_lib/contexts/StepContext";
+import { useGetQuestions, usePostQuestions } from "../../../_lib/queries/useQuestions";
 import { useModal } from "@/components/Modal/useModal";
 import { useState } from "react";
 import Modal from "@/components/Modal";
