@@ -90,6 +90,12 @@ const AddQuestionTitleModal = ({ closeModal, onSubmit }: AddQuestionTitleModalPr
     onSubmit(title);
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleCreate();
+    }
+  };
+
   return (
     <Modal
       header="질문 세트 추가"
@@ -113,6 +119,7 @@ const AddQuestionTitleModal = ({ closeModal, onSubmit }: AddQuestionTitleModalPr
         placeholder="질문 세트의 제목을 입력해주세요."
         value={title}
         onChange={handleTitle}
+        onKeyDown={handleKeyPress}
       />
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </Modal>
