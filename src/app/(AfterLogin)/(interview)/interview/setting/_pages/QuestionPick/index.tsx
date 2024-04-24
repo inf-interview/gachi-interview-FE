@@ -7,13 +7,12 @@ import SelectTitleSection from "./_component/SelectTitleSection";
 
 const QuestionPick = () => {
   const { data: questionList } = useGetQuestionList();
-
   const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(
     questionList?.[0]?.listId || null,
   );
 
   useEffect(() => {
-    if (questionList) setSelectedQuestionId(questionList[0].listId);
+    if (questionList?.[0]?.listId) setSelectedQuestionId(questionList[0].listId);
   }, [questionList]);
 
   // TODO: Loading 컴포넌트 추가
