@@ -12,10 +12,16 @@ type ResponseQuestions = {
 }[];
 
 export const useGetQuestions = ({ interviewId }: { interviewId: number }) => {
+  const queryClient = useQueryClient();
   return useQuery<ResponseQuestions, Error>({
     queryKey: ["questionList", interviewId],
     queryFn: () => getQuestions({ interviewId }),
-    initialData: [],
+    initialData: () => {
+      const cache = queryClient.getQueryData<ResponseQuestions>(["questionList", interviewId]);
+      return cache || [];
+    },
+    placeholderData: [],
+    gcTime: 300 * 1000,
   });
 };
 

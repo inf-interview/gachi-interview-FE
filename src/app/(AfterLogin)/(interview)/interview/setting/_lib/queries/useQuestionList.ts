@@ -8,9 +8,17 @@ type ResponseQuestionList = {
 }[];
 
 export const useGetQuestionList = () => {
+  const queryClient = useQueryClient();
+
   return useQuery<ResponseQuestionList, Error>({
     queryKey: ["questionList"],
     queryFn: getQuestionList,
+    initialData: () => {
+      const cache = queryClient.getQueryData<ResponseQuestionList>(["questionList"]);
+      return cache || [];
+    },
+    staleTime: 60 * 1000,
+    gcTime: 300 * 1000,
   });
 };
 
