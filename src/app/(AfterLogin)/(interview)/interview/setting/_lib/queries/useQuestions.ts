@@ -4,7 +4,7 @@ import postQuestion from "../api/postQuestion";
 
 // TODO: 타입 디렉토리로 분리
 
-type ResponseQuestions = {
+export type ResponseQuestions = {
   questionId: number;
   questionContent: string;
   answerContent: string;
@@ -18,10 +18,11 @@ export const useGetQuestions = ({ interviewId }: { interviewId: number }) => {
     queryFn: () => getQuestions({ interviewId }),
     initialData: () => {
       const cache = queryClient.getQueryData<ResponseQuestions>(["questionList", interviewId]);
-      return cache || [];
+      return cache;
     },
     placeholderData: [],
     gcTime: 300 * 1000,
+    staleTime: 300 * 1000,
   });
 };
 
