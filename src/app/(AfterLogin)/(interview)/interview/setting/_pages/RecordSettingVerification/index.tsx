@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useInterviewOption } from "../../../_lib/contexts/InterviewOptionContext";
-import { useStep } from "../../../_lib/contexts/StepContext";
+import { useInterviewOption } from "../../../../_lib/contexts/InterviewOptionContext";
+import { useStep } from "../../../../_lib/contexts/StepContext";
 import { useEffect } from "react";
 import { useErrorModal } from "@/components/Modal/useModal";
 

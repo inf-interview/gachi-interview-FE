@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineReload } from "react-icons/ai";
 import { closeMedia, getMedia } from "@/lib/utills/media";
-import { useStep } from "../../../_lib/contexts/StepContext";
-import { useInterviewOption } from "../../../_lib/contexts/InterviewOptionContext";
+import { useStep } from "../../../../_lib/contexts/StepContext";
+import { useInterviewOption } from "../../../../_lib/contexts/InterviewOptionContext";
 
 const RecordSetting = () => {
   // TODO: 커스텀 훅으로 분리한다.

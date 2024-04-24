@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import SelectQuestionSection from "./SelectQuestionSection";
-import { useGetQuestionList, usePostQuestionList } from "../_lib/queries/useQuestionList";
+import SelectQuestionSection from "./_component/SelectQuestionSection";
+import { useGetQuestionList, usePostQuestionList } from "../../_lib/queries/useQuestionList";
 import { useModal } from "@/components/Modal/useModal";
 import Modal from "@/components/Modal";
 import { Button } from "@/components/ui/button";
@@ -61,8 +61,6 @@ const QuestionPick = () => {
   );
 };
 
-export default QuestionPick;
-
 interface AddQuestionTitleModalProps {
   closeModal: () => void;
   onSubmit: (title: string) => void;
@@ -120,3 +118,5 @@ const AddQuestionTitleModal = ({ closeModal, onSubmit }: AddQuestionTitleModalPr
     </Modal>
   );
 };
+
+export default QuestionPick;
