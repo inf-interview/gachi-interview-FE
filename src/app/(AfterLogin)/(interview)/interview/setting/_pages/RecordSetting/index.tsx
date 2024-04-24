@@ -1,8 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineReload } from "react-icons/ai";
 import { closeMedia, getMedia } from "@/lib/utills/media";
-import { useStep } from "../../../../_lib/contexts/StepContext";
 import { useInterviewOption } from "../../../../_lib/contexts/InterviewOptionContext";
 
 const RecordSetting = () => {
@@ -12,7 +10,6 @@ const RecordSetting = () => {
   const [cameraDevices, setCameraDevices] = useState<MediaDeviceInfo[]>([]);
   const [selectedAudioDevice, setSelectedAudioDevice] = useState<string>("");
   const [selectedCameraDevice, setSelectedCameraDevice] = useState<string>("");
-  const { handleNextStep, handlePrevStep } = useStep();
   const { mediaOption, setMediaOption } = useInterviewOption();
 
   const handleAudioDeviceChange = (deviceId: string) => {
@@ -121,14 +118,6 @@ const RecordSetting = () => {
             </option>
           ))}
         </select>
-      </div>
-      <div className="ml-auto mt-4">
-        <Button onClick={() => handlePrevStep()} variant="outline">
-          이전
-        </Button>
-        <Button onClick={() => handleNextStep()} className="ml-2" variant="outline">
-          다음
-        </Button>
       </div>
     </div>
   );
