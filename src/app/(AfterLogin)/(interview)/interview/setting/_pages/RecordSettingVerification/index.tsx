@@ -20,6 +20,7 @@ const RecordSettingVerification = () => {
 
     if (!interviewOption.questions.length) {
       // TODO: 에러 메시지를 띄운다.
+      // TODO: 매직 넘버를 상수로 빼야 한다.
       errorModal("질문을 선택해주세요.");
       setStep(1);
       return false;
