@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Dispatch, useEffect } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import { QuestionType } from "../../../_lib/contexts/InterviewOptionContext";
 import { useModal } from "@/components/Modal/useModal";
+import { useRouter } from "next/navigation";
+import { BsCardText, BsCameraVideo, BsCameraVideoOff, BsFillCaretRightFill } from "react-icons/bs";
 
 interface ControllerProps {
   setScript: Dispatch<
@@ -15,6 +17,7 @@ interface ControllerProps {
   onStopRecord: () => void;
   questionList: QuestionType[];
   currentQuestionId: number;
+  isRecording: boolean;
 }
 
 const Controller = ({
@@ -23,8 +26,18 @@ const Controller = ({
   onStopRecord,
   questionList,
   currentQuestionId,
+  isRecording,
 }: ControllerProps) => {
   const { openDialog } = useModal();
+  const router = useRouter();
+
+  const startRecordHandler = () => {
+    onStartRecord();
+  };
+
+  const stopRecordHandler = () => {
+    onStopRecord();
+  };
 
   const toggleShowAnswerHandler = () => {
     setScript((prev) => ({ ...prev, showAnswer: !prev.showAnswer }));
@@ -55,22 +68,47 @@ const Controller = ({
         answerId: questionList[0].answerId,
         showAnswer: false,
       });
+    } else {
+      router.push("/");
     }
   }, [questionList]);
 
   return (
     <div className="flex flex-row items-center mt-2">
-      <Button className="w-full" variant="outline" onClick={toggleShowAnswerHandler}>
-        답변 보기
+      <Button
+        className="w-full h-16 flex flex-col"
+        variant="outline"
+        onClick={toggleShowAnswerHandler}
+      >
+        <BsCardText />
+        <span className="text-xs text-center mt-1">답변 보기</span>
       </Button>
-      <Button className="w-full ml-2" variant="outline" onClick={nextQuestionHandler}>
-        다음 질문
-      </Button>
-      <Button className="w-full ml-2" variant="outline" onClick={() => onStartRecord()}>
-        녹화 시작
-      </Button>
-      <Button className="w-full ml-2" variant="outline" onClick={() => onStopRecord()}>
-        녹화 종료
+      {isRecording ? (
+        <Button
+          className="w-full h-16 ml-2 flex flex-col"
+          variant="outline"
+          onClick={stopRecordHandler}
+        >
+          <BsCameraVideoOff className="text-red-500" />
+          <span className="text-xs text-center mt-1 text-red-500">녹화 종료</span>
+        </Button>
+      ) : (
+        <Button
+          className="w-full h-16 ml-2 flex flex-col"
+          variant="outline"
+          onClick={startRecordHandler}
+        >
+          <BsCameraVideo />
+          <span className="text-xs text-center mt-1">녹화 시작</span>
+        </Button>
+      )}
+      <Button
+        className="w-full h-16 ml-2 flex flex-col"
+        variant="outline"
+        onClick={nextQuestionHandler}
+      >
+        <BsFillCaretRightFill />
+        <span className="text-xs text-center mt-1 text-primary">다음 질문</span>
       </Button>
     </div>
   );
