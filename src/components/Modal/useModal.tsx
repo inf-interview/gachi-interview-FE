@@ -3,7 +3,7 @@
 import Modal from "../Modal";
 import Backdrop from "../Backdrop";
 import { createPortal } from "react-dom";
-import { useContext, ReactNode } from "react";
+import React, { useContext, ReactNode } from "react";
 import { ModalContext } from "./context";
 import { Button } from "../ui/button";
 
@@ -47,6 +47,7 @@ export const ModalContainer = () => {
 
   const onBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target !== e.currentTarget) return;
+    if (React.isValidElement(modal) && modal.props.disableBackdropClick) return;
     closeModal();
   };
 
