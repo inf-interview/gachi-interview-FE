@@ -30,6 +30,7 @@ export const startRecording = ({
     });
 
     mediaRecorderRef.current.ondataavailable = (event: BlobEvent) => {
+      console.log("녹화 데이터가 수신되었습니다.", event.data);
       if (event.data && event.data.size > 0) {
         setRecordedBlobs((prevBlobs) => [...prevBlobs, event.data]);
       }
@@ -39,7 +40,8 @@ export const startRecording = ({
       console.log("녹화가 종료되었습니다.");
     };
 
-    mediaRecorderRef.current.start();
+    mediaRecorderRef.current.start(1000);
+    console.log("미디어 레코딩을 시작합니다.", mediaRecorderRef);
   } catch (error) {
     console.error("미디어 레코딩 중 오류가 발생했습니다.");
     console.error(error);
@@ -47,23 +49,85 @@ export const startRecording = ({
 };
 
 export const stopRecording = (mediaRecorderRef: React.MutableRefObject<MediaRecorder | null>) => {
-  if (mediaRecorderRef.current) {
-    mediaRecorderRef.current.stop();
-  }
+  return new Promise<void>((resolve) => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.onstop = () => {
+        resolve();
+      };
+      mediaRecorderRef.current.stop();
+    }
+  });
 };
 
-export const localDownload = async (blob: Blob) => {
-  const mp4Blob = await EncodingWebmToMp4(blob);
-  const url = window.URL.createObjectURL(mp4Blob);
+export const localDownload = async (blob: Blob, fileName?: string) => {
+  const url = window.URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.style.display = "none";
   a.href = url;
-  a.download = `${"test"}.mp4`;
+  if (!fileName) {
+    fileName = new Date().toISOString().replace(/:/g, "-");
+  }
+  a.download = `${fileName}.mp4`;
 
   document.body.appendChild(a);
   a.click();
   window.URL.revokeObjectURL(url);
   document.body.removeChild(a);
+};
+
+export const getThumbnailImage = async (blob: Blob, time?: number): Promise<Blob> => {
+  return new Promise((resolve, reject) => {
+    const video = document.createElement("video");
+    video.src = URL.createObjectURL(blob);
+    video.preload = "metadata"; // 메타데이터만 로드하도록 설정
+
+    video.onloadedmetadata = () => {
+      if (!video.videoWidth || !video.videoHeight) {
+        reject(new Error("비디오의 메타데이터를 로드하는 중에 오류가 발생했습니다."));
+        return;
+      }
+
+      video.currentTime = time || 1;
+      video.onseeked = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext("2d");
+        if (!context) {
+          reject(new Error("캔버스 컨텍스트를 가져올 수 없습니다."));
+          return;
+        }
+
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob((thumbnailBlob) => {
+          if (!thumbnailBlob) {
+            reject(new Error("썸네일 이미지를 생성할 수 없습니다."));
+            return;
+          }
+          resolve(thumbnailBlob);
+        }, "image/png");
+      };
+
+      video.onerror = () => {
+        reject(new Error("비디오를 로드하는 중에 오류가 발생했습니다."));
+      };
+    };
+  });
+};
+
+export const getThumbnailImages = async (blobs: Blob, videoDuration: number): Promise<Blob[]> => {
+  const times = Array.from({ length: 5 }, (_, index) => {
+    return Math.floor((videoDuration / 5) * index);
+  });
+
+  const thumbnailBlobs = await Promise.all(
+    times.map(async (time) => {
+      return await getThumbnailImage(blobs, time);
+    }),
+  );
+
+  return thumbnailBlobs;
 };
 
 export const EncodingWebmToMp4 = async (blob: Blob) => {
@@ -111,7 +175,6 @@ export const EncodingWebmToMp4 = async (blob: Blob) => {
   console.log("output.mp4 파일 작성 완료");
   const data = await ffmpeg.readFile("output.mp4");
   const newBlob = new Blob([data], { type: "video/mp4;" });
-  console.log(data);
 
   console.timeEnd("EncodingWebmToMp4");
 
