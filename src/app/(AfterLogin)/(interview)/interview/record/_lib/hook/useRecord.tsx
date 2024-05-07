@@ -14,12 +14,14 @@ import { useModal } from "@/components/Modal/useModal";
 import VideoMetadataModal from "../../_component/VideoMetadataModal";
 import Modal from "@/components/Modal";
 import { Button } from "@/components/ui/button";
+import { usePostInterviewMutation } from "../queries/useInterviewQuery";
 
 const useRecord = () => {
   const { interviewOption, mediaOption, setMediaOption } = useInterviewOption();
   const [recordedBlobs, setRecordedBlobs] = useState<Blob[]>([]);
   const { openDialog, closeDialog, openModal, closeModal } = useModal();
   const [isRecording, setIsRecording] = useState(false);
+  const { mutate, isSuccess } = usePostInterviewMutation();
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const questionList = interviewOption.questions;
@@ -79,7 +81,28 @@ const useRecord = () => {
           "image/png",
         );
 
+        if (!videoUrl || !thumbnailUrl) {
+          console.error("업로드 실패");
+          return;
+        }
+
+        console.log(thumbnailUrl);
+
         // TODO: 백엔드에 POST할 mutation 호출
+        const response = mutate({
+          // TODO: 유저 아이디 넘겨주기
+          userId: 1,
+          videoLink: videoUrl,
+          thumbnailLink: thumbnailUrl,
+          videoTitle: metadata.title,
+          tags: metadata.tags,
+          isPublic: metadata.public,
+          questions: questionList.map((question) => question.questionId),
+        });
+
+        if (isSuccess) {
+          console.log("업로드 성공");
+        }
 
         openModal(
           // TODO: 업로드 완료 모달 컴포넌트로 분리
