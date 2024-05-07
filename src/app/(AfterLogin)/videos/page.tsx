@@ -1,95 +1,20 @@
+"use client";
+
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { AiOutlineLike } from "react-icons/ai";
 import Link from "next/link";
-
-const VideoList = [
-  {
-    userId: 1,
-    userName: "권우현",
-    videoId: 555,
-    videoLink: "idrive 올린 링크",
-    videoTitle: "면접 연습 영상",
-    time: "2024-04-01 15:41:00",
-    updateTime: null,
-    numOfLike: 20,
-    tags: ["삼성", "네이버", "카카오", "BE"],
-    thumbnailUrl: "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
-  },
-  {
-    userId: 2,
-    userName: "권우현",
-    videoId: 666,
-    videoLink: "idrive 올린 링크",
-    videoTitle: "면접 연습 영상2",
-    time: "2024-04-01 15:42:00",
-    updateTime: null,
-    numOfLike: 15,
-    tags: [
-      "삼성",
-      "네이버",
-      "카카오",
-      "BE",
-      "프론트엔드",
-      "백엔드",
-      "풀스택",
-      "자바스크립트",
-      "타입스크립트",
-      "리액트",
-      "노드",
-    ],
-    thumbnailUrl: "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
-  },
-  {
-    userId: 3,
-    userName: "권우현",
-    videoId: 777,
-    videoLink: "idrive 올린 링크",
-    videoTitle: "면접 연습 영상3",
-    time: "2024-04-01 15:43:00",
-    updateTime: null,
-    numOfLike: 10,
-    tags: ["삼성", "네이버", "카카오", "BE"],
-    thumbnailUrl: "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
-  },
-  {
-    userId: 4,
-    userName: "권우현",
-    videoId: 888,
-    videoLink: "idrive 올린 링크",
-    videoTitle: "면접 연습 영상4",
-    time: "2024-04-01 15:44:00",
-    updateTime: null,
-    numOfLike: 5,
-    tags: ["삼성", "네이버", "카카오", "BE"],
-    thumbnailUrl: "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
-  },
-  {
-    userId: 5,
-    userName: "권우현",
-    videoId: 999,
-    videoLink: "idrive 올린 링크",
-    videoTitle: "면접 연습 영상5",
-    time: "2024-04-01 15:45:00",
-    updateTime: null,
-    numOfLike: 0,
-    tags: ["삼성", "네이버", "카카오", "BE"],
-    thumbnailUrl: "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
-  },
-  {
-    userId: 6,
-    userName: "권우현",
-    videoId: 101010,
-    videoLink: "idrive 올린 링크",
-    videoTitle: "면접 연습 영상6",
-    time: "2024-04-01 15:46:00",
-    updateTime: null,
-    numOfLike: 0,
-    tags: ["삼성", "네이버", "카카오", "BE"],
-    thumbnailUrl: "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
-  },
-];
+import { useGetInterviews } from "./_lib/queries/useInterviewQuery";
+import { Badge } from "@/components/ui/badge";
 
 const Videos = () => {
+  // TODO: infinite scroll 구현
+  const page = 1;
+  const { data: videoList } = useGetInterviews({ sortType: "like", page });
+
+  if (!videoList) {
+    return <div>loading...</div>;
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center w-full mb-2" style={{ gap: "1rem" }}>
@@ -107,7 +32,7 @@ const Videos = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {VideoList.map((video) => (
+        {videoList.map((video) => (
           <Link key={video.videoId} href={`/videos/${video.videoId}`} passHref>
             <Card key={video.videoId} className="flex flex-col h-full">
               <CardHeader className="flex flex-row justify-between">
@@ -126,19 +51,20 @@ const Videos = () => {
               <CardContent>
                 <div className="flex justify-center rounded-lg overflow-hidden">
                   <img
-                    src={video.thumbnailUrl}
+                    src={video.thumbnailLink}
                     alt="thumbnail"
                     className="w-full h-40 object-cover"
                   />
                 </div>
                 <div className="flex flex-wrap gap-1 mt-2">
-                  {video.tags.map((tag) => (
-                    <div
+                  {video.tags.map((tag, index) => (
+                    <Badge
                       key={tag}
-                      className="px-2 py-1 text-xs bg-gray-200 text-gray-800 rounded-md"
+                      variant="secondary"
+                      className={`px-3 py-1 text-sm ${index === 0 ? "ml-0" : "mx-1"}`}
                     >
                       {tag}
-                    </div>
+                    </Badge>
                   ))}
                 </div>
               </CardContent>
