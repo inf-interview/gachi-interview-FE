@@ -1,5 +1,5 @@
 import { useInterviewOption } from "../../../../../_lib/contexts/InterviewOptionContext";
-import { useGetQuestions } from "../../../_lib/queries/useQuestions";
+import { useGetQuestionsQuery } from "../../../_lib/queries/useQuestions";
 import QuestionList from "./QuestionList";
 import QuestionListHeader from "./QuestionListHeader";
 
@@ -12,7 +12,7 @@ interface QuestionSelectionSectionProps {
 // 또는 훅으로 분리해도 좋을듯
 const QuestionSelectionSection = ({ questionId, questionTitle }: QuestionSelectionSectionProps) => {
   const { setInterviewOption, interviewOption } = useInterviewOption();
-  const { data: questionList, isLoading } = useGetQuestions({ interviewId: questionId });
+  const { data: questionList, isLoading } = useGetQuestionsQuery({ interviewId: questionId });
 
   const getPrevQuestionIds = () => interviewOption.questions.map((question) => question.questionId);
   const selectAllQuestions = () => {

@@ -2,7 +2,7 @@ import {
   InterviewOptionType,
   QuestionType,
 } from "@/app/(AfterLogin)/(interview)/_lib/contexts/InterviewOptionContext";
-import { useGetQuestions, usePostQuestions } from "../../../_lib/queries/useQuestions";
+import { useGetQuestionsQuery, usePostQuestionsMutation } from "../../../_lib/queries/useQuestions";
 import QuestionItem from "./QuestionItem";
 import { Button } from "@/components/ui/button";
 import AddQuestionModal from "./AddQuestionModal";
@@ -15,9 +15,9 @@ interface QuestionListProps {
 }
 
 const QuestionList = ({ questionId, onSelect, interviewOption }: QuestionListProps) => {
-  const { data: questionList, isLoading } = useGetQuestions({ interviewId: questionId });
+  const { data: questionList, isLoading } = useGetQuestionsQuery({ interviewId: questionId });
   const { openModal, closeModal } = useModal();
-  const { mutate } = usePostQuestions();
+  const { mutate } = usePostQuestionsMutation();
 
   const openAddQuestionModalHandler = () =>
     openModal(

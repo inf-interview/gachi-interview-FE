@@ -1,5 +1,8 @@
 import { useModal } from "@/components/Modal/useModal";
-import { useGetQuestionList, usePostQuestionList } from "../../../_lib/queries/useQuestionList";
+import {
+  useGetQuestionListQuery,
+  usePostQuestionListMutation,
+} from "../../../_lib/queries/useQuestionList";
 import AddQuestionTitleModal from "./AddQuestionTitleModal";
 
 interface SelectTitleSectionProps {
@@ -11,9 +14,9 @@ const SelectTitleSection = ({
   selectedQuestionId,
   setSelectedQuestionId,
 }: SelectTitleSectionProps) => {
-  const { data: questionList } = useGetQuestionList();
+  const { data: questionList } = useGetQuestionListQuery();
 
-  const { mutate: createTitleMutate } = usePostQuestionList();
+  const { mutate: createTitleMutate } = usePostQuestionListMutation();
   const { openModal, closeModal } = useModal();
 
   const openAddTitleModalHandler = () => {
