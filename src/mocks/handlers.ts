@@ -568,4 +568,108 @@ export const handlers = [
       },
     );
   }),
+
+  http.patch("/api/video/:videoId/comments/:commentId", async ({ params, request }) => {
+    const { videoId, commentId } = params;
+    const bodyString = await request.text();
+    const { userId, content } = JSON.parse(bodyString);
+
+    if (
+      typeof videoId !== "string" ||
+      isNaN(+videoId) ||
+      typeof commentId !== "string" ||
+      isNaN(+commentId)
+    ) {
+      return new HttpResponse(null, {
+        status: 400,
+        statusText: "Bad Request",
+      });
+    }
+
+    const existVideo = data.interviews.find((interview) => interview.videoId === +videoId);
+
+    if (!existVideo) {
+      return new HttpResponse(null, {
+        statusText: "Not Found",
+        status: 404,
+      });
+    }
+
+    const targetComment = data.comments.find((comment) => comment.videoId === +videoId);
+    if (!targetComment) {
+      return new HttpResponse(null, {
+        statusText: "Not Found",
+        status: 404,
+      });
+    }
+
+    const targetContent = targetComment.content.find((comment) => comment.commentId === +commentId);
+    if (!targetContent) {
+      return new HttpResponse(null, {
+        statusText: "Not Found",
+        status: 404,
+      });
+    }
+
+    targetContent.content = content;
+
+    return HttpResponse.json(
+      {
+        content: targetContent,
+      },
+      {
+        status: 201,
+      },
+    );
+  }),
+
+  // 영상 댓글 삭제
+  http.delete("/api/video/:videoId/comments/:commentId", async ({ params }) => {
+    const { videoId, commentId } = params;
+
+    if (
+      typeof videoId !== "string" ||
+      isNaN(+videoId) ||
+      typeof commentId !== "string" ||
+      isNaN(+commentId)
+    ) {
+      return new HttpResponse(null, {
+        status: 400,
+        statusText: "Bad Request",
+      });
+    }
+
+    const existVideo = data.interviews.find((interview) => interview.videoId === +videoId);
+
+    if (!existVideo) {
+      return new HttpResponse(null, {
+        statusText: "Not Found",
+        status: 404,
+      });
+    }
+
+    const targetComment = data.comments.find((comment) => comment.videoId === +videoId);
+    if (!targetComment) {
+      return new HttpResponse(null, {
+        statusText: "Not Found",
+        status: 404,
+      });
+    }
+
+    const targetContent = targetComment.content.find((comment) => comment.commentId === +commentId);
+    if (!targetContent) {
+      return new HttpResponse(null, {
+        statusText: "Not Found",
+        status: 404,
+      });
+    }
+
+    targetComment.content = targetComment.content.filter(
+      (comment) => comment.commentId !== +commentId,
+    );
+
+    return new HttpResponse(null, {
+      status: 204,
+    });
+  }),
 ];
