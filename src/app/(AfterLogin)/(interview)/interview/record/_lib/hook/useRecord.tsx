@@ -1,6 +1,6 @@
 import { useInterviewOption } from "@/app/(AfterLogin)/(interview)/_lib/contexts/InterviewOptionContext";
 import { getSupportedMimeTypes } from "@/lib/utills/media";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useTimer from "./useTimer";
 import {
   EncodingWebmToMp4,
@@ -157,6 +157,14 @@ const useRecord = () => {
     const encodedBlob = await EncodingWebmToMp4(blob);
     localDownload(encodedBlob);
   };
+
+  useEffect(() => {
+    return () => {
+      stopRecording(mediaOption.mediaRecorderRef);
+      setRecordedBlobs([]);
+      reset();
+    };
+  }, []);
 
   return {
     videoRef,
