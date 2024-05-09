@@ -4,12 +4,15 @@ export interface getInterviewsProps {
 }
 const getInterviews = async ({ sortType, page }: getInterviewsProps) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/video/list?page=${page}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/video/list?page=${page}&sortType=${sortType}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    });
+    );
     return res.json();
   } catch (error) {
     console.error(error);
