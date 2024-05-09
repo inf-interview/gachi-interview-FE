@@ -161,6 +161,18 @@ const useRecord = () => {
   useEffect(() => {
     return () => {
       stopRecording(mediaOption.mediaRecorderRef);
+
+      // 미디어 스트림의 모든 트랙 중지
+      if (mediaOption.mediaRecorderRef.current) {
+        const stream = mediaOption.mediaRecorderRef.current.stream;
+        if (stream) {
+          const tracks = stream.getTracks();
+          tracks.forEach((track) => {
+            track.stop();
+          });
+        }
+      }
+
       setRecordedBlobs([]);
       reset();
     };
