@@ -393,9 +393,11 @@ export const handlers = [
     });
   }),
 
+  // 영상 목록 조회
   http.get("/api/video/list", async ({ request }) => {
     const url = new URL(request.url);
     const page = url.searchParams.get("page");
+    const sortType = url.searchParams.get("sortType");
 
     if (!page) {
       return new HttpResponse(null, {
@@ -404,13 +406,19 @@ export const handlers = [
       });
     }
     const publicVideos = data.interviews.filter((interview) => interview.public);
-    const sortedVideos = publicVideos.sort((a, b) => {
-      return new Date(b.time).getTime() - new Date(a.time).getTime();
-    });
+
+    let result = publicVideos;
+    if (sortType === "like") {
+      result.sort((a, b) => b.numOfLike - a.numOfLike);
+    } else {
+      result.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
+    }
     const start = (Number(page) - 1) * 10;
     const end = start + 10;
 
-    return HttpResponse.json(sortedVideos.slice(start, end));
+    // sortType이 바뀐 경우 page를 1로 초기화해야함
+
+    return HttpResponse.json(result.slice(start, end));
   }),
 
   http.get("/api/video/:videoId", async ({ params }) => {
