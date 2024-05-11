@@ -10,7 +10,6 @@ interface VideoIdPageProps {
 }
 
 const VideoIdPage = async ({ params }: VideoIdPageProps) => {
-  // params가져오기
   const { videoId } = params;
   const queryClient = new QueryClient();
   const dehydratedState = dehydrate(queryClient);

@@ -27,6 +27,7 @@ const VideoDetail = ({ videoId }: VideoDetailProps) => {
   // TODO: Loading, Error 컴포넌트 추가
   if (!videoData) return null;
 
+  // TODO: 본인의 비디오인 경우 수정, 삭제 버튼 추가
   return (
     <>
       <div className="flex justify-center w-full">
