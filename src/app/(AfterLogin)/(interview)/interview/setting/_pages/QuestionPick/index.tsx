@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import SelectQuestionSection from "./_component/SelectQuestionSection";
-import { useGetQuestionList } from "../../_lib/queries/useQuestionList";
+import { useGetQuestionListQuery } from "../../_lib/queries/useQuestionList";
 import SelectTitleSection from "./_component/SelectTitleSection";
 
 const QuestionPick = () => {
-  const { data: questionList } = useGetQuestionList();
+  const { data: questionList } = useGetQuestionListQuery();
   const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(
     questionList?.[0]?.listId || null,
   );

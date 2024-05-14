@@ -11,7 +11,7 @@ export type ResponseQuestions = {
   answerId: number;
 }[];
 
-export const useGetQuestions = ({ interviewId }: { interviewId: number }) => {
+export const useGetQuestionsQuery = ({ interviewId }: { interviewId: number }) => {
   const queryClient = useQueryClient();
   return useQuery<ResponseQuestions, Error>({
     queryKey: ["questionList", interviewId],
@@ -33,7 +33,7 @@ type RequestPostQuestions = {
   listId: number;
 };
 
-export const usePostQuestions = () => {
+export const usePostQuestionsMutation = () => {
   const queryClient = useQueryClient();
   return useMutation<ResponseQuestions, Error, RequestPostQuestions>({
     mutationKey: ["questionList"],
