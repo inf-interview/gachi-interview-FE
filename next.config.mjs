@@ -1,9 +1,11 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
+  // rewrites: [{ source: "/(.*)", destination: "/" }],
   async headers() {
     return [
       {
-        source: "/interview/record",
+        source: "/interview/:slug*",
         headers: [
           {
             key: "Cross-Origin-Embedder-Policy",
@@ -29,6 +31,32 @@ const nextConfig = {
           },
         ],
       },
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Cross-Origin-Embedder-Policy",
+            value: "credentialless", //credentialless 요청을 허용하기
+          },
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: "same-origin",
+          },
+        ],
+      },
+      // {
+      //   source: "/(.*)", // 모든 경로에 대해 적용
+      //   headers: [
+      //     {
+      //       key: "Cross-Origin-Embedder-Policy",
+      //       value: "require-corp",
+      //     },
+      //     {
+      //       key: "Cross-Origin-Opener-Policy",
+      //       value: "same-origin",
+      //     },
+      //   ],
+      // },
     ];
   },
 };

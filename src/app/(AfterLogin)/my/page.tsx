@@ -6,7 +6,6 @@ import CommentCard from "./_component/CommentCard";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 
 const InterViewData = [
@@ -110,7 +109,7 @@ const My = () => {
               </Link>
             </TabsList>
           </div>
-          <Button onClick={() => signOut()}>로그아웃</Button>
+          <Button>로그아웃</Button>
         </div>
         <TabsContent value="videos">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

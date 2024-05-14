@@ -1,10 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useInterviewOption } from "../../../../_lib/contexts/InterviewOptionContext";
+import { useStep } from "../../../../_lib/contexts/StepContext";
 import { useEffect } from "react";
 import { useErrorModal } from "@/components/Modal/useModal";
-import { useInterviewOption } from "@/app/(AfterLogin)/(interview)/_lib/contexts/InterviewOptionContext";
-import { useStep } from "@/app/(AfterLogin)/(interview)/_lib/contexts/StepContext";
 
 const RecordSettingVerification = () => {
   const errorModal = useErrorModal();
@@ -20,6 +20,7 @@ const RecordSettingVerification = () => {
 
     if (!interviewOption.questions.length) {
       // TODO: 에러 메시지를 띄운다.
+      // TODO: 매직 넘버를 상수로 빼야 한다.
       errorModal("질문을 선택해주세요.");
       setStep(1);
       return false;

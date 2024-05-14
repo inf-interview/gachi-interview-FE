@@ -7,14 +7,21 @@ type ResponseQuestionList = {
   title: string;
 }[];
 
-export const useGetQuestionList = () => {
+export const useGetQuestionListQuery = () => {
+  const queryClient = useQueryClient();
   return useQuery<ResponseQuestionList, Error>({
     queryKey: ["questionList"],
     queryFn: getQuestionList,
+    initialData: () => {
+      const cache = queryClient.getQueryData<ResponseQuestionList>(["questionList"]);
+      return cache;
+    },
+    staleTime: 300 * 1000,
+    gcTime: 300 * 1000,
   });
 };
 
-export const usePostQuestionList = () => {
+export const usePostQuestionListMutation = () => {
   const queryClient = useQueryClient();
   return useMutation<ResponseQuestionList, Error, { userId: number; title: string }>({
     mutationKey: ["questionList"],

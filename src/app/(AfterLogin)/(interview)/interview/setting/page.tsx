@@ -1,9 +1,10 @@
 "use client";
 
-import { useStep } from "../../_lib/contexts/StepContext";
 import QuestionPick from "./_pages/QuestionPick";
 import RecordSetting from "./_pages/RecordSetting";
 import RecordSettingVerification from "./_pages/RecordSettingVerification";
+import { useStep } from "../../_lib/contexts/StepContext";
+import Footer from "./_pages/_component/footer";
 
 const SettingPage = () => {
   const { step } = useStep();
@@ -14,6 +15,7 @@ const SettingPage = () => {
       {step === 1 && <QuestionPick />}
       {step === 2 && <RecordSetting />}
       {step === 3 && <RecordSettingVerification />}
+      <Footer />
     </div>
   );
 };

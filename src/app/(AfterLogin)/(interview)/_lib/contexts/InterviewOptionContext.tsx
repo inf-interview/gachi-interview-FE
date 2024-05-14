@@ -54,7 +54,12 @@ export const InterviewOptionProvider = ({ children }: InterviewOptionProviderPro
     mediaRecorderRef: { current: null },
   });
 
-  const value = { interviewOption, setInterviewOption, mediaOption, setMediaOption };
+  const value = {
+    interviewOption,
+    setInterviewOption,
+    mediaOption,
+    setMediaOption,
+  };
 
   return (
     <InterviewOptionContext.Provider value={value}>{children}</InterviewOptionContext.Provider>

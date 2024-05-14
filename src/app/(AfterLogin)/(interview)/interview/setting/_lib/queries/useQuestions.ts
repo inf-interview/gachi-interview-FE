@@ -4,18 +4,25 @@ import postQuestion from "../api/postQuestion";
 
 // TODO: 타입 디렉토리로 분리
 
-type ResponseQuestions = {
+export type ResponseQuestions = {
   questionId: number;
   questionContent: string;
   answerContent: string;
   answerId: number;
 }[];
 
-export const useGetQuestions = ({ interviewId }: { interviewId: number }) => {
+export const useGetQuestionsQuery = ({ interviewId }: { interviewId: number }) => {
+  const queryClient = useQueryClient();
   return useQuery<ResponseQuestions, Error>({
     queryKey: ["questionList", interviewId],
     queryFn: () => getQuestions({ interviewId }),
-    initialData: [],
+    initialData: () => {
+      const cache = queryClient.getQueryData<ResponseQuestions>(["questionList", interviewId]);
+      return cache;
+    },
+    placeholderData: [],
+    gcTime: 300 * 1000,
+    staleTime: 300 * 1000,
   });
 };
 
@@ -26,7 +33,7 @@ type RequestPostQuestions = {
   listId: number;
 };
 
-export const usePostQuestions = () => {
+export const usePostQuestionsMutation = () => {
   const queryClient = useQueryClient();
   return useMutation<ResponseQuestions, Error, RequestPostQuestions>({
     mutationKey: ["questionList"],
