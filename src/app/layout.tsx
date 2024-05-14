@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { MSWComponent } from "./_component/MSWComponent";
-import AuthSession from "./_component/AuthSession";
 import { ModalProvider } from "@/components/Modal/context";
 import { ModalContainer } from "@/components/Modal/useModal";
 
@@ -22,13 +21,11 @@ export default function RootLayout({
     <html lang="ko">
       <body className={inter.className}>
         <MSWComponent />
-        <AuthSession>
-          <ModalProvider>
-            {children}
-            <ModalContainer />
-            <div id="modal-root" />
-          </ModalProvider>
-        </AuthSession>
+        <ModalProvider>
+          {children}
+          <ModalContainer />
+          <div id="modal-root" />
+        </ModalProvider>
       </body>
     </html>
   );
