@@ -1,22 +1,22 @@
 import { useModal } from "@/components/Modal/useModal";
 import {
-  useGetQuestionListQuery,
-  usePostQuestionListMutation,
-} from "../../../_lib/queries/useQuestionList";
+  useGetWorkbookListQuery,
+  usePostWorkbookMutation,
+} from "../../../_lib/queries/useWorkbookListQuery";
 import AddQuestionTitleModal from "./AddQuestionTitleModal";
 
-interface SelectTitleSectionProps {
-  selectedQuestionId: number;
-  setSelectedQuestionId: (id: number) => void;
+interface SelectWorkbookSectionProps {
+  selectedWorkbookId: number;
+  setSelectedWorkbookId: (id: number) => void;
 }
 
-const SelectTitleSection = ({
-  selectedQuestionId,
-  setSelectedQuestionId,
-}: SelectTitleSectionProps) => {
-  const { data: questionList } = useGetQuestionListQuery();
+const SelectWorkbookSection = ({
+  selectedWorkbookId,
+  setSelectedWorkbookId,
+}: SelectWorkbookSectionProps) => {
+  const { data: questionList } = useGetWorkbookListQuery();
 
-  const { mutate: createTitleMutate } = usePostQuestionListMutation();
+  const { mutate: createTitleMutate } = usePostWorkbookMutation();
   const { openModal, closeModal } = useModal();
 
   const openAddTitleModalHandler = () => {
@@ -36,9 +36,9 @@ const SelectTitleSection = ({
           <li
             key={question.listId}
             className={`${
-              selectedQuestionId === question.listId && "bg-muted justify-start"
+              selectedWorkbookId === question.listId && "bg-muted justify-start"
             } flex-col items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 h-9 px-4 py-2 justify-start cursor-pointer`}
-            onClick={() => setSelectedQuestionId(question.listId)}
+            onClick={() => setSelectedWorkbookId(question.listId)}
           >
             {question.title}
           </li>
@@ -53,4 +53,4 @@ const SelectTitleSection = ({
   );
 };
 
-export default SelectTitleSection;
+export default SelectWorkbookSection;

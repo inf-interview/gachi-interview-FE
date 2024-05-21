@@ -2,13 +2,13 @@ import { useInterviewOption } from "@/app/(AfterLogin)/(interview)/_lib/contexts
 import { ResponseQuestions } from "../../../_lib/queries/useQuestions";
 
 interface SelectQuestionHeaderProps {
-  questionList: ResponseQuestions | undefined;
+  questions: ResponseQuestions | undefined;
   questionTitle: string;
   onSelect: () => void;
 }
 
 const QuestionListHeader = ({
-  questionList = [],
+  questions = [],
   questionTitle,
   onSelect,
 }: SelectQuestionHeaderProps) => {
@@ -20,7 +20,7 @@ const QuestionListHeader = ({
         className="cursor-pointer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         type="checkbox"
         onChange={onSelect}
-        checked={questionList?.every((question) => interviewOption.questions.includes(question))}
+        checked={questions?.every((question) => interviewOption.questions.includes(question))}
         id="all"
         value="all"
       />
