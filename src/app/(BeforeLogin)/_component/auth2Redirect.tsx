@@ -1,6 +1,5 @@
 "use client";
 
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -21,34 +20,24 @@ export default function Auth2Redirect() {
   useEffect(() => {
     const kakaoLogin = async () => {
       if (code) {
-        // await axios({
-        //   method: "GET",
-        //   url: `${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}?code=${code}`,
-        //   headers: {
-        //     "Content-Type": "application/json;charset=urf-8",
-        //   },
-        // }).then((res) => {
-        //   console.log("res", res);
-        //   // localStorage.setItem()
-        //   router.replace("/my?tab=videos");
-        // });
         try {
-          const res = await axios.post(
-            `${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}`,
-            { authorizationCode: code },
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
+          const res = await fetch(`http://52.78.111.188:8080/user/kakao/login?code=${code}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
             },
-          );
-          if (res.status === 200) {
+          });
+
+          if (res.status === 201) {
             console.log("로그인 성공");
-            console.log("res", res);
+            const data = await res.json();
+            console.log("res", data);
             router.replace("/my?tab=videos");
+          } else {
+            console.error("예상치 못한 응답 상태:", res.status);
           }
         } catch (error) {
-          console.error("로그인 에러:", error);
+          console.log(error);
         }
       }
     };

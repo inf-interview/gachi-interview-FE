@@ -168,7 +168,12 @@ export const handlers = [
   http.get("/api/board/list", async ({ request }) => {
     const queryParams = new URLSearchParams(request.url);
     const category = queryParams.get("category");
+    console.log(category);
     const filteredPosts = posts.filter((post) => post.category === category);
+
+    if (category === null) {
+      return HttpResponse.json([]);
+    }
 
     return HttpResponse.json(filteredPosts);
   }),

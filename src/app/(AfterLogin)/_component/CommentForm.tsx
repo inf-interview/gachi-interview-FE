@@ -3,15 +3,48 @@
 import { Button } from "@/components/ui/button";
 import { ChangeEvent, FormEvent, useState } from "react";
 import postComment from "../community/_lib/postComment";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+const User = {
+  userId: 1,
+  userName: "이승학",
+  image: "/noneProfile.jpg",
+};
 
 export default function CommentForm({ postId }: { postId: number }) {
   const [content, setContent] = useState("");
+  const queryClient = useQueryClient();
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const commentData = useMutation({
+    mutationKey: ["community", postId, "comments"],
+    mutationFn: (newComment: { content: string; postId: number }) => postComment(newComment),
+    onMutate: async (newComment) => {
+      const previousData = queryClient.getQueryData(["community", postId, "comments"]);
+      queryClient.setQueryData(["community", postId, "comments"], (old: any) => {
+        return [
+          ...old,
+          {
+            postId,
+            commentId: Math.random(),
+            User: User,
+            content: newComment.content,
+            createdAt: new Date().toISOString(),
+          },
+        ];
+      });
+      return { previousData };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["community", postId, "comments"],
+      });
+    },
+  });
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    commentData.mutate({ content, postId });
     setContent("");
-    const commentData = await postComment({ content, postId });
-    console.log("commentData", commentData);
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

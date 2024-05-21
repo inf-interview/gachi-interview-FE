@@ -1,7 +1,6 @@
 "use client";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import axios from "axios";
 import { useEffect, useState } from "react";
 
 type alertsData = {
@@ -15,9 +14,20 @@ const Alerts = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/alert`);
-      console.log(res.data);
-      setAlertsData(res.data);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/alert`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const data = await res.json();
+      console.log(data);
+      setAlertsData(data);
     } catch (error) {
       throw new Error("Failed to fetch data");
     }
