@@ -9,13 +9,13 @@ import AddQuestionModal from "./AddQuestionModal";
 import { useModal } from "@/components/Modal/useModal";
 
 interface QuestionListProps {
-  questionId: number;
+  workbookId: number;
   onSelect: (id: number) => void;
   interviewOption: InterviewOptionType;
 }
 
-const QuestionList = ({ questionId, onSelect, interviewOption }: QuestionListProps) => {
-  const { data: questionList, isLoading } = useGetQuestionsQuery({ interviewId: questionId });
+const QuestionList = ({ workbookId, onSelect, interviewOption }: QuestionListProps) => {
+  const { data: questionList, isLoading } = useGetQuestionsQuery({ workbookId: workbookId });
   const { openModal, closeModal } = useModal();
   const { mutate } = usePostQuestionsMutation();
 
@@ -30,7 +30,7 @@ const QuestionList = ({ questionId, onSelect, interviewOption }: QuestionListPro
             userId: 1,
             questionContent,
             answerContent,
-            listId: questionId,
+            workbookId,
           });
           closeModal();
         }}

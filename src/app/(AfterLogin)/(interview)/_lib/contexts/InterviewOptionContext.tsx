@@ -4,7 +4,6 @@ export type QuestionType = {
   questionId: number;
   questionContent: string;
   answerContent: string;
-  answerId: number;
 };
 
 export interface InterviewOptionType {

@@ -259,21 +259,23 @@ export const handlers = [
     });
   }),
 
-  http.get("/api/interview/question/list", async () => {
+  // workbooks 목록 조회
+  http.get("/api/workbook/list", async () => {
     return HttpResponse.json(data.questionList);
   }),
 
-  http.get("/api/interview/question/:listId", async ({ params }) => {
-    const { listId } = params;
+  // 질문 세트 목록 조회
+  http.get("/api/workbook/:workbookId/question/list", async ({ params }) => {
+    const { workbookId } = params;
 
-    if (typeof listId !== "string" || isNaN(+listId)) {
+    if (typeof workbookId !== "string" || isNaN(+workbookId)) {
       return new HttpResponse(null, {
         status: 400,
         statusText: "Bad Request",
       });
     }
 
-    const existQuestions = data.questions.hasOwnProperty(listId);
+    const existQuestions = data.questions.hasOwnProperty(workbookId);
 
     if (!existQuestions) {
       return new HttpResponse(null, {
@@ -282,10 +284,11 @@ export const handlers = [
       });
     }
 
-    return HttpResponse.json(data.questions[listId]);
+    return HttpResponse.json(data.questions[workbookId]);
   }),
 
-  http.post("/api/interview/question", async ({ request }) => {
+  // 질문 워크북 작성
+  http.post("/api/workbook", async ({ request }) => {
     const bodyString = await request.text();
     const { userId, title } = JSON.parse(bodyString);
 
@@ -310,12 +313,13 @@ export const handlers = [
     });
   }),
 
-  http.post("/api/interview/question/:listId", async ({ request, params }) => {
-    const { listId } = params;
+  // 질문 세트 작성
+  http.post("/api/workbook/:workbook_id/question", async ({ request, params }) => {
+    const { workbook_id } = params;
     const bodyString = await request.text();
     const { userId, questionContent, answerContent } = JSON.parse(bodyString);
 
-    if (typeof listId !== "string" || isNaN(+listId)) {
+    if (typeof workbook_id !== "string" || isNaN(+workbook_id)) {
       return new HttpResponse(null, {
         status: 400,
         statusText: "Bad Request",
@@ -343,8 +347,8 @@ export const handlers = [
       answerContent,
     };
 
-    data.questions[listId] = data.questions[listId] || [];
-    data.questions[listId].push(newQuestion);
+    data.questions[workbook_id] = data.questions[workbook_id] || [];
+    data.questions[workbook_id].push(newQuestion);
 
     return HttpResponse.json({
       ...newQuestion,

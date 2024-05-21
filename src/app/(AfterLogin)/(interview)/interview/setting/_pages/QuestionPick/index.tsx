@@ -2,17 +2,17 @@
 
 import { useEffect, useState } from "react";
 import SelectQuestionSection from "./_component/SelectQuestionSection";
-import { useGetQuestionListQuery } from "../../_lib/queries/useQuestionList";
-import SelectTitleSection from "./_component/SelectTitleSection";
+import { useGetWorkbookListQuery } from "../../_lib/queries/useWorkbookListQuery";
+import SelectWorkbookSection from "./_component/SelectWorkbookSection";
 
 const QuestionPick = () => {
-  const { data: questionList } = useGetQuestionListQuery();
-  const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(
+  const { data: questionList } = useGetWorkbookListQuery();
+  const [selectedWorkbookId, setSelectedWorkbookId] = useState<number | null>(
     questionList?.[0]?.listId || null,
   );
 
   useEffect(() => {
-    if (questionList?.[0]?.listId) setSelectedQuestionId(questionList[0].listId);
+    if (questionList?.[0]?.listId) setSelectedWorkbookId(questionList[0].listId);
   }, [questionList]);
 
   // TODO: Loading 컴포넌트 추가
@@ -20,16 +20,16 @@ const QuestionPick = () => {
 
   return (
     <div className="flex flex-col sm:flex-row">
-      {selectedQuestionId && (
+      {selectedWorkbookId && (
         <>
-          <SelectTitleSection
-            selectedQuestionId={selectedQuestionId}
-            setSelectedQuestionId={setSelectedQuestionId}
+          <SelectWorkbookSection
+            selectedWorkbookId={selectedWorkbookId}
+            setSelectedWorkbookId={setSelectedWorkbookId}
           />
           <SelectQuestionSection
-            questionId={selectedQuestionId}
+            workbookId={selectedWorkbookId}
             questionTitle={
-              questionList.find((question) => question.listId === selectedQuestionId)?.title || ""
+              questionList.find((question) => question.listId === selectedWorkbookId)?.title || ""
             }
           />
         </>
