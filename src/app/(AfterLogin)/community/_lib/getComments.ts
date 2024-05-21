@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export default async function getComments({
   queryKey,
 }: {
@@ -7,15 +5,18 @@ export default async function getComments({
 }) {
   const [_1, postId, _3] = queryKey;
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/board/${postId}/comments`,
-      {
-        params: {
-          tags: ["community", postId, "comments"],
-        },
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/board/${postId}/comments`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
-    return res.data;
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    return await res.json();
   } catch (error) {
     throw new Error("Failed to fetch data");
   }

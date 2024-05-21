@@ -10,8 +10,8 @@ export default function Comment({ comment }: { comment: Post }) {
           alt="프로필 이미지"
         />
         <div className="flex flex-col ml-4">
-          <span className="font-bold">{comment.User.userName}</span>
-          <span className="text-gray-500">{comment.updateTime.toLocaleString()}</span>
+          <span className="font-bold">{comment.User?.userName}</span>
+          <span className="text-gray-500">{comment.updateTime?.toLocaleString()}</span>
         </div>
       </div>
       <p className="mt-2">{comment.content}</p>

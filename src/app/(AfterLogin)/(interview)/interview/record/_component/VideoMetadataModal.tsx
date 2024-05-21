@@ -1,5 +1,6 @@
 import Modal from "@/components/Modal";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
 type metadata = {
@@ -111,7 +112,7 @@ const VideoMetadataModal = ({ thumbnails, onSubmit }: VideoMetadataModalProps) =
         </label>
         <div className="flex gap-4 overflow-x-scroll relative">
           {thumbnails.map((thumbnail, index) => (
-            <img
+            <Image
               key={index}
               src={thumbnailsURL[index]}
               alt="썸네일"
@@ -119,6 +120,8 @@ const VideoMetadataModal = ({ thumbnails, onSubmit }: VideoMetadataModalProps) =
               className={`cursor-pointer w-48 h-32 object-cover rounded-lg border-2 ${
                 metadata.thumbnail === thumbnail && "border-2 border-primary"
               }`}
+              width={100}
+              height={100}
             />
           ))}
         </div>

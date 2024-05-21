@@ -17,5 +17,5 @@ export default function Comments({ postId }: { postId: number }) {
   if (!comments) {
     return null;
   }
-  return comments.map((comment) => <Comment key={comment.content} comment={comment} />);
+  return comments.map((comment, i) => <Comment key={i} comment={comment} />);
 }

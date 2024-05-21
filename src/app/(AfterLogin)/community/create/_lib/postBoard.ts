@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export default async function postBoard({
   title,
   content,
@@ -12,13 +10,24 @@ export default async function postBoard({
   category: string;
 }) {
   try {
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/board/write`, {
-      postTitle: title,
-      content,
-      tag: tags,
-      category,
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/board/write`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        postTitle: title,
+        content,
+        tag: tags,
+        category,
+      }),
     });
-    return res.data;
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    return await res.json();
   } catch (error) {
     throw new Error("Failed to fetch data");
   }
