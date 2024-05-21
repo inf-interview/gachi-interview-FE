@@ -1,15 +1,16 @@
-import axios from "axios";
-
 interface getQuestionsProps {
-  interviewId: number;
+  workbookId: number;
 }
 
-const getQuestions = async ({ interviewId }: getQuestionsProps) => {
+const getQuestions = async ({ workbookId }: getQuestionsProps) => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/interview/question/${interviewId}`,
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/workbook/${workbookId}/question/list`,
     );
-    return res.data;
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    return res.json();
   } catch (error) {
     console.error(error);
     throw new Error("Failed to fetch data");

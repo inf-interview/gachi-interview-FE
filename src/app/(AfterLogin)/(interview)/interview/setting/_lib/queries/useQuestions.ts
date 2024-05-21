@@ -8,16 +8,15 @@ export type ResponseQuestions = {
   questionId: number;
   questionContent: string;
   answerContent: string;
-  answerId: number;
 }[];
 
-export const useGetQuestionsQuery = ({ interviewId }: { interviewId: number }) => {
+export const useGetQuestionsQuery = ({ workbookId }: { workbookId: number }) => {
   const queryClient = useQueryClient();
   return useQuery<ResponseQuestions, Error>({
-    queryKey: ["questionList", interviewId],
-    queryFn: () => getQuestions({ interviewId }),
+    queryKey: ["questions", workbookId],
+    queryFn: () => getQuestions({ workbookId }),
     initialData: () => {
-      const cache = queryClient.getQueryData<ResponseQuestions>(["questionList", interviewId]);
+      const cache = queryClient.getQueryData<ResponseQuestions>(["questions", workbookId]);
       return cache;
     },
     placeholderData: [],
@@ -30,17 +29,17 @@ type RequestPostQuestions = {
   userId: number;
   questionContent: string;
   answerContent: string;
-  listId: number;
+  workbookId: number;
 };
 
 export const usePostQuestionsMutation = () => {
   const queryClient = useQueryClient();
   return useMutation<ResponseQuestions, Error, RequestPostQuestions>({
-    mutationKey: ["questionList"],
+    mutationKey: ["questions"],
     mutationFn: (data) => postQuestion(data),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: ["questionList"],
+        queryKey: ["questions"],
       });
     },
   });
