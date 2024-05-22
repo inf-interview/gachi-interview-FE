@@ -7,9 +7,17 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import InterviewReview from "./InterviewReview";
 import GetStudy from "./GetStudy";
+import { useState } from "react";
 
 export default function CommunityContainer() {
   const tabParams = useSearchParams().get("tab") || undefined;
+
+  const page = 1;
+  const [sortType, setSortType] = useState<"recent" | "like">("recent");
+
+  const handleSortType = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortType(e.target.value as "recent" | "like");
+  };
 
   return (
     <Tabs defaultValue={tabParams}>
@@ -23,6 +31,14 @@ export default function CommunityContainer() {
               <TabsTrigger value="studies">스터디 모집</TabsTrigger>
             </Link>
           </TabsList>
+          <select
+            className="h-10 w-32 rounded-md border border-input bg-background ml-3 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            defaultValue="최신순"
+            onChange={handleSortType}
+          >
+            <option value="recent">최신순</option>
+            <option value="like">인기순</option>
+          </select>
         </div>
         <Link href={`/community/create?tab=${tabParams}`}>
           <Button>
@@ -33,12 +49,12 @@ export default function CommunityContainer() {
       </div>
       <TabsContent value="reviews">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <InterviewReview tabParams={tabParams} />
+          <InterviewReview tabParams={tabParams} sortType={sortType} page={page} />
         </div>
       </TabsContent>
       <TabsContent value="studies">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <GetStudy tabParams={tabParams} />
+          <GetStudy tabParams={tabParams} sortType={sortType} page={page} />
         </div>
       </TabsContent>
     </Tabs>
