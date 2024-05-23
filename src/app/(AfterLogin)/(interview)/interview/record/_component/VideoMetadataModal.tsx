@@ -2,7 +2,6 @@ import Modal from "@/components/Modal";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 
 type metadata = {
   title: string;

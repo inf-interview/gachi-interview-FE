@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { useGetInterview, usePostLike } from "../../_lib/queries/useInterviewQuery";
 import { formatRelativeTime } from "@/lib/utills/days";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import "@/app/(AfterLogin)/community/_component/PostDetail.css";
 
 interface VideoDetailProps {
   videoId: string;
@@ -13,13 +15,25 @@ interface VideoDetailProps {
 const VideoDetail = ({ videoId }: VideoDetailProps) => {
   const { data: videoData, error, isLoading } = useGetInterview(videoId);
   const { mutate } = usePostLike();
+  const [isLiked, setIsLiked] = useState(false);
+  const [animate, setAnimate] = useState(false);
 
   const handleLike = () => {
-    mutate({
-      // TODO: userId 수정
-      userId: 1,
-      videoId: videoId,
-    });
+    if (!isLiked) {
+      mutate({
+        // TODO: userId 수정
+        userId: 1,
+        id: videoId,
+        type: "video",
+        queryKeyPrefix: ["interview"],
+      });
+      setIsLiked(true);
+      setAnimate(true);
+      setTimeout(() => setAnimate(false), 300);
+    } else {
+      // TODO: 좋아요 취소
+      setIsLiked(false);
+    }
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -53,9 +67,17 @@ const VideoDetail = ({ videoId }: VideoDetailProps) => {
             ))}
           </div>
           <div className="flex items-center w-full justify-center">
-            <Button variant="outline" onClick={handleLike}>
-              <AiOutlineLike className="mr-2" />
-              {videoData.numOfLike}
+            <Button
+              variant="outline"
+              onClick={handleLike}
+              className={animate ? "animate-ping" : ""}
+            >
+              <AiOutlineLike className={`mr-2 ${isLiked ? "text-green-500" : "text-gray-500"}`} />
+              <span
+                className={`text-sm ${isLiked ? "text-green-500 font-semibold" : "text-gray-700"}`}
+              >
+                {videoData.numOfLike}
+              </span>
             </Button>
             <Button variant="outline" className="ml-2">
               <AiOutlineShareAlt className="mr-2" />

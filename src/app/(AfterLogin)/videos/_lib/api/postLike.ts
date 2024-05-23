@@ -1,18 +1,19 @@
 export interface postLikeProps {
   userId: number;
-  videoId: string;
+  id: string;
+  type: "video" | "board";
 }
 
-const postLike = async ({ userId, videoId }: postLikeProps) => {
+const postLike = async ({ userId, id, type }: postLikeProps) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/video/${videoId}/like`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/${type}/${id}/like`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         userId,
-        videoId,
+        id,
       }),
     });
 
