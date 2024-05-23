@@ -18,7 +18,9 @@ const VideoDetail = ({ videoId }: VideoDetailProps) => {
     mutate({
       // TODO: userId 수정
       userId: 1,
-      videoId: videoId,
+      id: videoId,
+      type: "video",
+      queryKeyPrefix: ["interview"],
     });
   };
 

@@ -188,7 +188,7 @@ export const handlers = [
       User: User,
       postTitle: "글 제목 부분",
       content: "글 내용 부분",
-      category,
+      category: "reviews" || "studies",
       updateTime: new Date(),
       numOfLike: 20,
       numOfComment: 5,
@@ -488,6 +488,35 @@ export const handlers = [
     }
 
     existVideo.numOfLike += 1;
+
+    return HttpResponse.json(null, {
+      status: 201,
+    });
+  }),
+
+  http.post("/api/board/:postId/like", async ({ params, request }) => {
+    const { postId } = params;
+
+    const bodyString = await request.text();
+    const { userId } = JSON.parse(bodyString);
+
+    if (typeof postId !== "string" || isNaN(+postId)) {
+      return new HttpResponse(null, {
+        status: 400,
+        statusText: "Bad Request",
+      });
+    }
+
+    const existPost = posts.find((post) => post.postId === +postId);
+
+    if (!existPost) {
+      return new HttpResponse(null, {
+        status: 404,
+        statusText: "Not Found",
+      });
+    }
+
+    existPost.numOfLike += 1;
 
     return HttpResponse.json(null, {
       status: 201,
