@@ -2,14 +2,17 @@ import { useState } from "react";
 import CreateComment from "@/app/(AfterLogin)/_component/CommentForm";
 import { Badge } from "@/components/ui/badge";
 import { Post } from "@/model/Post";
-import { AiOutlineLike } from "react-icons/ai";
+import { AiOutlineLike, AiOutlineShareAlt } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
 import { usePostLike } from "../../videos/_lib/queries/useInterviewQuery";
 import { formatRelativeTime } from "@/lib/utills/days";
+import { Button } from "@/components/ui/button";
+import "./PostDetail.css";
 
 export default function PostDetail({ post }: { post: Post }) {
   const { mutate } = usePostLike();
   const [isLiked, setIsLiked] = useState(false);
+  const [animate, setAnimate] = useState(false);
 
   const handleLike = () => {
     if (!isLiked) {
@@ -19,10 +22,12 @@ export default function PostDetail({ post }: { post: Post }) {
         type: "board",
         queryKeyPrefix: ["community", post.category],
       });
-      setIsLiked(!isLiked);
+      setIsLiked(true);
+      setAnimate(true);
+      setTimeout(() => setAnimate(false), 300);
     } else {
       // TODO: 좋아요 취소
-      setIsLiked(!isLiked);
+      setIsLiked(false);
     }
   };
 
@@ -54,13 +59,25 @@ export default function PostDetail({ post }: { post: Post }) {
             </p>
           </div>
           <div className="flex">
-            <div className="flex items-center cursor-pointer" onClick={handleLike}>
-              <AiOutlineLike className={`mr-1 ${isLiked ? "text-blue-500" : "text-gray-500"}`} />
-              <span
-                className={`text-sm ${isLiked ? "text-blue-500 font-semibold" : "text-gray-700"}`}
+            <div className="flex items-center w-full justify-center">
+              <Button
+                variant="outline"
+                onClick={handleLike}
+                className={`${animate ? "animate-ping" : ""}`}
               >
-                {post.numOfLike}
-              </span>
+                <AiOutlineLike className={`mr-1 ${isLiked ? "text-green-500" : "text-gray-500"}`} />
+                <span
+                  className={`text-sm ${
+                    isLiked ? "text-green-500 font-semibold" : "text-gray-700"
+                  }`}
+                >
+                  {post.numOfLike}
+                </span>
+              </Button>
+              <Button variant="outline" className="ml-2">
+                <AiOutlineShareAlt className="mr-2" />
+                공유
+              </Button>
             </div>
             <div className="flex items-center ml-3">
               <FaRegComment className="text-gray-500 mr-1" />
