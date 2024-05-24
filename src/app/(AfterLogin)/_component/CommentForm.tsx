@@ -18,22 +18,6 @@ export default function CommentForm({ postId }: { postId: number }) {
   const commentData = useMutation({
     mutationKey: ["community", postId, "comments"],
     mutationFn: (newComment: { content: string; postId: number }) => postComment(newComment),
-    onMutate: async (newComment) => {
-      const previousData = queryClient.getQueryData(["community", postId, "comments"]);
-      queryClient.setQueryData(["community", postId, "comments"], (old: any) => {
-        return [
-          ...old,
-          {
-            postId,
-            commentId: Math.random(),
-            User: User,
-            content: newComment.content,
-            createdAt: new Date().toISOString(),
-          },
-        ];
-      });
-      return { previousData };
-    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["community", postId, "comments"],

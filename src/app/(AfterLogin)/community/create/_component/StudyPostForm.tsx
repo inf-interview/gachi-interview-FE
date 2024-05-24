@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import postBoard from "../_lib/postBoard";
 import { useSearchParams } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useModal } from "@/components/Modal/useModal";
 
 export default function StudyPostForm() {
   const [title, setTitle] = useState("");
@@ -11,16 +13,31 @@ export default function StudyPostForm() {
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
   const category = useSearchParams().get("tab");
+  const queryClient = useQueryClient();
+  const { openDialogWithBack } = useModal();
+
+  const postData = useMutation({
+    mutationKey: ["community", category, "recent", 1],
+    mutationFn: (newPost: { title: string; content: string; tags: string[]; category: string }) =>
+      postBoard(newPost),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["community", category, "recent", 1],
+      });
+      openDialogWithBack("게시글이 등록되었습니다.");
+    },
+  });
 
   if (!category) return null;
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(title);
-    console.log(content);
-    console.log(tags);
-    const postData = await postBoard({ title, content, tags, category });
-    console.log("postData", postData);
+    postData.mutate({
+      title,
+      content,
+      tags,
+      category,
+    });
   };
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
