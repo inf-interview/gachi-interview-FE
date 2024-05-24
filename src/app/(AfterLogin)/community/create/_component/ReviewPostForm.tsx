@@ -53,7 +53,7 @@ export default function ReviewPostForm() {
       <form onSubmit={onSubmit} className="flex flex-col w-full mt-2">
         <input
           type="text"
-          placeholder="제목에 핵심 내용을 요약해 보세요."
+          placeholder="제목에 핵심 내용을 요약해 보세요"
           onChange={handleTitle}
           value={title}
           required
@@ -74,7 +74,7 @@ export default function ReviewPostForm() {
             value={newTag}
             onChange={handleNewTagChange}
             onKeyDown={handleNewTagKeyDown}
-            placeholder="태그를 입력하세요."
+            placeholder="태그 작성 후 엔터키를 눌러주세요 (태그 클릭 시 삭제)"
             className="w-2/3 border-none focus:outline-none"
           />
         </div>
