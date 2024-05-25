@@ -311,3 +311,80 @@ export const comments = [
     ],
   },
 ];
+
+const User = {
+  userId: 1,
+  userName: "이승학",
+  image: "/noneProfile.jpg",
+};
+
+export const PostComments = [
+  {
+    postId: 1,
+    content: [
+      {
+        commentId: 1,
+        User: User,
+        content: "잘했어요!",
+        createdAt: "2024-05-02 15:41:00",
+      },
+      {
+        commentId: 2,
+        User: User,
+        content: "잘했어요!",
+        createdAt: "2024-05-02 15:41:00",
+      },
+    ],
+  },
+  {
+    postId: 2,
+    content: [
+      {
+        commentId: 3,
+        User: User,
+        content: "잘했어요!",
+        createdAt: "2024-05-02 15:41:00",
+      },
+      {
+        commentId: 4,
+        User: User,
+        content: "잘했어요!",
+        createdAt: "2024-05-02 15:41:00",
+      },
+    ],
+  },
+  {
+    postId: 3,
+    content: [
+      {
+        commentId: 5,
+        User: User,
+        content: "잘했어요!",
+        createdAt: "2024-05-02 15:41:00",
+      },
+      {
+        commentId: 6,
+        User: User,
+        content: "잘했어요!",
+        createdAt: "2024-05-02 15:41:00",
+      },
+    ],
+  },
+  {
+    postId: 4,
+    content: [
+      {
+        commentId: 7,
+        User: User,
+        content: "4번 게시글의 7번 댓글",
+        createdAt: "2024-05-02 15:41:00",
+      },
+      {
+        commentId: 8,
+        User: User,
+        content: "4번 게시글의 8번 댓글",
+        createdAt: "2024-05-02 15:41:00",
+      },
+    ],
+  },
+];

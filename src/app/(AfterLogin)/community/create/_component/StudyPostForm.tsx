@@ -74,7 +74,7 @@ export default function StudyPostForm() {
           onChange={handleTitle}
           value={title}
           required
-          className="w-2/3 p-2 border border-gray-300 rounded-md mb-4 text-lg"
+          className="p-2 border border-gray-300 rounded-md mb-4 text-lg"
         />
         <div className="mb-4">
           {tags.map((tag, index) => (
@@ -100,9 +100,9 @@ export default function StudyPostForm() {
           onChange={handleContent}
           value={content}
           required
-          className="w-2/3 p-2 border border-gray-300 rounded-md mb-4 h-80"
+          className="p-2 border border-gray-300 rounded-md mb-4 h-80"
         />
-        <button type="submit" className="w-2/3 bg-black text-white font-bold py-2 px-4 rounded">
+        <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
           글쓰기
         </button>
       </form>

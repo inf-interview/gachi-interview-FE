@@ -1,4 +1,8 @@
-export default async function getStudyDetail({ queryKey }: { queryKey: [string, string, number] }) {
+export default async function getStudyDetail({
+  queryKey,
+}: {
+  queryKey: [_1: string, _2: string, _3: string];
+}) {
   const [_1, _2, postId] = queryKey;
 
   try {

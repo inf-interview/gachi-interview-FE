@@ -58,7 +58,6 @@ export default function AfterLoginLayout({ children }: { children: ReactNode }) 
       <svg
         stroke="currentColor"
         fill="currentColor"
-        stroke-width="0"
         viewBox="0 0 448 512"
         cursor="pointer"
         height="30"

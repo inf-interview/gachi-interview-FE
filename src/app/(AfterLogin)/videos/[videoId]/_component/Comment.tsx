@@ -55,6 +55,7 @@ const Comment = ({ comment, videoId }: CommentProps) => {
     openModal(
       <Modal
         header="댓글 삭제"
+        disableBackdropClick={false}
         footer={
           <div className="flex justify-end gap-2">
             <Button onClick={closeModal} variant="ghost">
@@ -85,7 +86,7 @@ const Comment = ({ comment, videoId }: CommentProps) => {
           <span className="text-gray-500">{formatRelativeTime(comment.createdAt)}</span>
         </div>
 
-        {comment.userId === 1 && (
+        {comment.userId === 1 && isEditing == false && (
           <div className="flex justify-end mt-2 gap-2 ml-auto">
             <Button onClick={handleEdit} variant="ghost">
               수정
@@ -101,11 +102,16 @@ const Comment = ({ comment, videoId }: CommentProps) => {
           <textarea
             value={editedComment}
             onChange={(e) => setEditedComment(e.target.value)}
-            className="w-full h-32 mt-4 p-4 rounded-lg border border-gray-300"
+            className="w-full h-20 mt-4 p-4 rounded-lg border border-gray-300"
           />
-          <Button className="float-end" type="submit">
-            수정
-          </Button>
+          <div className="flex justify-end gap-2 mt-2">
+            <Button onClick={() => setIsEditing(false)} variant="ghost">
+              취소
+            </Button>
+            <Button type="submit" variant="default">
+              등록
+            </Button>
+          </div>
         </form>
       ) : (
         <p className="mt-4">{comment.content}</p>
