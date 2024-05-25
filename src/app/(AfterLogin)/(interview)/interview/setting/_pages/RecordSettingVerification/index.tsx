@@ -2,15 +2,17 @@
 
 import { useRouter } from "next/navigation";
 import { useInterviewOption } from "../../../../_lib/contexts/InterviewOptionContext";
-import { useStep } from "../../../../_lib/contexts/StepContext";
 import { useEffect } from "react";
 import { useErrorModal } from "@/components/Modal/useModal";
 
-const RecordSettingVerification = () => {
+interface RecordSettingVerificationProps {
+  setStep: (step: number) => void;
+}
+
+const RecordSettingVerification = ({ setStep }: RecordSettingVerificationProps) => {
   const errorModal = useErrorModal();
   const router = useRouter();
   const { interviewOption, mediaOption } = useInterviewOption();
-  const { setStep } = useStep();
 
   const validateInterviewOption = () => {
     if (!interviewOption) {
