@@ -8,6 +8,7 @@ import CommentCard from "./CommentCard";
 import MyInterviewReviewPosts from "./MyInterviewReviewPosts";
 import MyGetStudyPosts from "./MyGetStudyPosts";
 import MyVideoPosts from "./MyVideoPosts";
+import { MdLogout } from "react-icons/md";
 
 const InterViewData = [
   {
@@ -113,7 +114,10 @@ export default function MyContainer() {
               </Link>
             </TabsList>
           </div>
-          <Button>로그아웃</Button>
+          <Button className="rounded-3xl" variant="outline">
+            <MdLogout className="mr-2" />
+            로그아웃
+          </Button>
         </div>
         <TabsContent value="videos">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

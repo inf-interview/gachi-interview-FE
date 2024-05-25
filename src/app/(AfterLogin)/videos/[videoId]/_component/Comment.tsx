@@ -7,6 +7,8 @@ import {
 } from "../../_lib/queries/useCommentQuery";
 import { useModal } from "@/components/Modal/useModal";
 import Modal from "@/components/Modal";
+import { PiPencil } from "react-icons/pi";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 interface CommentProps {
   comment: {
@@ -58,7 +60,7 @@ const Comment = ({ comment, videoId }: CommentProps) => {
         disableBackdropClick={false}
         footer={
           <div className="flex justify-end gap-2">
-            <Button onClick={closeModal} variant="ghost">
+            <Button onClick={closeModal} variant="outline">
               취소
             </Button>
             <Button onClick={handleDeleteComment} variant="destructive">
@@ -88,10 +90,12 @@ const Comment = ({ comment, videoId }: CommentProps) => {
 
         {comment.userId === 1 && isEditing == false && (
           <div className="flex justify-end mt-2 gap-2 ml-auto">
-            <Button onClick={handleEdit} variant="ghost">
+            <Button onClick={handleEdit} variant="link" className="text-gray-600">
+              <PiPencil className="mr-1" />
               수정
             </Button>
-            <Button onClick={handleOpenDeleteModal} variant="ghost">
+            <Button onClick={handleOpenDeleteModal} variant="link" className="text-red-500">
+              <RiDeleteBinLine className="mr-1" />
               삭제
             </Button>
           </div>
@@ -105,7 +109,7 @@ const Comment = ({ comment, videoId }: CommentProps) => {
             className="w-full h-20 mt-4 p-4 rounded-lg border border-gray-300"
           />
           <div className="flex justify-end gap-2 mt-2">
-            <Button onClick={() => setIsEditing(false)} variant="ghost">
+            <Button onClick={() => setIsEditing(false)} variant="outline">
               취소
             </Button>
             <Button type="submit" variant="default">

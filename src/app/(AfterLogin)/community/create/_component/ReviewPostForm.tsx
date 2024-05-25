@@ -74,13 +74,13 @@ export default function ReviewPostForm() {
           onChange={handleTitle}
           value={title}
           required
-          className="p-2 border border-gray-300 rounded-md mb-4 text-lg"
+          className="p-2 border border-gray-300 rounded-md mb-4 text-lg focus:outline-none"
         />
         <div className="mb-4">
           {tags.map((tag, index) => (
             <Badge
               key={index}
-              className="mr-1 cursor-pointer"
+              className="mr-1 cursor-pointer bg-gray-200 text-gray-700 hover:bg-gray-300"
               onClick={() => handleBadgeClick(tag)}
             >
               #{tag}
@@ -100,10 +100,10 @@ export default function ReviewPostForm() {
           onChange={handleContent}
           value={content}
           required
-          className="p-2 border border-gray-300 rounded-md mb-4 h-80"
+          className="p-2 border border-gray-300 rounded-md mb-4 h-80 focus:outline-none"
         />
         <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
-          글쓰기
+          등록
         </button>
       </form>
     </>

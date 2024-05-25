@@ -5,6 +5,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent, useState } from "react";
 import patchComment from "../community/_lib/patchComment";
 import { Button } from "@/components/ui/button";
+import { PiPencil } from "react-icons/pi";
+import { RiDeleteBinLine } from "react-icons/ri";
 import Modal from "@/components/Modal";
 import deleteComment from "../community/_lib/deleteComment";
 
@@ -66,7 +68,7 @@ export default function Comment({ comment, postId }: { comment: Comment; postId:
         disableBackdropClick={false}
         footer={
           <div className="flex justify-end gap-2">
-            <Button onClick={closeModal} variant="ghost">
+            <Button onClick={closeModal} variant="outline">
               취소
             </Button>
             <Button onClick={handleDeleteComment} variant="destructive">
@@ -107,10 +109,12 @@ export default function Comment({ comment, postId }: { comment: Comment; postId:
         </div>
         {comment.User?.userId == 1 && isEditing == false && (
           <div className="flex justify-end mt-2 gap-2 ml-auto">
-            <Button onClick={() => setIsEditing(true)} variant="ghost">
+            <Button onClick={() => setIsEditing(true)} variant="link" className="text-gray-600">
+              <PiPencil className="mr-1" />
               수정
             </Button>
-            <Button onClick={handleOpenDeleteModal} variant="ghost">
+            <Button onClick={handleOpenDeleteModal} variant="link" className="text-red-500">
+              <RiDeleteBinLine className="mr-1" />
               삭제
             </Button>
           </div>
@@ -124,7 +128,7 @@ export default function Comment({ comment, postId }: { comment: Comment; postId:
             className="w-full h-20 p-4 rounded-md border border-gray-300 focus:outline-none"
           />
           <div className="flex justify-end gap-2 mt-2">
-            <Button onClick={() => setIsEditing(false)} variant="ghost">
+            <Button onClick={() => setIsEditing(false)} variant="outline">
               취소
             </Button>
             <Button type="submit" variant="default">
