@@ -2,7 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { BsPlusCircle } from "react-icons/bs";
+import { FaPen } from "react-icons/fa";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import InterviewReview from "./InterviewReview";
@@ -41,8 +41,8 @@ export default function CommunityContainer() {
           </select>
         </div>
         <Link href={`/community/create?tab=${tabParams}`}>
-          <Button>
-            <BsPlusCircle className="mr-2" />
+          <Button className="rounded-3xl">
+            <FaPen className="mr-2" />
             글쓰기
           </Button>
         </Link>

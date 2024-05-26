@@ -6,9 +6,11 @@ import { createPortal } from "react-dom";
 import React, { useContext, ReactNode } from "react";
 import { ModalContext } from "./context";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 export const useModal = () => {
   const { modal, setModal } = useContext(ModalContext);
+  const router = useRouter();
 
   const openModal = (modal: ReactNode) => {
     setModal(modal);
@@ -18,22 +20,43 @@ export const useModal = () => {
     setModal(null);
   };
 
+  const closeModalAndBack = () => {
+    router.back();
+    setModal(null);
+  };
+
   const openDialog = (message: string) => {
-    openModal(<Modal footer={<Button onClick={closeModal}>확인</Button>}>{message}</Modal>);
+    openModal(
+      <Modal footer={<Button onClick={closeModal}>확인</Button>} disableBackdropClick={false}>
+        {message}
+      </Modal>,
+    );
+  };
+
+  const openDialogWithBack = (message: string) => {
+    openModal(
+      <Modal footer={<Button onClick={closeModalAndBack}>확인</Button>} disableBackdropClick={true}>
+        {message}
+      </Modal>,
+    );
   };
 
   const closeDialog = () => {
     setModal(null);
   };
 
-  return { openModal, closeModal, modal, openDialog, closeDialog };
+  return { openModal, closeModal, modal, openDialog, closeDialog, openDialogWithBack };
 };
 
 export const useErrorModal = () => {
   const { openModal, closeModal } = useModal();
   const openErrorModal = (message: string) => {
     openModal(
-      <Modal header="😭" footer={<Button onClick={closeModal}>확인</Button>}>
+      <Modal
+        header="😭"
+        footer={<Button onClick={closeModal}>확인</Button>}
+        disableBackdropClick={false}
+      >
         {message}
       </Modal>,
     );

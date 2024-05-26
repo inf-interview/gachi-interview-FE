@@ -1,5 +1,6 @@
 import { HttpResponse, http } from "msw";
 import * as data from "./data";
+import { comments } from "./data";
 
 const User = {
   userId: 1,
@@ -87,36 +88,40 @@ const posts = [
   },
 ];
 
-const comments = [
-  {
-    postId: 1,
-    commentId: 1,
-    User: User,
-    content: `게시글 댓글 내용1`,
-    updateTime: new Date(),
-  },
-  {
-    postId: 2,
-    commentId: 2,
-    User: User,
-    content: `게시글 댓글 내용2`,
-    updateTime: new Date(),
-  },
-  {
-    postId: 3,
-    commentId: 3,
-    User: User,
-    content: `게시글 댓글 내용3`,
-    updateTime: new Date(),
-  },
-  {
-    postId: 4,
-    commentId: 4,
-    User: User,
-    content: `게시글 댓글 내용4`,
-    updateTime: new Date(),
-  },
-];
+// const comments = [
+//   {
+//     postId: 1,
+//     commentId: 1,
+//     User: User,
+//     content: `게시글 댓글 내용1`,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//   },
+//   {
+//     postId: 2,
+//     commentId: 2,
+//     User: User,
+//     content: `게시글 댓글 내용2`,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//   },
+//   {
+//     postId: 3,
+//     commentId: 3,
+//     User: User,
+//     content: `게시글 댓글 내용3`,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//   },
+//   {
+//     postId: 4,
+//     commentId: 4,
+//     User: User,
+//     content: `게시글 댓글 내용4`,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//   },
+// ];
 
 const alerts = [
   {
@@ -168,7 +173,6 @@ export const handlers = [
   http.get("/api/board/list", async ({ request }) => {
     const queryParams = new URLSearchParams(request.url);
     const category = queryParams.get("category");
-    console.log(category);
     const filteredPosts = posts.filter((post) => post.category === category);
 
     if (category === null) {
@@ -219,30 +223,111 @@ export const handlers = [
     });
   }),
 
-  http.get("/api/board/:postId/comments", ({ request, params }) => {
+  // http.get("/api/board/:postId/comments", ({ request, params }) => {
+  //   const { postId } = params;
+  //   const filteredComments = comments.filter((post) => post.postId === +postId);
+  //   return HttpResponse.json(filteredComments);
+  // }),
+  http.get("/api/board/:postId/comments", async ({ params }) => {
     const { postId } = params;
-    const filteredComments = comments.filter((post) => post.postId === +postId);
-    return HttpResponse.json(filteredComments);
-  }),
 
-  http.post("/api/board/:postId/submit", async ({ request, params }) => {
-    const { postId } = params;
-    const bodyString = await request.text();
-    const { content } = JSON.parse(bodyString);
+    const existPost = posts.find((post) => post.postId === +postId);
 
-    const newComment = {
-      postId: +postId,
-      commentId: 1,
-      User: User,
-      content,
-      updateTime: new Date(),
+    if (!existPost) {
+      return new HttpResponse(null, {
+        status: 404,
+        statusText: "Not Found",
+      });
+    }
+
+    const existComments = data.PostComments.filter((comment) => comment.postId === +postId);
+    if (!existComments || existComments.length === 0) {
+      return HttpResponse.json({ content: [] });
+    }
+
+    const comments = data.PostComments.filter((comment) => comment.postId === +postId)[0]?.content;
+    const result = {
+      content: comments,
     };
 
-    comments.unshift(newComment);
+    return HttpResponse.json(result);
+  }),
 
-    return HttpResponse.json({
-      ...newComment,
-    });
+  // http.post("/api/board/:postId/submit", async ({ request, params }) => {
+  //   const { postId } = params;
+  //   const bodyString = await request.text();
+  //   const { content } = JSON.parse(bodyString);
+
+  //   const newComment = {
+  //     postId: +postId,
+  //     commentId: 1,
+  //     User: User,
+  //     content,
+  //     createdAt: new Date(),
+  //     updatedAt: new Date(),
+  //   };
+
+  //   data.PostComments.unshift(newComment);
+
+  //   return HttpResponse.json({
+  //     ...newComment,
+  //   });
+  // }),
+  http.post("/api/board/:postId/submit", async ({ params, request }) => {
+    const { postId } = params;
+    const bodyString = await request.text();
+    const { userId, content } = JSON.parse(bodyString);
+
+    if (typeof postId !== "string" || isNaN(+postId)) {
+      return new HttpResponse(null, {
+        status: 400,
+        statusText: "Bad Request",
+      });
+    }
+
+    const existPost = posts.find((post) => post.postId === +postId);
+
+    if (!existPost) {
+      return new HttpResponse(null, {
+        statusText: "Not Found",
+        status: 404,
+      });
+    }
+
+    const newCommentId =
+      data.PostComments.reduce((acc, cur) => {
+        const max = cur.content.reduce((acc, cur) => {
+          return acc < cur.commentId ? cur.commentId : acc;
+        }, 0);
+
+        return acc < max ? max : acc;
+      }, 0) + 1;
+
+    const newComment = {
+      commentId: newCommentId,
+      content,
+      User: User,
+      createdAt: new Date().toISOString(),
+    };
+
+    const targetComment = data.PostComments.find((comment) => comment.postId === +postId);
+    if (!targetComment) {
+      data.PostComments.push({
+        postId: +postId,
+        content: [newComment],
+      });
+    } else {
+      targetComment.content.push(newComment);
+    }
+
+    return HttpResponse.json(
+      {
+        newComment,
+      },
+      {
+        status: 201,
+      },
+    );
   }),
 
   http.get("/api/alert", () => {
@@ -669,6 +754,60 @@ export const handlers = [
     );
   }),
 
+  http.patch("/api/board/:postId/comments/:commentId", async ({ params, request }) => {
+    const { postId, commentId } = params;
+    const bodyString = await request.text();
+    const { userId, content } = JSON.parse(bodyString);
+
+    if (
+      typeof postId !== "string" ||
+      isNaN(+postId) ||
+      typeof commentId !== "string" ||
+      isNaN(+commentId)
+    ) {
+      return new HttpResponse(null, {
+        status: 400,
+        statusText: "Bad Request",
+      });
+    }
+
+    const existPost = posts.find((post) => post.postId === +postId);
+
+    if (!existPost) {
+      return new HttpResponse(null, {
+        statusText: "Not Found",
+        status: 404,
+      });
+    }
+
+    const targetComment = data.PostComments.find((comment) => comment.postId === +postId);
+    if (!targetComment) {
+      return new HttpResponse(null, {
+        statusText: "Not Found",
+        status: 404,
+      });
+    }
+
+    const targetContent = targetComment.content.find((comment) => comment.commentId === +commentId);
+    if (!targetContent) {
+      return new HttpResponse(null, {
+        statusText: "Not Found",
+        status: 404,
+      });
+    }
+
+    targetContent.content = content;
+
+    return HttpResponse.json(
+      {
+        content: targetContent,
+      },
+      {
+        status: 201,
+      },
+    );
+  }),
+
   // 영상 댓글 삭제
   http.delete("/api/video/:videoId/comments/:commentId", async ({ params }) => {
     const { videoId, commentId } = params;
@@ -695,6 +834,43 @@ export const handlers = [
     }
 
     const targetComment = data.comments.find((comment) => comment.videoId === +videoId);
+    if (!targetComment) {
+      return new HttpResponse(null, {
+        statusText: "Not Found",
+        status: 404,
+      });
+    }
+
+    const targetContent = targetComment.content.find((comment) => comment.commentId === +commentId);
+    if (!targetContent) {
+      return new HttpResponse(null, {
+        statusText: "Not Found",
+        status: 404,
+      });
+    }
+
+    targetComment.content = targetComment.content.filter(
+      (comment) => comment.commentId !== +commentId,
+    );
+
+    return new HttpResponse(null, {
+      status: 204,
+    });
+  }),
+
+  http.delete("/api/board/:postId/comments/:commentId", async ({ params }) => {
+    const { postId, commentId } = params;
+
+    const existPost = posts.find((post) => post.postId === +postId);
+
+    if (!existPost) {
+      return new HttpResponse(null, {
+        statusText: "Not Found",
+        status: 404,
+      });
+    }
+
+    const targetComment = data.PostComments.find((comment) => comment.postId === +postId);
     if (!targetComment) {
       return new HttpResponse(null, {
         statusText: "Not Found",

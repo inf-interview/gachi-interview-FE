@@ -6,6 +6,7 @@ interface ModalProps {
   children?: React.ReactNode;
   header?: React.ReactNode;
   footer?: React.ReactNode;
+  disableBackdropClick: boolean;
 }
 
 const Modal = ({ children, header, footer }: ModalProps) => {

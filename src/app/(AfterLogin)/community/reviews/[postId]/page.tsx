@@ -8,7 +8,7 @@ export default async function Page({
   params,
 }: {
   params: {
-    postId: number;
+    postId: string;
   };
 }) {
   const { postId } = params;
@@ -22,7 +22,8 @@ export default async function Page({
 
   await queryClient.prefetchQuery({
     queryKey: ["community", postId, "comments"],
-    queryFn: getComments,
+    queryFn: ({ queryKey }) =>
+      getComments({ queryKey: queryKey as [_1: string, _2: string, _3: string] }),
   });
 
   return (

@@ -1,7 +1,9 @@
 export default async function postComment({
+  userId,
   content,
   postId,
 }: {
+  userId: number;
   content: string;
   postId: number;
 }) {
@@ -11,7 +13,7 @@ export default async function postComment({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ content }),
+      body: JSON.stringify({ userId, content }),
     });
 
     if (!res.ok) {

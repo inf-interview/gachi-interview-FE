@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ChangeEvent, FormEvent, useState } from "react";
 import postComment from "../community/_lib/postComment";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Comment } from "@/model/Comment";
 
 const User = {
   userId: 1,
@@ -17,16 +18,17 @@ export default function CommentForm({ postId }: { postId: number }) {
 
   const commentData = useMutation({
     mutationKey: ["community", postId, "comments"],
-    mutationFn: (newComment: { content: string; postId: number }) => postComment(newComment),
+    mutationFn: (newComment: { content: string; postId: number; userId: number }) =>
+      postComment(newComment),
     onMutate: async (newComment) => {
       const previousData = queryClient.getQueryData(["community", postId, "comments"]);
-      queryClient.setQueryData(["community", postId, "comments"], (old: any) => {
+      queryClient.setQueryData(["community", postId, "comments"], (old: Comment[]) => {
         return [
           ...old,
           {
-            postId,
             commentId: Math.random(),
-            User: User,
+            userId: newComment.userId,
+            userName: "같이 면접",
             content: newComment.content,
             createdAt: new Date().toISOString(),
           },
@@ -43,7 +45,11 @@ export default function CommentForm({ postId }: { postId: number }) {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    commentData.mutate({ content, postId });
+    commentData.mutate({
+      content,
+      postId,
+      userId: 1,
+    });
     setContent("");
   };
 
@@ -51,7 +57,7 @@ export default function CommentForm({ postId }: { postId: number }) {
     setContent(e.target.value);
   };
   return (
-    <form onSubmit={onSubmit} className="bottom-1 flex w-2/3 p-4 border border-gray-300 rounded-md">
+    <form onSubmit={onSubmit} className="bottom-1 flex p-4 border border-gray-300 rounded-md">
       <input
         type="text"
         value={content}
