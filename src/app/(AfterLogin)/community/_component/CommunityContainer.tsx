@@ -4,16 +4,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { FaPen } from "react-icons/fa";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import InterviewReview from "./InterviewReview";
 import GetStudy from "./GetStudy";
 import { useState } from "react";
 
 export default function CommunityContainer() {
   const tabParams = useSearchParams().get("tab") || undefined;
+  const router = useRouter();
 
   const page = 1;
   const [sortType, setSortType] = useState<"recent" | "like">("recent");
+
+  const handleTabClick = (value: string) => {
+    router.replace(`/community?tab=${value}`);
+  };
 
   const handleSortType = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortType(e.target.value as "recent" | "like");
@@ -24,12 +29,12 @@ export default function CommunityContainer() {
       <div className="flex">
         <div className="flex-1">
           <TabsList>
-            <Link href="/community?tab=reviews">
-              <TabsTrigger value="reviews">면접 후기</TabsTrigger>
-            </Link>
-            <Link href="/community?tab=studies">
-              <TabsTrigger value="studies">스터디 모집</TabsTrigger>
-            </Link>
+            <TabsTrigger value="reviews" onClick={() => handleTabClick("reviews")}>
+              면접 후기
+            </TabsTrigger>
+            <TabsTrigger value="studies" onClick={() => handleTabClick("studies")}>
+              스터디 모집
+            </TabsTrigger>
           </TabsList>
           <select
             className="h-10 w-32 rounded-md border border-input bg-background ml-3 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"

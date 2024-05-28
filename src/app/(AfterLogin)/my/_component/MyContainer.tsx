@@ -2,8 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import CommentCard from "./CommentCard";
 import MyInterviewReviewPosts from "./MyInterviewReviewPosts";
 import MyGetStudyPosts from "./MyGetStudyPosts";
@@ -94,24 +93,30 @@ const CommentData = [
 
 export default function MyContainer() {
   const tabParams = useSearchParams().get("tab") || undefined;
+  const router = useRouter();
+
+  const handleTabClick = (value: string) => {
+    router.replace(`/my?tab=${value}`);
+  };
+
   return (
     <section>
       <Tabs defaultValue={tabParams}>
         <div className="flex">
           <div className="flex-1">
             <TabsList className="mx-auto my-0 inline-block">
-              <Link href="/my?tab=videos">
-                <TabsTrigger value="videos">MY 인터뷰 영상</TabsTrigger>
-              </Link>
-              <Link href="/my?tab=reviews">
-                <TabsTrigger value="reviews">MY 면접후기</TabsTrigger>
-              </Link>
-              <Link href="/my?tab=studies">
-                <TabsTrigger value="studies">MY 스터디모집</TabsTrigger>
-              </Link>
-              <Link href="/my?tab=comments">
-                <TabsTrigger value="comments">MY 댓글</TabsTrigger>
-              </Link>
+              <TabsTrigger value="videos" onClick={() => handleTabClick("videos")}>
+                MY 인터뷰 영상
+              </TabsTrigger>
+              <TabsTrigger value="reviews" onClick={() => handleTabClick("reviews")}>
+                MY 면접후기
+              </TabsTrigger>
+              <TabsTrigger value="studies" onClick={() => handleTabClick("studies")}>
+                MY 스터디모집
+              </TabsTrigger>
+              <TabsTrigger value="comments" onClick={() => handleTabClick("comments")}>
+                MY 댓글
+              </TabsTrigger>
             </TabsList>
           </div>
           <Button className="rounded-3xl" variant="outline">
