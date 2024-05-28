@@ -6,7 +6,7 @@ import {
 import AddQuestionTitleModal from "./AddQuestionTitleModal";
 
 interface SelectWorkbookSectionProps {
-  selectedWorkbookId: number;
+  selectedWorkbookId: number | null;
   setSelectedWorkbookId: (id: number) => void;
 }
 

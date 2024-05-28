@@ -4,7 +4,7 @@ import QuestionList from "./QuestionList";
 import QuestionListHeader from "./QuestionListHeader";
 
 interface QuestionSelectionSectionProps {
-  workbookId: number;
+  workbookId: number | null;
   questionTitle: string;
 }
 
@@ -12,7 +12,7 @@ interface QuestionSelectionSectionProps {
 // 또는 훅으로 분리해도 좋을듯
 const QuestionSelectionSection = ({ workbookId, questionTitle }: QuestionSelectionSectionProps) => {
   const { setInterviewOption, interviewOption } = useInterviewOption();
-  const { data: questions, isLoading } = useGetQuestionsQuery({ workbookId: workbookId });
+  const { data: questions, isLoading } = useGetQuestionsQuery({ workbookId: workbookId || 0 });
 
   const getPrevQuestionIds = () => interviewOption.questions.map((question) => question.questionId);
   const selectAllQuestions = () => {
@@ -64,14 +64,16 @@ const QuestionSelectionSection = ({ workbookId, questionTitle }: QuestionSelecti
       <div className="rounded-md border w-full h-96 overflow-y-auto">
         <QuestionListHeader
           questions={questions}
-          questionTitle={questionTitle}
+          questionTitle={workbookId ? questionTitle : "질문 세트가 없어요."}
           onSelect={selectAllQuestions}
         />
-        <QuestionList
-          workbookId={workbookId}
-          interviewOption={interviewOption}
-          onSelect={selectQuestion}
-        />
+        {workbookId && (
+          <QuestionList
+            workbookId={workbookId}
+            interviewOption={interviewOption}
+            onSelect={selectQuestion}
+          />
+        )}
       </div>
     </div>
   );

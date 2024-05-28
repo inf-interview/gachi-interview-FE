@@ -13,7 +13,7 @@ const patchInterview = async ({
   tags,
   videoTitle,
 }: PatchInterviewProps) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/video/${videoId}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/video/${videoId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",

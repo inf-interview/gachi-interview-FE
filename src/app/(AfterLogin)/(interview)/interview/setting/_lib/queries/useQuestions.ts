@@ -34,7 +34,7 @@ type RequestPostQuestions = {
 
 export const usePostQuestionsMutation = () => {
   const queryClient = useQueryClient();
-  return useMutation<ResponseQuestions, Error, RequestPostQuestions>({
+  return useMutation<Response, Error, RequestPostQuestions>({
     mutationKey: ["questions"],
     mutationFn: (data) => postQuestion(data),
     onSuccess: () => {

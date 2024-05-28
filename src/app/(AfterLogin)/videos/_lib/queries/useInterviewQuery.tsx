@@ -4,17 +4,19 @@ import getInterview, { getInterviewProps as RequestGetInterview } from "../api/g
 import postLike, { postLikeProps as RequestPostLike } from "../api/postLike";
 
 type ResponseGetInterviews = {
-  userId: number;
-  userName: string;
-  videoId: number;
-  videoLink: string;
-  videoTitle: string;
-  thumbnailLink: string;
-  time: string;
-  updateTime: string | null;
-  numOfLike: number;
-  tags: string[];
-}[];
+  content: {
+    userId: number;
+    userName: string;
+    videoId: number;
+    videoLink: string;
+    videoTitle: string;
+    thumbnailLink: string;
+    time: string;
+    updateTime: string | null;
+    numOfLike: number;
+    tags: string[];
+  }[];
+};
 
 export const useGetInterviews = ({ sortType, page }: RequestGetInterviews) => {
   return useQuery<ResponseGetInterviews, Error, ResponseGetInterviews, [string, string, number]>({

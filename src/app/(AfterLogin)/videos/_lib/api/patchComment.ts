@@ -7,7 +7,7 @@ export interface PatchCommentProps {
 
 const patchComment = async ({ userId, commentId, content, videoId }: PatchCommentProps) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/video/${videoId}/comments/${commentId}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/video/${videoId}/comments/${commentId}`,
     {
       method: "PATCH",
       headers: {

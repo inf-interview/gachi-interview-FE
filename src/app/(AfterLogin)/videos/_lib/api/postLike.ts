@@ -5,7 +5,7 @@ export interface postLikeProps {
 
 const postLike = async ({ userId, videoId }: postLikeProps) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/video/${videoId}/like`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/video/${videoId}/like`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

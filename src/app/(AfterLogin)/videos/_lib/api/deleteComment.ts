@@ -6,7 +6,7 @@ export interface DeleteCommentProps {
 
 const deleteComment = async ({ userId, commentId, videoId }: DeleteCommentProps) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/video/${videoId}/comments/${commentId}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/video/${videoId}/comments/${commentId}`,
     {
       method: "DELETE",
       headers: {
