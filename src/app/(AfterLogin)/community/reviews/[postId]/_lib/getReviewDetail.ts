@@ -1,7 +1,7 @@
 export default async function getReviewDetail({
   queryKey,
 }: {
-  queryKey: [string, string, number];
+  queryKey: [string, string, string];
 }) {
   const [_1, _2, postId] = queryKey;
 

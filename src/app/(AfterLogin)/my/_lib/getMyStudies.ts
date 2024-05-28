@@ -1,12 +1,17 @@
-export default async function getStudyDetail({
+export default async function getMyStudies({
   queryKey,
 }: {
   queryKey: [_1: string, _2: string, _3: string];
 }) {
-  const [_1, _2, postId] = queryKey;
-
+  const [_1, category] = queryKey;
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/board/${postId}`, {
+    const tags = ["community", "studies", "my"].join(",");
+    const queryParams = new URLSearchParams({
+      tags,
+      category,
+    });
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/board/list?${queryParams}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

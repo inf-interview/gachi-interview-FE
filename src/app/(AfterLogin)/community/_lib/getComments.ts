@@ -1,7 +1,7 @@
 export default async function getComments({
   queryKey,
 }: {
-  queryKey: [_1: string, _2: number, _3: string];
+  queryKey: [_1: string, _2: string, _3: string];
 }) {
   const [_1, postId, _3] = queryKey;
   try {
@@ -16,7 +16,8 @@ export default async function getComments({
       throw new Error("Failed to fetch data");
     }
 
-    return await res.json();
+    const data = await res.json();
+    return data.content || [];
   } catch (error) {
     throw new Error("Failed to fetch data");
   }

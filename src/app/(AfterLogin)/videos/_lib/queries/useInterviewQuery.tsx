@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import getInterviews, { getInterviewsProps as RequestGetInterviews } from "../api/getInterviews";
 import getInterview, { getInterviewProps as RequestGetInterview } from "../api/getInterview";
-import postLike, { postLikeProps as RequestPostLike } from "../api/postLike";
+import postLike, { postLikeProps } from "../api/postLike";
 
 type ResponseGetInterviews = {
   content: {
@@ -45,15 +45,20 @@ export const useGetInterview = (videoId: RequestGetInterview) => {
   });
 };
 
+interface RequestPostLike extends postLikeProps {
+  queryKeyPrefix: string[];
+}
+
 export const usePostLike = () => {
   const queryClient = useQueryClient();
 
   return useMutation<null, Error, RequestPostLike>({
     mutationFn: (data) => postLike(data),
     onMutate: async (data) => {
-      await queryClient.cancelQueries({ queryKey: ["interview", data.videoId] });
-      const previousData = queryClient.getQueryData(["interview", data.videoId]);
-      queryClient.setQueryData(["interview", data.videoId], (old: ResponseGetInterview) => {
+      const queryKey = [...data.queryKeyPrefix, data.id];
+      await queryClient.cancelQueries({ queryKey });
+      const previousData = queryClient.getQueryData(queryKey);
+      queryClient.setQueryData(queryKey, (old: any) => {
         return {
           ...old,
           numOfLike: old.numOfLike + 1,

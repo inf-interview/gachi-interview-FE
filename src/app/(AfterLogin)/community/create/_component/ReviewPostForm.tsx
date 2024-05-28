@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import postBoard from "../_lib/postBoard";
 import { useSearchParams } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useModal } from "@/components/Modal/useModal";
 
 export default function ReviewPostForm() {
   const [title, setTitle] = useState("");
@@ -11,16 +13,31 @@ export default function ReviewPostForm() {
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
   const category = useSearchParams().get("tab");
+  const queryClient = useQueryClient();
+  const { openDialogWithBack, closeModal } = useModal();
+
+  const postData = useMutation({
+    mutationKey: ["community", category, "recent", 1],
+    mutationFn: (newPost: { title: string; content: string; tags: string[]; category: string }) =>
+      postBoard(newPost),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["community", category, "recent", 1],
+      });
+      openDialogWithBack("게시글이 등록되었습니다.");
+    },
+  });
 
   if (!category) return null;
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(title);
-    console.log(content);
-    console.log(tags);
-    const postData = await postBoard({ title, content, tags, category });
-    console.log("postData", postData);
+    postData.mutate({
+      title,
+      content,
+      tags,
+      category,
+    });
   };
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,17 +70,17 @@ export default function ReviewPostForm() {
       <form onSubmit={onSubmit} className="flex flex-col w-full mt-2">
         <input
           type="text"
-          placeholder="제목에 핵심 내용을 요약해 보세요."
+          placeholder="제목에 핵심 내용을 요약해 보세요"
           onChange={handleTitle}
           value={title}
           required
-          className="w-2/3 p-2 border border-gray-300 rounded-md mb-4 text-lg"
+          className="p-2 border border-gray-300 rounded-md mb-4 text-lg focus:outline-none"
         />
         <div className="mb-4">
           {tags.map((tag, index) => (
             <Badge
               key={index}
-              className="mr-1 cursor-pointer"
+              className="mr-1 cursor-pointer bg-gray-200 text-gray-700 hover:bg-gray-300"
               onClick={() => handleBadgeClick(tag)}
             >
               #{tag}
@@ -74,7 +91,7 @@ export default function ReviewPostForm() {
             value={newTag}
             onChange={handleNewTagChange}
             onKeyDown={handleNewTagKeyDown}
-            placeholder="태그를 입력하세요."
+            placeholder="태그 작성 후 엔터키를 눌러주세요 (태그 클릭 시 삭제)"
             className="w-2/3 border-none focus:outline-none"
           />
         </div>
@@ -83,10 +100,10 @@ export default function ReviewPostForm() {
           onChange={handleContent}
           value={content}
           required
-          className="w-2/3 p-2 border border-gray-300 rounded-md mb-4 h-80"
+          className="p-2 border border-gray-300 rounded-md mb-4 h-80 focus:outline-none"
         />
-        <button type="submit" className="w-2/3 bg-black text-white font-bold py-2 px-4 rounded">
-          글쓰기
+        <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+          등록
         </button>
       </form>
     </>
