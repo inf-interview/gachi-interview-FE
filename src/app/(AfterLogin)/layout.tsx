@@ -58,8 +58,8 @@ export default function AfterLoginLayout({ children }: { children: ReactNode }) 
 
   return (
     <div className="flex">
-      <div className="flex min-h-screen">
-        <div className="flex flex-col justify-between w-64 bg-white shadow-lg">
+      <div className="flex min-h-screen fixed top-0 left-0 w-64 bg-white shadow-lg z-10">
+        <div className="flex flex-col justify-between w-64">
           <div className="flex items-center justify-center h-20 bg-gray-100 text-black font-bold text-xl">
             <img src="/logo.png" alt="logo" className="w-20" />
           </div>
@@ -90,21 +90,23 @@ export default function AfterLoginLayout({ children }: { children: ReactNode }) 
           </nav>
         </div>
       </div>
-      <svg
-        stroke="currentColor"
-        fill="currentColor"
-        viewBox="0 0 448 512"
-        cursor="pointer"
-        height="30"
-        width="30"
-        xmlns="http://www.w3.org/2000/svg"
-        className="text-gray-600 mt-5 ml-5"
-        onClick={handleBackClick}
-      >
-        <path d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
-      </svg>
-      <div className="w-full mt-20 pl-4 pr-12 pb-8">
-        <RQProvider>{children}</RQProvider>
+      <div className="flex-1 ml-64 relative">
+        <svg
+          stroke="currentColor"
+          fill="currentColor"
+          viewBox="0 0 448 512"
+          cursor="pointer"
+          height="30"
+          width="30"
+          xmlns="http://www.w3.org/2000/svg"
+          className="text-gray-600 mt-5 ml-6 absolute top-0 left-0 z-20"
+          onClick={handleBackClick}
+        >
+          <path d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+        </svg>
+        <div className="w-full mt-20 pl-6 pr-8 pb-8">
+          <RQProvider>{children}</RQProvider>
+        </div>
       </div>
       <AlertMessage />
     </div>
