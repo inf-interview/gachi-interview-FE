@@ -15,7 +15,7 @@ interface QuestionListProps {
 }
 
 const QuestionList = ({ workbookId, onSelect, interviewOption }: QuestionListProps) => {
-  const { data: questionList, isLoading } = useGetQuestionsQuery({ workbookId: workbookId });
+  const { data: questionList, isLoading } = useGetQuestionsQuery({ workbookId });
   const { openModal, closeModal } = useModal();
   const { mutate } = usePostQuestionsMutation();
 

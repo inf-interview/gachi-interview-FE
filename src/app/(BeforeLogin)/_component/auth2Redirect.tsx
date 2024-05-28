@@ -32,6 +32,10 @@ export default function Auth2Redirect() {
             console.log("로그인 성공");
             const data = await res.json();
             console.log("res", data);
+            // 임의로 추가했습니다.
+            localStorage.setItem("accessToken", data.accessToken);
+            localStorage.setItem("refreshToken", data.refreshToken);
+            // ---
             router.replace("/my?tab=videos");
           } else {
             console.error("예상치 못한 응답 상태:", res.status);

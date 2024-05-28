@@ -6,7 +6,7 @@ export interface postCommentProps {
 
 const postComment = async ({ userId, videoId, content }: postCommentProps) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/video/${videoId}/submit`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/video/${videoId}/submit`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

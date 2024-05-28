@@ -1,10 +1,18 @@
-import { useStep } from "@/app/(AfterLogin)/(interview)/_lib/contexts/StepContext";
 import { Button } from "@/components/ui/button";
 
-interface FooterProps {}
+interface FooterProps {
+  setStep: (step: number) => void;
+  step: number;
+}
 
-const Footer = ({}: FooterProps) => {
-  const { handleNextStep, handlePrevStep, step } = useStep();
+const Footer = ({ setStep, step }: FooterProps) => {
+  const handleNextStep = () => {
+    setStep(step + 1);
+  };
+
+  const handlePrevStep = () => {
+    setStep(step - 1);
+  };
 
   return (
     <div className="mt-4 w-full flex justify-end">

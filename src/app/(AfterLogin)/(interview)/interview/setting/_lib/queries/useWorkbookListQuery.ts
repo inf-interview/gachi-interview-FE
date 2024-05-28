@@ -23,13 +23,17 @@ export const useGetWorkbookListQuery = () => {
 
 export const usePostWorkbookMutation = () => {
   const queryClient = useQueryClient();
-  return useMutation<ResponseWorkbookList, Error, { userId: number; title: string }>({
+  return useMutation<Response, Error, { userId: number; title: string }>({
     mutationKey: ["workbookList"],
     mutationFn: (data) => postWorkbook(data),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: ["workbookList"],
       });
+    },
+    onError: (error) => {
+      console.log(error);
+      throw new Error("Failed to post workbook");
     },
   });
 };

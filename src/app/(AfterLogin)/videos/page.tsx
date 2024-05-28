@@ -23,6 +23,10 @@ const Videos = () => {
     return <div>loading...</div>;
   }
 
+  if (videoList.content.length === 0) {
+    return <div>데이터가 없습니다.</div>;
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center w-full mb-2" style={{ gap: "1rem" }}>

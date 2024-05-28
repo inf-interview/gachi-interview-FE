@@ -1,7 +1,7 @@
 export type getInterviewProps = string;
 const getInterview = async (videoId: getInterviewProps) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/video/${videoId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/video/${videoId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

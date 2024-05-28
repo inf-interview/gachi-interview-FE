@@ -1,5 +1,3 @@
-import axios from "axios";
-
 interface postQuestionProps {
   userId: number;
   questionContent: string;
@@ -14,15 +12,25 @@ const postQuestion = async ({
   workbookId,
 }: postQuestionProps) => {
   try {
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/workbook/${workbookId}/question`,
-      {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/workbook/${workbookId}/question`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        "X-Refresh-Token": localStorage.getItem("refreshToken") || "",
+      },
+      body: JSON.stringify({
         userId,
         questionContent,
         answerContent,
-      },
-    );
-    return res.data;
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    return res;
   } catch (error) {
     console.error(error);
     throw new Error("Failed to fetch data");

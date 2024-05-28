@@ -2,7 +2,7 @@ export type getCommentsProps = string;
 
 const getComments = async (videoId: getCommentsProps) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/video/${videoId}/comments`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/video/${videoId}/comments`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
