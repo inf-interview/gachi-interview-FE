@@ -1,13 +1,17 @@
-import { User } from "./User";
-
 export interface Post {
-  postId: number;
-  User: User;
+  postId: string;
+  userId: number;
+  userName: string;
+  image: string;
   postTitle: string;
   content: string;
   category: string;
+  time: Date;
   updateTime: Date;
   numOfLike: number;
   numOfComment: number;
-  tags: string[];
+  tag: string[];
+}
+export interface PostContent {
+  content: Post[];
 }

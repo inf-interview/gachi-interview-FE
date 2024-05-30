@@ -1,14 +1,17 @@
 export default async function getComments({
   queryKey,
+  accessToken,
 }: {
   queryKey: [_1: string, _2: string, _3: string];
+  accessToken: string;
 }) {
   const [_1, postId, _3] = queryKey;
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/board/${postId}/comments`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/board/${postId}/comments`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 

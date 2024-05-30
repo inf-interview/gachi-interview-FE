@@ -10,7 +10,7 @@ export default async function patchComment({
   postId: string;
 }) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/board/${postId}/comments/${commentId}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/board/${postId}/comments/${commentId}`,
     {
       method: "PATCH",
       headers: {

@@ -1,15 +1,18 @@
 export default async function getStudyDetail({
   queryKey,
+  accessToken,
 }: {
   queryKey: [_1: string, _2: string, _3: string];
+  accessToken: string;
 }) {
   const [_1, _2, postId] = queryKey;
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/board/${postId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/board/${postId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 

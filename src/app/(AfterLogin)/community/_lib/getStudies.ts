@@ -2,25 +2,22 @@ export default async function getStudies({
   queryKey,
   sortType,
   page,
+  accessToken,
 }: {
   queryKey: [_1: string, _2: string, _3: string, _4: number];
   sortType: string;
   page: number;
+  accessToken: string;
 }) {
   const [_1, category] = queryKey;
   try {
-    // const tags = ["community", "studies"].join(",");
-    // const queryParams = new URLSearchParams({
-    //   tags,
-    //   category,
-    // });
-
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/board/list?page=${page}&sortType=${sortType}&category=${category}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/board/list?page=${page}&sortType=${sortType}&category=${category}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
         },
       },
     );

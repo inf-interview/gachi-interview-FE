@@ -14,14 +14,14 @@ export default function CommunityContainer() {
   const router = useRouter();
 
   const page = 1;
-  const [sortType, setSortType] = useState<"recent" | "like">("recent");
+  const [sortType, setSortType] = useState<"new" | "like">("new");
 
   const handleTabClick = (value: string) => {
     router.replace(`/community?tab=${value}`);
   };
 
   const handleSortType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortType(e.target.value as "recent" | "like");
+    setSortType(e.target.value as "new" | "like");
   };
 
   return (
@@ -41,7 +41,7 @@ export default function CommunityContainer() {
             defaultValue="최신순"
             onChange={handleSortType}
           >
-            <option value="recent">최신순</option>
+            <option value="new">최신순</option>
             <option value="like">인기순</option>
           </select>
         </div>

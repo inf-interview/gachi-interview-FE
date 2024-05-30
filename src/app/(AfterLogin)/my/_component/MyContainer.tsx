@@ -99,6 +99,10 @@ export default function MyContainer() {
     router.replace(`/my?tab=${value}`);
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+  };
+
   return (
     <section>
       <Tabs defaultValue={tabParams}>
@@ -119,7 +123,7 @@ export default function MyContainer() {
               </TabsTrigger>
             </TabsList>
           </div>
-          <Button className="rounded-3xl" variant="outline">
+          <Button onClick={handleLogout} className="rounded-3xl" variant="outline">
             <MdLogout className="mr-2" />
             로그아웃
           </Button>
