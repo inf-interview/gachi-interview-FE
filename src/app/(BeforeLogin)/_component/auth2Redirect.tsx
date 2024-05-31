@@ -35,6 +35,7 @@ export default function Auth2Redirect() {
             // 임의로 추가했습니다.
             localStorage.setItem("accessToken", data.accessToken);
             localStorage.setItem("refreshToken", data.refreshToken);
+            localStorage.setItem("userId", data.userId);
             // ---
             router.replace("/my?tab=videos");
           } else {

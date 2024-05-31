@@ -8,7 +8,7 @@ export type QuestionType = {
 
 export interface InterviewOptionType {
   userId: number;
-  public: boolean;
+  exposure: boolean;
   videoLink: string;
   videoTitle: string;
   questions: QuestionType[];
@@ -40,7 +40,7 @@ interface InterviewOptionProviderProps {
 export const InterviewOptionProvider = ({ children }: InterviewOptionProviderProps) => {
   const [interviewOption, setInterviewOption] = useState<InterviewOptionType>({
     userId: 0,
-    public: true,
+    exposure: true,
     videoLink: "",
     videoTitle: "",
     questions: [],

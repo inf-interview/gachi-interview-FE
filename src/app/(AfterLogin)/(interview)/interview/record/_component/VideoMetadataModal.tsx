@@ -7,7 +7,7 @@ type metadata = {
   title: string;
   tags: string[];
   thumbnail: Blob;
-  public: boolean;
+  exposure: boolean;
 };
 
 interface VideoMetadataModalProps {
@@ -23,7 +23,7 @@ const VideoMetadataModal = ({ thumbnails, onSubmit }: VideoMetadataModalProps) =
     title: "",
     tags: [],
     thumbnail: thumbnails[0],
-    public: true,
+    exposure: true,
   });
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +40,7 @@ const VideoMetadataModal = ({ thumbnails, onSubmit }: VideoMetadataModalProps) =
   };
 
   const handlePublicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMetadata({ ...metadata, public: e.target.checked });
+    setMetadata({ ...metadata, exposure: e.target.checked });
   };
 
   const validateMetadata = () => {
@@ -79,6 +79,7 @@ const VideoMetadataModal = ({ thumbnails, onSubmit }: VideoMetadataModalProps) =
 
   return (
     <Modal
+      disableBackdropClick={true}
       header={
         <>
           <p>영상을 열심히 분석 하고 있어요! 🎬</p>
@@ -139,23 +140,23 @@ const VideoMetadataModal = ({ thumbnails, onSubmit }: VideoMetadataModalProps) =
               id="public"
               role="switch"
               type="checkbox"
-              checked={metadata.public}
+              checked={metadata.exposure}
               onChange={handlePublicChange}
               className="peer sr-only"
             />
             <span className="block text-sm text-muted-foreground select-none">
-              {metadata.public
+              {metadata.exposure
                 ? "(면접 리스트 페이지에서) 모두가 볼 수 있어요."
                 : "(마이페이지에서) 나만 볼 수 있어요."}
             </span>
             <span
               className={`peer h-5 w-9 rounded-full bg-input transition-colors ${
-                metadata.public ? "bg-primary" : ""
+                metadata.exposure ? "bg-primary" : ""
               }`}
             >
               <span
                 className={`block w-5 h-5 rounded-full bg-slate-300 shadow-sm transform transition-transform ${
-                  metadata.public ? "translate-x-4 bg-slate-400" : ""
+                  metadata.exposure ? "translate-x-4 bg-slate-400" : ""
                 }`}
               />
             </span>
