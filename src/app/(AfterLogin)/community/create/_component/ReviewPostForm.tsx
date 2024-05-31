@@ -6,6 +6,8 @@ import postBoard from "../_lib/postBoard";
 import { useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useModal } from "@/components/Modal/useModal";
+import { useRecoilValue } from "recoil";
+import { accessTokenState, userIdState } from "@/store/auth";
 
 export default function ReviewPostForm() {
   const [title, setTitle] = useState("");
@@ -15,14 +17,22 @@ export default function ReviewPostForm() {
   const category = useSearchParams().get("tab");
   const queryClient = useQueryClient();
   const { openDialogWithBack, closeModal } = useModal();
+  const accessToken = useRecoilValue(accessTokenState);
+  const userId = useRecoilValue(userIdState);
 
   const postData = useMutation({
-    mutationKey: ["community", category, "recent", 1],
-    mutationFn: (newPost: { title: string; content: string; tags: string[]; category: string }) =>
-      postBoard(newPost),
+    mutationKey: ["community", category, "new", 1],
+    mutationFn: (newPost: {
+      title: string;
+      content: string;
+      tags: string[];
+      category: string;
+      accessToken: string;
+      userId: number;
+    }) => postBoard(newPost),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["community", category, "recent", 1],
+        queryKey: ["community", category, "new", 1],
       });
       openDialogWithBack("게시글이 등록되었습니다.");
     },
@@ -37,6 +47,8 @@ export default function ReviewPostForm() {
       content,
       tags,
       category,
+      accessToken,
+      userId,
     });
   };
 

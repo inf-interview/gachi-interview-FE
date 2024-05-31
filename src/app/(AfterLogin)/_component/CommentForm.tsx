@@ -5,37 +5,39 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import postComment from "../community/_lib/postComment";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Comment } from "@/model/Comment";
+import { useRecoilValue } from "recoil";
+import { accessTokenState, userIdState } from "@/store/auth";
 
-const User = {
-  userId: 1,
-  userName: "이승학",
-  image: "/noneProfile.jpg",
-};
-
-export default function CommentForm({ postId }: { postId: number }) {
+export default function CommentForm({ postId }: { postId: string }) {
   const [content, setContent] = useState("");
   const queryClient = useQueryClient();
+  const accessToken = useRecoilValue(accessTokenState);
+  const userId = useRecoilValue(userIdState);
 
   const commentData = useMutation({
     mutationKey: ["community", postId, "comments"],
-    mutationFn: (newComment: { content: string; postId: number; userId: number }) =>
-      postComment(newComment),
-    onMutate: async (newComment) => {
-      const previousData = queryClient.getQueryData(["community", postId, "comments"]);
-      queryClient.setQueryData(["community", postId, "comments"], (old: Comment[]) => {
-        return [
-          ...old,
-          {
-            commentId: Math.random(),
-            userId: newComment.userId,
-            userName: "같이 면접",
-            content: newComment.content,
-            createdAt: new Date().toISOString(),
-          },
-        ];
-      });
-      return { previousData };
-    },
+    mutationFn: (newComment: {
+      content: string;
+      postId: string;
+      userId: number;
+      accessToken: string;
+    }) => postComment(newComment),
+    // onMutate: async (newComment) => {
+    //   const previousData = queryClient.getQueryData(["community", postId, "comments"]);
+    //   queryClient.setQueryData(["community", postId, "comments"], (old: Comment[]) => {
+    //     return [
+    //       ...old,
+    //       {
+    //         commentId: Math.random(),
+    //         userId: newComment.userId,
+    //         userName: "같이 면접",
+    //         content: newComment.content,
+    //         createdAt: new Date().toISOString(),
+    //       },
+    //     ];
+    //   });
+    //   return { previousData };
+    // },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["community", postId, "comments"],
@@ -48,7 +50,8 @@ export default function CommentForm({ postId }: { postId: number }) {
     commentData.mutate({
       content,
       postId,
-      userId: 1,
+      userId,
+      accessToken,
     });
     setContent("");
   };

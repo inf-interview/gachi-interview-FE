@@ -7,7 +7,7 @@
 //       category,
 //     });
 
-//     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/video/list?${queryParams}`, {
+//     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/video/list?${queryParams}`, {
 //       method: "GET",
 //       headers: {
 //         "Content-Type": "application/json",
@@ -30,7 +30,7 @@ export interface getInterviewsProps {
 const getMyVideos = async ({ sortType, page }: getInterviewsProps) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/video/list?page=${page}&sortType=${sortType}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/video/list?page=${page}&sortType=${sortType}`,
       {
         method: "GET",
         headers: {

@@ -1,21 +1,29 @@
+import customFetcher from "@/utils/customFetcher";
+
 export default async function postBoard({
   title,
   content,
   tags,
   category,
+  accessToken,
+  userId,
 }: {
   title: string;
   content: string;
   tags: string[];
   category: string;
+  accessToken: string;
+  userId: number;
 }) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/board/write`, {
+    const { response, data } = await customFetcher(`/board/write`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
+        userId,
         postTitle: title,
         content,
         tag: tags,
@@ -23,11 +31,11 @@ export default async function postBoard({
       }),
     });
 
-    if (!res.ok) {
+    if (!response?.ok) {
       throw new Error("Failed to fetch data");
     }
 
-    return await res.json();
+    return await data;
   } catch (error) {
     throw new Error("Failed to fetch data");
   }

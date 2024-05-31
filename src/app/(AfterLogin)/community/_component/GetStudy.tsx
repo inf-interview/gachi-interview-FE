@@ -2,8 +2,10 @@
 
 import { useQuery } from "@tanstack/react-query";
 import PostCard from "./PostCard";
-import { Post } from "@/model/Post";
+import { PostContent } from "@/model/Post";
 import getStudies from "../_lib/getStudies";
+import { useRecoilValue } from "recoil";
+import { accessTokenState } from "@/store/auth";
 
 export default function GetStudy({
   tabParams,
@@ -14,17 +16,27 @@ export default function GetStudy({
   sortType: string;
   page: number;
 }) {
-  const { data } = useQuery<
-    Post[],
+  const accessToken = useRecoilValue(accessTokenState);
+  const { data, error, isLoading } = useQuery<
+    PostContent,
     Object,
-    Post[],
+    PostContent,
     [_1: string, _2: string, _3: string, _4: number]
   >({
     queryKey: ["community", "studies", sortType, page],
-    queryFn: ({ queryKey }) => getStudies({ queryKey, sortType, page }),
+    queryFn: ({ queryKey }) => getStudies({ queryKey, sortType, page, accessToken }),
     staleTime: 60 * 1000,
     gcTime: 300 * 1000,
   });
 
-  return data?.map((post) => <PostCard key={post.postId} post={post} tabParams={tabParams} />);
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error</div>;
+
+  if (data?.content?.length == 0) {
+    return <div>등록된 게시글이 없습니다🥲</div>;
+  }
+
+  return data?.content?.map((post) => (
+    <PostCard key={post.postId} post={post} tabParams={tabParams} />
+  ));
 }

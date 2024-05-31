@@ -1,11 +1,15 @@
-import { User } from "./User";
-
 export interface Comment {
   postId?: string;
-  videoId?: number | string;
+  videoId?: string;
   commentId: number;
-  User: User;
+  userId: number;
+  userName: string;
+  image: string;
   content: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface CommentContent {
+  content: Comment[];
 }

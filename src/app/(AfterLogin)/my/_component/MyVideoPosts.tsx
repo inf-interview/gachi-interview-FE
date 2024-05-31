@@ -15,5 +15,5 @@ export default function MyVideoPosts({ tabParams }: { tabParams: string | undefi
   const page = 1;
   const { data } = useGetInterviews({ sortType: sortType, page });
 
-  return data?.map((video) => <VideoCard key={video.videoId} video={video} />);
+  return data?.content?.map((video) => <VideoCard key={video.videoId} video={video} />);
 }

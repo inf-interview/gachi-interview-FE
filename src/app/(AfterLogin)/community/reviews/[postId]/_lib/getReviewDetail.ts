@@ -1,23 +1,28 @@
+import customFetcher from "@/utils/customFetcher";
+
 export default async function getReviewDetail({
   queryKey,
+  accessToken,
 }: {
   queryKey: [string, string, string];
+  accessToken: string;
 }) {
   const [_1, _2, postId] = queryKey;
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/board/${postId}`, {
+    const { response, data } = await customFetcher(`/board/${postId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    if (!res.ok) {
+    if (!response?.ok) {
       throw new Error("Failed to fetch data");
     }
 
-    return await res.json();
+    return await data;
   } catch (error) {
     throw new Error("Failed to fetch data");
   }
