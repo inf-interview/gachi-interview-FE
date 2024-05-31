@@ -1,3 +1,5 @@
+import customFetcher from "@/utils/customFetcher";
+
 export default async function getStudyDetail({
   queryKey,
   accessToken,
@@ -8,7 +10,7 @@ export default async function getStudyDetail({
   const [_1, _2, postId] = queryKey;
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/board/${postId}`, {
+    const { response, data } = await customFetcher(`/board/${postId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -16,11 +18,11 @@ export default async function getStudyDetail({
       },
     });
 
-    if (!res.ok) {
+    if (!response?.ok) {
       throw new Error("Failed to fetch data");
     }
 
-    return await res.json();
+    return await data;
   } catch (error) {
     throw new Error("Failed to fetch data");
   }

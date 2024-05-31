@@ -1,3 +1,5 @@
+import customFetcher from "@/utils/customFetcher";
+
 export default async function deleteComment({
   userId,
   commentId,
@@ -7,7 +9,7 @@ export default async function deleteComment({
   commentId: number;
   postId: string;
 }) {
-  const response = await fetch(
+  const { response, data } = await customFetcher(
     `${process.env.NEXT_PUBLIC_BASE_URL}/board/${postId}/comments/${commentId}`,
     {
       method: "DELETE",
@@ -18,8 +20,8 @@ export default async function deleteComment({
     },
   );
 
-  if (!response.ok) {
+  if (!response?.ok) {
     throw new Error("Failed to delete comment");
   }
-  return response.json();
+  return await data;
 }
