@@ -1,3 +1,5 @@
+import customFetcher from "@/utils/customFetcher";
+
 export default async function getStudies({
   queryKey,
   sortType,
@@ -11,8 +13,8 @@ export default async function getStudies({
 }) {
   const [_1, category] = queryKey;
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/board/list?page=${page}&sortType=${sortType}&category=${category}`,
+    const { response, data } = await customFetcher(
+      `/board/list?page=${page}&sortType=${sortType}&category=${category}`,
       {
         method: "GET",
         headers: {
@@ -22,11 +24,11 @@ export default async function getStudies({
       },
     );
 
-    if (!res.ok) {
+    if (!response?.ok) {
       throw new Error("Failed to fetch data");
     }
 
-    return await res.json();
+    return await data;
   } catch (error) {
     throw new Error("Failed to fetch data");
   }

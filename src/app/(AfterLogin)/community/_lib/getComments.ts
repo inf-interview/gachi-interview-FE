@@ -1,3 +1,5 @@
+import customFetcher from "@/utils/customFetcher";
+
 export default async function getComments({
   queryKey,
   accessToken,
@@ -7,7 +9,7 @@ export default async function getComments({
 }) {
   const [_1, postId, _3] = queryKey;
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/board/${postId}/comments`, {
+    const { response, data } = await customFetcher(`/board/${postId}/comments`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -15,12 +17,13 @@ export default async function getComments({
       },
     });
 
-    if (!res.ok) {
+    if (!response?.ok) {
       throw new Error("Failed to fetch data");
     }
 
-    const data = await res.json();
-    return data.content || [];
+    // const data = await res.json();
+    // return data.content || [];
+    return await data;
   } catch (error) {
     throw new Error("Failed to fetch data");
   }

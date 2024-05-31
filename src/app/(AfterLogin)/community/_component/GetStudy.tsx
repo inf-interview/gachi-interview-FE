@@ -32,11 +32,11 @@ export default function GetStudy({
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
 
-  if (data?.content.length == 0) {
+  if (data?.content?.length == 0) {
     return <div>등록된 게시글이 없습니다🥲</div>;
   }
 
-  return data?.content.map((post) => (
+  return data?.content?.map((post) => (
     <PostCard key={post.postId} post={post} tabParams={tabParams} />
   ));
 }

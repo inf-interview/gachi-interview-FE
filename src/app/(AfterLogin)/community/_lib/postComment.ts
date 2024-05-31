@@ -1,3 +1,5 @@
+import customFetcher from "@/utils/customFetcher";
+
 export default async function postComment({
   userId,
   content,
@@ -10,7 +12,7 @@ export default async function postComment({
   accessToken: string;
 }) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/board/${postId}/submit`, {
+    const { response, data } = await customFetcher(`/board/${postId}/submit`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,11 +21,12 @@ export default async function postComment({
       body: JSON.stringify({ userId, content }),
     });
 
-    if (!res.ok) {
+    if (!response?.ok) {
       throw new Error("Failed to fetch data");
     }
-    console.log("res", res);
-    return await res.json();
+    // console.log("res", res);
+    // return await res.json();
+    return await data;
   } catch (error) {
     throw new Error("Failed to fetch data");
   }
