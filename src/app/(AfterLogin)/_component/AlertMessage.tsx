@@ -1,6 +1,6 @@
 "use client";
 
-import { messaging, requestPermission } from "@/firebase";
+import { messaging } from "@/firebase";
 import { onMessage } from "firebase/messaging";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function AlertMessage() {
   useEffect(() => {
-    requestPermission();
+    // requestPermission();
     onMessage(messaging, (payload) => {
       toast.info(payload.notification?.body);
     });

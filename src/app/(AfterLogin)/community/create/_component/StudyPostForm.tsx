@@ -17,12 +17,12 @@ export default function StudyPostForm() {
   const { openDialogWithBack } = useModal();
 
   const postData = useMutation({
-    mutationKey: ["community", category, "recent", 1],
+    mutationKey: ["community", category, "new", 1],
     mutationFn: (newPost: { title: string; content: string; tags: string[]; category: string }) =>
       postBoard(newPost),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["community", category, "recent", 1],
+        queryKey: ["community", category, "new", 1],
       });
       openDialogWithBack("게시글이 등록되었습니다.");
     },

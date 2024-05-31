@@ -8,11 +8,11 @@ export default function Page() {
   const dehydratedState = dehydrate(queryClient);
 
   queryClient.prefetchQuery({
-    queryKey: ["community", "reviews", "recent", 1],
+    queryKey: ["community", "reviews", "new", 1],
     queryFn: () => getReviews,
   });
   queryClient.prefetchQuery({
-    queryKey: ["community", "studies", "recent", 1],
+    queryKey: ["community", "studies", "new", 1],
     queryFn: () => getStudies,
   });
 

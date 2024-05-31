@@ -1,14 +1,12 @@
-import { User } from "./User";
-
 export interface Video {
-  videoId: number;
+  videoId: string;
   userId: number;
+  userName: string;
+  image: string;
   videoTitle: string;
   videoLink: string;
   thumbnailLink: string;
   numOfLike: number;
   time: string;
-  tags: string[];
-  userName: string;
-  // User: User;
+  tag: string[];
 }

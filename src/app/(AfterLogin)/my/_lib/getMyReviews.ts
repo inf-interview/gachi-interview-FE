@@ -11,7 +11,7 @@ export default async function getMyReviews({
       category,
     });
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/board/list?${queryParams}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/board/list?${queryParams}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

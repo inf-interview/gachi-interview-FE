@@ -18,15 +18,15 @@ if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
   messaging = getMessaging(app);
 }
 
-export const requestPermission = async () => {
-  console.log("Requesting permission...");
-  const permission = await Notification.requestPermission();
-  if (permission === "granted") {
-    console.log("Notification permission granted.");
-    await getToken(messaging, {
-      vapidKey: process.env.NEXT_PUBLIC_VAPID_KEY,
-    });
-  } else {
-    console.log("No registration token available. Request permission to generate one.");
-  }
-};
+// export const requestPermission = async () => {
+//   console.log("Requesting permission...");
+//   const permission = await Notification.requestPermission();
+//   if (permission === "granted") {
+//     console.log("Notification permission granted.");
+//     await getToken(messaging, {
+//       vapidKey: process.env.NEXT_PUBLIC_VAPID_KEY,
+//     });
+//   } else {
+//     console.log("No registration token available. Request permission to generate one.");
+//   }
+// };

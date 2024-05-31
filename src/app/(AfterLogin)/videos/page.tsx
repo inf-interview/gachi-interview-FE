@@ -8,12 +8,12 @@ import { useState } from "react";
 const Videos = () => {
   // TODO: infinite scroll 구현
   const page = 1;
-  // TODO: sortType 백엔드랑 맞추기 like, recent?
-  const [sortType, setSortType] = useState<"recent" | "like">("recent");
+  // TODO: sortType 백엔드랑 맞추기 like, new?
+  const [sortType, setSortType] = useState<"new" | "like">("new");
   const { data: videoList } = useGetInterviews({ sortType: sortType, page });
 
   const handleSortType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortType(e.target.value as "recent" | "like");
+    setSortType(e.target.value as "new" | "like");
   };
 
   // TODO: Filter tag 구현
@@ -23,7 +23,7 @@ const Videos = () => {
     return <div>loading...</div>;
   }
 
-  if (videoList.content.length === 0) {
+  if (videoList.content?.length === 0) {
     return <div>데이터가 없습니다.</div>;
   }
 
@@ -39,13 +39,13 @@ const Videos = () => {
           defaultValue="최신순"
           onChange={handleSortType}
         >
-          <option value="recent">최신순</option>
+          <option value="new">최신순</option>
           <option value="like">인기순</option>
         </select>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {videoList.map((video) => (
+        {videoList.content?.map((video) => (
           <VideoCard key={video.videoId} video={video} />
         ))}
       </div>

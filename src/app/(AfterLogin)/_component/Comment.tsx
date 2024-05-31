@@ -54,7 +54,7 @@ export default function Comment({ comment, postId }: { comment: Comment; postId:
 
   const handleDeleteComment = () => {
     removeComment.mutate({
-      userId: comment.User.userId,
+      userId: comment.userId,
       commentId: comment.commentId,
       postId,
     });
@@ -85,7 +85,7 @@ export default function Comment({ comment, postId }: { comment: Comment; postId:
   const handleUpdateComment = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     updateComment.mutate({
-      userId: comment.User.userId,
+      userId: comment.userId,
       commentId: comment.commentId,
       content: editedComment,
       postId,
@@ -102,12 +102,12 @@ export default function Comment({ comment, postId }: { comment: Comment; postId:
           alt="프로필 이미지"
         />
         <div className="flex flex-col ml-4">
-          <span className="font-bold">{comment.User?.userName}</span>
+          <span className="font-bold">{comment?.userName}</span>
           <span className="text-gray-500">
             {formatRelativeTime(comment.createdAt?.toLocaleString())}
           </span>
         </div>
-        {comment.User?.userId == 1 && isEditing == false && (
+        {comment?.userId == 1 && isEditing == false && (
           <div className="flex justify-end mt-2 gap-2 ml-auto">
             <Button onClick={() => setIsEditing(true)} variant="link" className="text-gray-600">
               <PiPencil className="mr-1" />
