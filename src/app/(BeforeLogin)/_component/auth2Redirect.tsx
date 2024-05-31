@@ -54,7 +54,6 @@ export default function Auth2Redirect() {
             console.log("로그인 성공");
             const data = await res.json();
             console.log("res", data);
-
             setAccessToken(data.accessToken);
             setRefreshToken(data.refreshToken);
             setUserId(data.userId);

@@ -70,7 +70,7 @@ const useRecord = () => {
         title: string;
         tags: string[];
         thumbnail: Blob;
-        public: boolean;
+        exposure: boolean;
       }) => {
         const encodedBlob = await encodingPromise;
         // S3 업로드 로직
@@ -84,19 +84,19 @@ const useRecord = () => {
           return;
         }
 
-        // TODO: 백엔드에 POST할 mutation 호출
+        // TODO: 유저 아이디 넘겨주기
+        const userId = Number(localStorage.getItem("userId")) || 0;
         mutate({
-          // TODO: 유저 아이디 넘겨주기
-          userId: 1,
+          userId,
           videoLink: videoUrl,
           thumbnailLink: thumbnailUrl,
           videoTitle: metadata.title,
           tags: metadata.tags,
-          isPublic: metadata.public,
+          exposure: metadata.exposure,
           questions: questionList.map((question) => question.questionId),
         });
 
-        openModal(<UploadCompletionModal encodedBlob={encodedBlob} isPublic={metadata.public} />);
+        openModal(<UploadCompletionModal encodedBlob={encodedBlob} isPublic={metadata.exposure} />);
       };
 
       openModal(

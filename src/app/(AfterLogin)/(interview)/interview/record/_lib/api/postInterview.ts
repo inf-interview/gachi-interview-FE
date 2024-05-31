@@ -1,6 +1,6 @@
 export interface postInterviewProps {
   userId: number;
-  isPublic: boolean;
+  exposure: boolean;
   videoLink: string;
   thumbnailLink: string;
   videoTitle: string;
@@ -9,7 +9,7 @@ export interface postInterviewProps {
 }
 const postInterview = async ({
   userId,
-  isPublic, // public이 예약어이므로 isPublic으로 변경
+  exposure,
   videoLink,
   thumbnailLink,
   videoTitle,
@@ -26,7 +26,7 @@ const postInterview = async ({
       },
       body: JSON.stringify({
         userId,
-        public: isPublic,
+        exposure,
         videoLink,
         thumbnailLink,
         videoTitle,

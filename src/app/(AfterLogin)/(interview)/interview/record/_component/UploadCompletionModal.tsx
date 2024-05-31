@@ -36,6 +36,7 @@ const UploadCompletionModal = ({ encodedBlob, isPublic }: UploadCompletionModalP
 
   return (
     <Modal
+      disableBackdropClick={true}
       header="업로드 완료"
       footer={<Button onClick={handleMoveToVideoDetail}>확인하러 가기</Button>}
     >
