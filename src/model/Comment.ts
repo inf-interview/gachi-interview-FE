@@ -3,13 +3,9 @@ export interface Comment {
   videoId?: string;
   commentId: number;
   userId: number;
-  userName: string;
+  username: string;
   image: string;
   content: string;
   createdAt: Date;
   updatedAt: Date;
-}
-
-export interface CommentContent {
-  content: Comment[];
 }

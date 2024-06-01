@@ -101,6 +101,7 @@ export default function MyContainer() {
 
   const handleLogout = () => {
     localStorage.clear();
+    router.push("/");
   };
 
   return (
