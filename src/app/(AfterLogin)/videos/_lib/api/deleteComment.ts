@@ -1,3 +1,5 @@
+import customFetcher from "@/utils/customFetcher";
+
 export interface DeleteCommentProps {
   userId: number;
   commentId: number;
@@ -5,21 +7,15 @@ export interface DeleteCommentProps {
 }
 
 const deleteComment = async ({ userId, commentId, videoId }: DeleteCommentProps) => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/video/${videoId}/comments/${commentId}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId, commentId }),
+  const { data } = await customFetcher(`/video/${videoId}/comments/${commentId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({ userId, commentId }),
+  });
 
-  if (!response.ok) {
-    throw new Error("Failed to delete comment");
-  }
-  return response.json();
+  return data;
 };
 
 export default deleteComment;

@@ -1,3 +1,5 @@
+import customFetcher from "@/utils/customFetcher";
+
 export interface postCommentProps {
   userId: number;
   videoId: string;
@@ -6,7 +8,8 @@ export interface postCommentProps {
 
 const postComment = async ({ userId, videoId, content }: postCommentProps) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/video/${videoId}/submit`, {
+    console.log("userId: ", userId, content, videoId);
+    const { data } = await customFetcher(`/video/${videoId}/submit`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -17,7 +20,7 @@ const postComment = async ({ userId, videoId, content }: postCommentProps) => {
       }),
     });
 
-    return res.json();
+    return data;
   } catch (error) {
     console.error(error);
     throw new Error("Failed to fetch data");

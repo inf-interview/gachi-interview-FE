@@ -1,3 +1,5 @@
+import customFetcher from "@/utils/customFetcher";
+
 export interface PatchCommentProps {
   userId: number;
   commentId: number;
@@ -6,21 +8,15 @@ export interface PatchCommentProps {
 }
 
 const patchComment = async ({ userId, commentId, content, videoId }: PatchCommentProps) => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/video/${videoId}/comments/${commentId}`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId, content }),
+  const { data } = await customFetcher(`/video/${videoId}/comments/${commentId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({ userId, content, commentId }),
+  });
 
-  if (!response.ok) {
-    throw new Error("Failed to patch comment");
-  }
-  return response.json();
+  return data;
 };
 
 export default patchComment;
