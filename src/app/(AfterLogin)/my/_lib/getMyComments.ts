@@ -1,17 +1,14 @@
 import customFetcher from "@/utils/customFetcher";
 
-export default async function getMyReviews({
-  queryKey,
+export default async function getMyComments({
   userId,
   accessToken,
 }: {
-  queryKey: [_1: string, _2: string, _3: string];
   userId: number;
   accessToken: string;
 }) {
-  const [_1, category] = queryKey;
   try {
-    const { response, data } = await customFetcher(`/user/${userId}/boards/${category}`, {
+    const { response, data } = await customFetcher(`/user/${userId}/comments`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

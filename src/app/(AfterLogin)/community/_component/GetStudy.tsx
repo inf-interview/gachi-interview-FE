@@ -25,8 +25,6 @@ export default function GetStudy({
   >({
     queryKey: ["community", "studies", sortType, page],
     queryFn: ({ queryKey }) => getStudies({ queryKey, sortType, page, accessToken }),
-    staleTime: 60 * 1000,
-    gcTime: 300 * 1000,
   });
 
   if (isLoading) return <div>Loading...</div>;

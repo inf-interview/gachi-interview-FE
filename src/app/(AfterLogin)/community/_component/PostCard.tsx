@@ -38,12 +38,12 @@ export default function PostCard({
         </CardDescription>
       </CardHeader>
       <div className="pl-4">
-        {(showAllTags ? post.tag : post.tag.slice(0, MAX_TAGS_TO_SHOW)).map((tag, index) => (
+        {(showAllTags ? post.tag : post.tag?.slice(0, MAX_TAGS_TO_SHOW))?.map((tag, index) => (
           <Badge key={index} className="px-3 py-1 text-sm mx-1 mt-2" variant="secondary">
             #{tag}
           </Badge>
         ))}
-        {post.tag.length > MAX_TAGS_TO_SHOW && (
+        {post.tag?.length > MAX_TAGS_TO_SHOW && (
           <button onClick={toggleShowAllTags} className="text-blue-500 text-sm ml-2 mt-2">
             {showAllTags ? "접기" : `+${post.tag.length - MAX_TAGS_TO_SHOW} 더보기`}
           </button>

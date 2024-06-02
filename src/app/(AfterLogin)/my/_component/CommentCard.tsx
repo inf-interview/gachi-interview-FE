@@ -1,19 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
+import { MyComment } from "./MyComments";
 
-interface CommentProps {
-  content: string;
-  createdAt: string;
-}
-
-const CommentCard = ({ content, createdAt }: CommentProps) => {
+export default function CommentCard({ comment }: { comment: MyComment }) {
   return (
     <Card>
       <CardHeader>
-        <CardDescription className="text-sm text-gray-500">{createdAt}</CardDescription>
+        {/* <CardDescription className="text-sm text-gray-500">{createdAt}</CardDescription> */}
       </CardHeader>
-      <CardContent>{content}</CardContent>
+      <CardContent>댓글 내용: {comment.content}</CardContent>
     </Card>
   );
-};
-
-export default CommentCard;
+}
