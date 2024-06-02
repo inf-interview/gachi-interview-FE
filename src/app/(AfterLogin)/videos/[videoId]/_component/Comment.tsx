@@ -9,6 +9,8 @@ import { useModal } from "@/components/Modal/useModal";
 import Modal from "@/components/Modal";
 import { PiPencil } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { useRecoilValue } from "recoil";
+import { userIdState } from "@/store/auth";
 
 interface CommentProps {
   comment: {
@@ -17,6 +19,7 @@ interface CommentProps {
     userName: string;
     content: string;
     createdAt: string;
+    image: string;
   };
   videoId: string;
 }
@@ -27,6 +30,7 @@ const Comment = ({ comment, videoId }: CommentProps) => {
   const [editedComment, setEditedComment] = useState(comment.content);
   const { mutate: updateComment } = useUpdateCommentMutation(videoId);
   const { mutate: deleteComment } = useDeleteCommentMutation(videoId);
+  const userId = useRecoilValue(userIdState);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -80,7 +84,7 @@ const Comment = ({ comment, videoId }: CommentProps) => {
         <img
           className="w-10 h-10 rounded-full object-cover"
           // TODO: 이미지 경로 수정
-          src="https://file.mk.co.kr/meet/neds/2020/03/image_readtop_2020_256728_15839167074119784.jpg"
+          src={comment.image}
           alt="프로필 이미지"
         />
         <div className="flex flex-col ml-4">
@@ -88,7 +92,7 @@ const Comment = ({ comment, videoId }: CommentProps) => {
           <span className="text-gray-500">{formatRelativeTime(comment.createdAt)}</span>
         </div>
 
-        {comment.userId === 1 && isEditing == false && (
+        {comment.userId === userId && isEditing == false && (
           <div className="flex justify-end mt-2 gap-2 ml-auto">
             <Button onClick={handleEdit} variant="link" className="text-gray-600">
               <PiPencil className="mr-1" />

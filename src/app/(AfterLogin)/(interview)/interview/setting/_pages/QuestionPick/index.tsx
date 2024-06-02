@@ -9,14 +9,17 @@ import {
 import SelectWorkbookSection from "./_component/SelectWorkbookSection";
 import AddQuestionTitleModal from "./_component/AddQuestionTitleModal";
 import { useModal } from "@/components/Modal/useModal";
+import { useRecoilValue } from "recoil";
+import { userIdState } from "@/store/auth";
 
 const QuestionPick = () => {
   const { data: questionList } = useGetWorkbookListQuery();
   const [selectedWorkbookId, setSelectedWorkbookId] = useState<number | null>(
     questionList?.[0]?.listId || null,
   );
+  const userId = useRecoilValue(userIdState);
 
-  const { mutate: createTitleMutate } = usePostWorkbookMutation();
+  const { mutate: createTitleMutate, isSuccess } = usePostWorkbookMutation();
   const { closeModal } = useModal();
 
   useEffect(() => {
@@ -27,9 +30,8 @@ const QuestionPick = () => {
   if (!questionList) return null;
 
   const submitHandler = (title: string) => {
-    // TODO: 사용자 userId로 제공
-    createTitleMutate({ userId: 1, title });
-    closeModal();
+    createTitleMutate({ userId, title });
+    isSuccess && closeModal();
   };
 
   if (questionList.length === 0) {

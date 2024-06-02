@@ -7,6 +7,8 @@ import QuestionItem from "./QuestionItem";
 import { Button } from "@/components/ui/button";
 import AddQuestionModal from "./AddQuestionModal";
 import { useModal } from "@/components/Modal/useModal";
+import { useRecoilValue } from "recoil";
+import { userIdState } from "@/store/auth";
 
 interface QuestionListProps {
   workbookId: number;
@@ -18,6 +20,7 @@ const QuestionList = ({ workbookId, onSelect, interviewOption }: QuestionListPro
   const { data: questionList, isLoading } = useGetQuestionsQuery({ workbookId });
   const { openModal, closeModal } = useModal();
   const { mutate } = usePostQuestionsMutation();
+  const userId = useRecoilValue(userIdState);
 
   const openAddQuestionModalHandler = () =>
     openModal(
@@ -26,8 +29,7 @@ const QuestionList = ({ workbookId, onSelect, interviewOption }: QuestionListPro
         // TODO: 인라인 함수 제거
         onSubmit={(questionContent, answerContent) => {
           mutate({
-            // TODO: userId 수정
-            userId: 1,
+            userId,
             questionContent,
             answerContent,
             workbookId,
@@ -37,7 +39,7 @@ const QuestionList = ({ workbookId, onSelect, interviewOption }: QuestionListPro
       />,
     );
 
-  // 로딩 상태 처리
+  // TODO: 로딩 상태 처리
   if (isLoading) return <div>Loading...</div>;
 
   return (
