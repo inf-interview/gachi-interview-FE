@@ -4,34 +4,85 @@ import { Badge } from "@/components/ui/badge";
 import { Post } from "@/model/Post";
 import { AiOutlineLike, AiOutlineShareAlt } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
-import { usePostLike } from "../../videos/_lib/queries/useInterviewQuery";
 import { formatRelativeTime } from "@/lib/utills/days";
 import { Button } from "@/components/ui/button";
 import "./PostDetail.css";
 import Image from "next/image";
 import { useRecoilValue } from "recoil";
-import { accessTokenState } from "@/store/auth";
+import { accessTokenState, userIdState } from "@/store/auth";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import postLike from "../_lib/postLike";
 
 export default function PostDetail({ post }: { post: Post }) {
-  const { mutate } = usePostLike();
   const [isLiked, setIsLiked] = useState(false);
   const [animate, setAnimate] = useState(false);
   const accessToken = useRecoilValue(accessTokenState);
+  const userId = useRecoilValue(userIdState);
+  const postId = post.postId;
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: (params: { userId: number; postId: string; accessToken: string }) => {
+      console.log("mutationFn called with params:", params);
+      return postLike(params);
+    },
+    // onMutate: async () => {
+    //   const queryKey = ["community", postId, "like"];
+    //   await queryClient.cancelQueries({ queryKey });
+    //   const previousData = queryClient.getQueryData(queryKey);
+    //   queryClient.setQueryData(queryKey, (old: any) => {
+    //     return {
+    //       ...old,
+    //       numOfLike: old.numOfLike + 1,
+    //     };
+    //   });
+    //   return { previousData };
+    // },
+    onMutate: async () => {
+      const queryKey = ["community", post.category, postId.toString()];
+      await queryClient.cancelQueries({ queryKey });
+      const previousData = queryClient.getQueryData(queryKey);
+      queryClient.setQueryData(queryKey, (old: { numOfLike: number }) => {
+        return {
+          ...old,
+          numOfLike: old.numOfLike,
+        };
+      });
+      return { previousData };
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        ["community", post.category, postId.toString()],
+        (old: { numOfLike: number }) => ({
+          ...old,
+          numOfLike: data.numOfLike,
+        }),
+      );
+    },
+    // onSettled: () => {
+    //   queryClient.invalidateQueries({ queryKey: ["community", postId, "like"] });
+    // },
+  });
 
   const handleLike = () => {
+    console.log("handleLike called");
     if (!isLiked) {
+      console.log("Before mutate:", { userId, postId, accessToken });
       mutate({
-        userId: post.userId,
-        id: post.postId.toString(),
-        type: "board",
-        queryKeyPrefix: ["community", post.category],
+        userId,
+        postId,
         accessToken,
       });
+      console.log("After mutate");
       setIsLiked(true);
       setAnimate(true);
       setTimeout(() => setAnimate(false), 300);
     } else {
-      // TODO: 좋아요 취소
+      mutate({
+        userId,
+        postId,
+        accessToken,
+      });
       setIsLiked(false);
     }
   };
