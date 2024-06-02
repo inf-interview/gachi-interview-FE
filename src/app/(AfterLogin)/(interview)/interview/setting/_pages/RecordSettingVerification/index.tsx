@@ -44,7 +44,7 @@ const RecordSettingVerification = ({ setStep }: RecordSettingVerificationProps) 
     }
   }, []);
 
-  return <div>TODO: 로딩 컴포넌트</div>;
+  return <div className="flex items-center justify-center w-full h-full">로딩중...</div>;
 };
 
 export default RecordSettingVerification;
