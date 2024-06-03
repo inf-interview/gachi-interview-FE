@@ -15,7 +15,7 @@ const postLike = async ({ userId, id, type }: postLikeProps) => {
       },
       body: JSON.stringify({
         userId,
-        id,
+        [type === "video" ? "videoId" : "postId"]: id,
       }),
     });
 
