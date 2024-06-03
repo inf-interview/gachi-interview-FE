@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import VideoCard from "./_component/VideoCard";
 import { useGetInterviews } from "./_lib/queries/useInterviewQuery";
 import { useState } from "react";
+import debounce from "./_lib/utills/debounce";
 
 const Videos = () => {
   // TODO: infinite scroll 구현
@@ -11,6 +11,7 @@ const Videos = () => {
   // TODO: sortType 백엔드랑 맞추기 like, new?
   const [sortType, setSortType] = useState<"new" | "like">("new");
   const { data: videoList } = useGetInterviews({ sortType: sortType, page });
+  const [filterTag, setFilterTag] = useState<string>("");
 
   const handleSortType = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortType(e.target.value as "new" | "like");
@@ -27,12 +28,23 @@ const Videos = () => {
     return <div>데이터가 없습니다.</div>;
   }
 
+  const handleFilterTag = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterTag(e.target.value);
+  };
+  const debouncedFilterTag = debounce(handleFilterTag, 300);
+
+  const filteredVideoList = videoList.content?.filter((video) => {
+    if (!filterTag) return true;
+    return video.tags.includes(filterTag);
+  });
+
   return (
     <div>
       <div className="flex justify-between items-center w-full mb-2" style={{ gap: "1rem" }}>
         <input
           placeholder="Tag Filter"
           className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          onChange={debouncedFilterTag}
         />
         <select
           className="flex h-10 w-32 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -45,7 +57,7 @@ const Videos = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {videoList.content?.map((video) => (
+        {filteredVideoList.map((video) => (
           <VideoCard key={video.videoId} video={video} />
         ))}
       </div>

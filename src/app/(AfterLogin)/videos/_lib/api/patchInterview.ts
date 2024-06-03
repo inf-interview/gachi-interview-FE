@@ -1,3 +1,5 @@
+import customFetcher from "@/utils/customFetcher";
+
 export interface PatchInterviewProps {
   userId: number;
   videoId: string;
@@ -13,18 +15,14 @@ const patchInterview = async ({
   tags,
   videoTitle,
 }: PatchInterviewProps) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/video/${videoId}`, {
+  const { data } = await customFetcher(`/video/${videoId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ userId, exposure, tags, videoTitle }),
   });
-
-  if (!response.ok) {
-    throw new Error("Failed to patch interview");
-  }
-  return response.json();
+  return data;
 };
 
 export default patchInterview;

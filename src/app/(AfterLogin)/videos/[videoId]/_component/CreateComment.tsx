@@ -3,6 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { usePostCommentMutation } from "../../_lib/queries/useCommentQuery";
+import { useRecoilValue } from "recoil";
+import { userIdState } from "@/store/auth";
 
 interface CreateCommentProps {
   videoId: string;
@@ -12,13 +14,13 @@ const CreateComment = ({ videoId }: CreateCommentProps) => {
   const [comment, setComment] = useState("");
   const [focus, setFocus] = useState(false);
   const { mutate } = usePostCommentMutation(videoId);
+  const userId = useRecoilValue(userIdState);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: userId 수정
     mutate({
       content: comment,
-      userId: 1,
+      userId,
       videoId,
     });
     setComment("");

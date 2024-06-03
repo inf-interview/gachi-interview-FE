@@ -10,6 +10,7 @@ type ResponseGetComments = {
   userName: string;
   content: string;
   createdAt: string;
+  image: string;
 }[];
 
 export const useGetCommentsQuery = (videoId: string) => {
@@ -19,26 +20,21 @@ export const useGetCommentsQuery = (videoId: string) => {
   });
 };
 
-type ResponsePostComment = {
-  commentId: number;
-  userId: number;
-  userName: string;
-  content: string;
-  createdAt: string;
-};
-
 export const usePostCommentMutation = (videoId: string) => {
   const queryClient = useQueryClient();
-  return useMutation<ResponsePostComment, Error, RequestPostComment>({
+  return useMutation<null, Error, RequestPostComment>({
     mutationKey: ["interview", "comments", videoId],
     mutationFn: (data) => postComment(data),
     onMutate: async (data) => {
       const previousData = queryClient.getQueryData(["interview", "comments", data.videoId]);
+      const previousDataOrDefault = previousData ?? [];
+
       queryClient.setQueryData(
         ["interview", "comments", data.videoId],
-        (old: ResponseGetComments) => {
+        (old: ResponseGetComments | undefined) => {
+          const oldData = old ?? [];
           return [
-            ...old,
+            ...oldData,
             {
               commentId: Math.random(),
               userId: data.userId,
@@ -49,7 +45,7 @@ export const usePostCommentMutation = (videoId: string) => {
           ];
         },
       );
-      return { previousData };
+      return { previousData: previousDataOrDefault };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

@@ -7,6 +7,8 @@ import { formatRelativeTime } from "@/lib/utills/days";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import "@/app/(AfterLogin)/community/_component/PostDetail.css";
+import { useRecoilValue } from "recoil";
+import { userIdState } from "@/store/auth";
 
 interface VideoDetailProps {
   videoId: string;
@@ -17,12 +19,12 @@ const VideoDetail = ({ videoId }: VideoDetailProps) => {
   const { mutate } = usePostLike();
   const [isLiked, setIsLiked] = useState(false);
   const [animate, setAnimate] = useState(false);
+  const userId = useRecoilValue(userIdState);
 
   const handleLike = () => {
     if (!isLiked) {
       mutate({
-        // TODO: userId 수정
-        userId: 1,
+        userId,
         id: videoId,
         type: "video",
         queryKeyPrefix: ["interview"],

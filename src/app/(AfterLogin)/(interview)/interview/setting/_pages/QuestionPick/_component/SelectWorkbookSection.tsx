@@ -4,6 +4,8 @@ import {
   usePostWorkbookMutation,
 } from "../../../_lib/queries/useWorkbookListQuery";
 import AddQuestionTitleModal from "./AddQuestionTitleModal";
+import { useRecoilValue } from "recoil";
+import { userIdState } from "@/store/auth";
 
 interface SelectWorkbookSectionProps {
   selectedWorkbookId: number | null;
@@ -15,20 +17,20 @@ const SelectWorkbookSection = ({
   setSelectedWorkbookId,
 }: SelectWorkbookSectionProps) => {
   const { data: questionList } = useGetWorkbookListQuery();
-
   const { mutate: createTitleMutate } = usePostWorkbookMutation();
   const { openModal, closeModal } = useModal();
+  const userId = useRecoilValue(userIdState);
 
   const openAddTitleModalHandler = () => {
     const submitHandler = (title: string) => {
-      // TODO: 사용자 userId로 제공
-      createTitleMutate({ userId: 1, title });
+      createTitleMutate({ userId, title });
       closeModal();
     };
 
     openModal(<AddQuestionTitleModal closeModal={closeModal} onSubmit={submitHandler} />);
   };
 
+  //TODO: Popover로 워크북 삭제 기능 추가
   return (
     <ul>
       {questionList &&

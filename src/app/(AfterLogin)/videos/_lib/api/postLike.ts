@@ -1,3 +1,5 @@
+import customFetcher from "@/utils/customFetcher";
+
 export interface postLikeProps {
   userId: number;
   id: string;
@@ -6,18 +8,18 @@ export interface postLikeProps {
 
 const postLike = async ({ userId, id, type }: postLikeProps) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/${type}/${id}/like`, {
+    const { data } = await customFetcher(`/${type}/${id}/like`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         userId,
-        id,
+        [type === "video" ? "videoId" : "postId"]: id,
       }),
     });
 
-    return res.json();
+    return data;
   } catch (error) {
     console.error(error);
     throw new Error("Failed to fetch data");
