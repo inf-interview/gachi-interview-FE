@@ -1,13 +1,16 @@
+import customFetcher from "@/utils/customFetcher";
+
 export type getInterviewProps = string;
 const getInterview = async (videoId: getInterviewProps) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/video/${videoId}`, {
+    const { data } = await customFetcher(`/video/${videoId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
-    return res.json();
+
+    return data;
   } catch (error) {
     console.error(error);
     throw new Error("Failed to fetch data");

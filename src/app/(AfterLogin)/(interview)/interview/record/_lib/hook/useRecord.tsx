@@ -14,6 +14,8 @@ import { useModal } from "@/components/Modal/useModal";
 import VideoMetadataModal from "../../_component/VideoMetadataModal";
 import { usePostInterviewMutation } from "../queries/useInterviewQuery";
 import UploadCompletionModal from "../../_component/UploadCompletionModal";
+import { userIdState } from "@/store/auth";
+import { useRecoilValue } from "recoil";
 
 const useRecord = () => {
   const { interviewOption, mediaOption, setMediaOption } = useInterviewOption();
@@ -21,6 +23,7 @@ const useRecord = () => {
   const { openModal } = useModal();
   const [isRecording, setIsRecording] = useState(false);
   const { mutate } = usePostInterviewMutation();
+  const userId = useRecoilValue(userIdState);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const questionList = interviewOption.questions;
@@ -85,7 +88,6 @@ const useRecord = () => {
         }
 
         // TODO: 유저 아이디 넘겨주기
-        const userId = Number(localStorage.getItem("userId")) || 0;
         mutate({
           userId,
           videoLink: videoUrl,

@@ -39,6 +39,7 @@ const AddQuestionTitleModal = ({ closeModal, onSubmit }: AddQuestionTitleModalPr
 
   return (
     <Modal
+      disableBackdropClick={true}
       header="질문 세트 추가"
       footer={
         <>
