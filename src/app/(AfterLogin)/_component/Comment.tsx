@@ -9,12 +9,15 @@ import { PiPencil } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
 import Modal from "@/components/Modal";
 import deleteComment from "../community/_lib/deleteComment";
+import { useRecoilValue } from "recoil";
+import { userIdState } from "@/store/auth";
 
 export default function Comment({ comment, postId }: { comment: Comment; postId: string }) {
   const [isEditing, setIsEditing] = useState(false);
   const { openModal, closeModal } = useModal();
   const [editedComment, setEditedComment] = useState(comment.content);
   const queryClient = useQueryClient();
+  const userId = useRecoilValue(userIdState);
 
   const updateComment = useMutation({
     mutationKey: ["community", postId, "comments"],
@@ -98,16 +101,17 @@ export default function Comment({ comment, postId }: { comment: Comment; postId:
       <div className="flex items-center">
         <img
           className="w-10 h-10 rounded-full object-cover"
-          src="https://file.mk.co.kr/meet/neds/2020/03/image_readtop_2020_256728_15839167074119784.jpg"
+          // src="https://file.mk.co.kr/meet/neds/2020/03/image_readtop_2020_256728_15839167074119784.jpg"
+          src={comment.image}
           alt="프로필 이미지"
         />
         <div className="flex flex-col ml-4">
-          <span className="font-bold">{comment?.userName}</span>
+          <span className="font-bold">{comment.username}</span>
           <span className="text-gray-500">
             {formatRelativeTime(comment.createdAt?.toLocaleString())}
           </span>
         </div>
-        {comment?.userId == 1 && isEditing == false && (
+        {comment?.userId == userId && isEditing == false && (
           <div className="flex justify-end mt-2 gap-2 ml-auto">
             <Button onClick={() => setIsEditing(true)} variant="link" className="text-gray-600">
               <PiPencil className="mr-1" />

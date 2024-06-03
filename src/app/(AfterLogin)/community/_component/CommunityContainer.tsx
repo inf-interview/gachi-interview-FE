@@ -1,6 +1,13 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { FaPen } from "react-icons/fa";
 import Link from "next/link";
@@ -20,15 +27,15 @@ export default function CommunityContainer() {
     router.replace(`/community?tab=${value}`);
   };
 
-  const handleSortType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortType(e.target.value as "new" | "like");
+  const handleSortType = (value: string) => {
+    setSortType(value as "new" | "like");
   };
 
   return (
     <Tabs defaultValue={tabParams}>
-      <div className="flex">
-        <div className="flex-1">
-          <TabsList>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center">
+          <TabsList className="mr-4">
             <TabsTrigger value="reviews" onClick={() => handleTabClick("reviews")}>
               면접 후기
             </TabsTrigger>
@@ -36,14 +43,15 @@ export default function CommunityContainer() {
               스터디 모집
             </TabsTrigger>
           </TabsList>
-          <select
-            className="h-10 w-32 rounded-md border border-input bg-background ml-3 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            defaultValue="최신순"
-            onChange={handleSortType}
-          >
-            <option value="new">최신순</option>
-            <option value="like">인기순</option>
-          </select>
+          <Select onValueChange={handleSortType}>
+            <SelectTrigger className="w-32">
+              <SelectValue placeholder="최신순" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="new">최신순</SelectItem>
+              <SelectItem value="like">인기순</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <Link href={`/community/create?tab=${tabParams}`}>
           <Button className="rounded-3xl">

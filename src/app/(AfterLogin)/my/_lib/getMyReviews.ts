@@ -1,28 +1,29 @@
+import customFetcher from "@/utils/customFetcher";
+
 export default async function getMyReviews({
   queryKey,
+  userId,
+  accessToken,
 }: {
   queryKey: [_1: string, _2: string, _3: string];
+  userId: number;
+  accessToken: string;
 }) {
   const [_1, category] = queryKey;
   try {
-    const tags = ["community", "reviews", "my"].join(",");
-    const queryParams = new URLSearchParams({
-      tags,
-      category,
-    });
-
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/board/list?${queryParams}`, {
+    const { response, data } = await customFetcher(`/user/${userId}/boards/${category}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    if (!res.ok) {
+    if (!response?.ok) {
       throw new Error("Failed to fetch data");
     }
 
-    return await res.json();
+    return await data;
   } catch (error) {
     throw new Error("Failed to fetch data");
   }

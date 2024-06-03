@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const originalRequest = async (url: string, config: RequestInit) => {
@@ -21,6 +23,24 @@ const originalRequest = async (url: string, config: RequestInit) => {
     console.error("originalRequest 에러:", error);
     throw error;
   }
+};
+
+const showLoginToast = () => {
+  const overlay = document.createElement("div");
+  overlay.className = "overlay";
+  document.body.appendChild(overlay);
+  overlay.style.display = "block";
+
+  toast.warning("토큰이 만료되었습니다.\n잠시 후 로그인 페이지로 이동합니다.", {
+    position: "top-center",
+    autoClose: 8000,
+    className: "toast-message",
+  });
+
+  localStorage.clear();
+  setTimeout(() => {
+    window.location.href = "/";
+  }, 8000);
 };
 
 const refreshingToken = async (url: string, accessToken: string, config: RequestInit) => {
@@ -90,14 +110,15 @@ const customFetcher = async (url: string, config: RequestInit) => {
           Authorization: `Bearer ${accessToken}`,
         };
         const retryResponse = await originalRequest(url, config);
-        // return retryResponse;
         response = retryResponse.response;
         data = retryResponse.data;
       } else {
+        showLoginToast();
         throw new Error("리프레시 토큰을 가져오는데 실패했습니다.");
       }
     } catch (error) {
       console.error("refreshing token in customFetcher 에러:", error);
+      showLoginToast();
       throw error;
     }
   }

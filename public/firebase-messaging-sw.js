@@ -29,7 +29,7 @@ self.addEventListener("push", async (event) => {
   console.log("push");
   console.log(event);
   try {
-    const res = await fetch(`http://localhost:9090/api/alert`, {
+    const res = await fetch(`http://52.78.111.188:8080/alert`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -25,8 +25,6 @@ export default function InterviewReview({
   >({
     queryKey: ["community", "reviews", sortType, page],
     queryFn: ({ queryKey }) => getReviews({ queryKey, sortType, page, accessToken }),
-    staleTime: 60 * 1000,
-    gcTime: 300 * 1000,
   });
 
   if (isLoading) return <div>Loading...</div>;

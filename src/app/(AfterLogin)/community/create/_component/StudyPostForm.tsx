@@ -6,6 +6,8 @@ import postBoard from "../_lib/postBoard";
 import { useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useModal } from "@/components/Modal/useModal";
+import { useRecoilValue } from "recoil";
+import { accessTokenState, userIdState } from "@/store/auth";
 
 export default function StudyPostForm() {
   const [title, setTitle] = useState("");
@@ -15,11 +17,19 @@ export default function StudyPostForm() {
   const category = useSearchParams().get("tab");
   const queryClient = useQueryClient();
   const { openDialogWithBack } = useModal();
+  const accessToken = useRecoilValue(accessTokenState);
+  const userId = useRecoilValue(userIdState);
 
   const postData = useMutation({
     mutationKey: ["community", category, "new", 1],
-    mutationFn: (newPost: { title: string; content: string; tags: string[]; category: string }) =>
-      postBoard(newPost),
+    mutationFn: (newPost: {
+      title: string;
+      content: string;
+      tags: string[];
+      category: string;
+      accessToken: string;
+      userId: number;
+    }) => postBoard(newPost),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["community", category, "new", 1],
@@ -37,6 +47,8 @@ export default function StudyPostForm() {
       content,
       tags,
       category,
+      accessToken,
+      userId,
     });
   };
 

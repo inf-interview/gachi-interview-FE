@@ -4,14 +4,16 @@ export interface postLikeProps {
   userId: number;
   id: string;
   type: "video" | "board";
+  accessToken: string;
 }
 
-const postLike = async ({ userId, id, type }: postLikeProps) => {
+const postLike = async ({ userId, id, type, accessToken }: postLikeProps) => {
   try {
-    const { data } = await customFetcher(`/${type}/${id}/like`, {
+    const { response, data } = await customFetcher(`/${type}/${id}/like`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         userId,
@@ -19,7 +21,11 @@ const postLike = async ({ userId, id, type }: postLikeProps) => {
       }),
     });
 
-    return data;
+    if (!response?.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    return await data;
   } catch (error) {
     console.error(error);
     throw new Error("Failed to fetch data");

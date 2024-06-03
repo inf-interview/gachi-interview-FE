@@ -1,34 +1,33 @@
 import customFetcher from "@/utils/customFetcher";
 
-export default async function postComment({
-  userId,
-  content,
-  postId,
-  accessToken,
-}: {
+export interface postLikeProps {
   userId: number;
-  content: string;
   postId: string;
   accessToken: string;
-}) {
+}
+
+export default async function postLike({ userId, postId, accessToken }: postLikeProps) {
+  console.log("postLike called");
   try {
-    const { response, data } = await customFetcher(`/board/${postId}/submit`, {
+    const { response, data } = await customFetcher(`/board/${postId}/like`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ userId, content }),
+      body: JSON.stringify({
+        userId,
+        postId,
+      }),
     });
 
     if (!response?.ok) {
-      console.error("Failed to fetch data", response?.status);
       throw new Error("Failed to fetch data");
     }
-    console.log("postComment data", data);
+    console.log("postLike return data", data);
     return await data;
   } catch (error) {
-    console.error("Failed to post comment:", error);
+    console.error(error);
     throw new Error("Failed to fetch data");
   }
 }

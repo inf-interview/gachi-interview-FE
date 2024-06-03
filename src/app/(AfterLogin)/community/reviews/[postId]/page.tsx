@@ -17,13 +17,12 @@ export default async function Page({
 
   await queryClient.prefetchQuery({
     queryKey: ["community", "reviews", postId],
-    queryFn: getReviewDetail,
+    queryFn: () => getReviewDetail,
   });
 
   await queryClient.prefetchQuery({
     queryKey: ["community", postId, "comments"],
-    queryFn: ({ queryKey }) =>
-      getComments({ queryKey: queryKey as [_1: string, _2: string, _3: string] }),
+    queryFn: () => getComments,
   });
 
   return (
