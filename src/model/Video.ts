@@ -7,6 +7,7 @@ export interface Video {
   videoLink: string;
   thumbnailLink: string;
   numOfLike: number;
+  exposure: boolean;
   time: string;
-  tag: string[];
+  tags: string[];
 }
