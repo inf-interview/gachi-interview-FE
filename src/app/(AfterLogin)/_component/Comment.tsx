@@ -1,6 +1,6 @@
 import { useModal } from "@/components/Modal/useModal";
 import { formatRelativeTime } from "@/lib/utills/days";
-import { Comment } from "@/model/Comment";
+import { Comment as CommentType } from "@/model/Comment";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent, useState } from "react";
 import patchComment from "../community/_lib/patchComment";
@@ -12,7 +12,7 @@ import deleteComment from "../community/_lib/deleteComment";
 import { useRecoilValue } from "recoil";
 import { userIdState } from "@/store/auth";
 
-export default function Comment({ comment, postId }: { comment: Comment; postId: string }) {
+export default function Comment({ comment, postId }: { comment: CommentType; postId: string }) {
   const [isEditing, setIsEditing] = useState(false);
   const { openModal, closeModal } = useModal();
   const [editedComment, setEditedComment] = useState(comment.content);
@@ -41,7 +41,7 @@ export default function Comment({ comment, postId }: { comment: Comment; postId:
     onMutate: async (removedComment) => {
       const previousData = queryClient.getQueryData(["community", postId, "comments"]);
       if (!previousData) return;
-      queryClient.setQueryData(["community", postId, "comments"], (old: Comment[]) => {
+      queryClient.setQueryData(["community", postId, "comments"], (old: CommentType[]) => {
         return old.filter(
           (comment: { commentId: number }) => comment.commentId !== removedComment.commentId,
         );
