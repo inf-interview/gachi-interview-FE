@@ -2,7 +2,7 @@
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { accessTokenState } from "@/store/auth";
-import customFetcher from "@/utils/customFetcher";
+import customFetcher from "@/lib/utills/customFetcher";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 

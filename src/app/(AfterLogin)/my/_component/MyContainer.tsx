@@ -49,7 +49,7 @@ export default function MyContainer() {
         </div>
         <TabsContent value="videos">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <MyVideoPosts tabParams={tabParams} />
+            <MyVideoPosts />
           </div>
         </TabsContent>
         <TabsContent value="reviews">

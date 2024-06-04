@@ -8,5 +8,5 @@ export interface Video {
   thumbnailLink: string;
   numOfLike: number;
   time: string;
-  tag: string[];
+  tags: string[];
 }

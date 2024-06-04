@@ -1,48 +1,28 @@
-// export default async function getMyVideos({ queryKey }: { queryKey: [_1: string, _2: string] }) {
-//   const [_1, category] = queryKey;
-//   try {
-//     const tags = ["interviews", "my"].join(",");
-//     const queryParams = new URLSearchParams({
-//       tags,
-//       category,
-//     });
+import customFetcher from "@/lib/utills/customFetcher";
 
-//     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/video/list?${queryParams}`, {
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     });
-
-//     if (!res.ok) {
-//       throw new Error("Failed to fetch data");
-//     }
-
-//     return await res.json();
-//   } catch (error) {
-//     throw new Error("Failed to fetch data");
-//   }
-// }
-export interface getInterviewsProps {
-  sortType: string;
-  page: number;
-}
-const getMyVideos = async ({ sortType, page }: getInterviewsProps) => {
+export default async function getMyVideos({
+  userId,
+  accessToken,
+}: {
+  userId: number;
+  accessToken: string;
+}) {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/video/list?page=${page}&sortType=${sortType}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    const { response, data } = await customFetcher(`/user/${userId}/videos`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
-    );
-    return res.json();
+    });
+
+    if (!response?.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    console.log("My video data", data, typeof data);
+    return await data;
   } catch (error) {
-    console.error(error);
     throw new Error("Failed to fetch data");
   }
-};
-
-export default getMyVideos;
+}

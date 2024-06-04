@@ -9,6 +9,7 @@ export interface Post {
   time: Date;
   updateTime: Date;
   numOfLike: number;
+  liked: boolean;
   numOfComment: number;
   tag: string[];
 }

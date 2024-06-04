@@ -14,7 +14,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postLike from "../_lib/postLike";
 
 export default function PostDetail({ post }: { post: Post }) {
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(post.liked);
   const [animate, setAnimate] = useState(false);
   const accessToken = useRecoilValue(accessTokenState);
   const userId = useRecoilValue(userIdState);
@@ -22,30 +22,17 @@ export default function PostDetail({ post }: { post: Post }) {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: (params: { userId: number; postId: string; accessToken: string }) => {
-      console.log("mutationFn called with params:", params);
-      return postLike(params);
-    },
-    // onMutate: async () => {
-    //   const queryKey = ["community", postId, "like"];
-    //   await queryClient.cancelQueries({ queryKey });
-    //   const previousData = queryClient.getQueryData(queryKey);
-    //   queryClient.setQueryData(queryKey, (old: any) => {
-    //     return {
-    //       ...old,
-    //       numOfLike: old.numOfLike + 1,
-    //     };
-    //   });
-    //   return { previousData };
-    // },
+    mutationFn: (params: { userId: number; postId: string; accessToken: string }) =>
+      postLike(params),
     onMutate: async () => {
       const queryKey = ["community", post.category, postId.toString()];
       await queryClient.cancelQueries({ queryKey });
       const previousData = queryClient.getQueryData(queryKey);
-      queryClient.setQueryData(queryKey, (old: { numOfLike: number }) => {
+      queryClient.setQueryData(queryKey, (old: { numOfLike: number; liked: boolean }) => {
         return {
           ...old,
           numOfLike: old.numOfLike,
+          liked: old.liked,
         };
       });
       return { previousData };
@@ -53,27 +40,22 @@ export default function PostDetail({ post }: { post: Post }) {
     onSuccess: (data) => {
       queryClient.setQueryData(
         ["community", post.category, postId.toString()],
-        (old: { numOfLike: number }) => ({
+        (old: { numOfLike: number; liked: boolean }) => ({
           ...old,
           numOfLike: data.numOfLike,
+          liked: data.liked,
         }),
       );
     },
-    // onSettled: () => {
-    //   queryClient.invalidateQueries({ queryKey: ["community", postId, "like"] });
-    // },
   });
 
   const handleLike = () => {
-    console.log("handleLike called");
     if (!isLiked) {
-      console.log("Before mutate:", { userId, postId, accessToken });
       mutate({
         userId,
         postId,
         accessToken,
       });
-      console.log("After mutate");
       setIsLiked(true);
       setAnimate(true);
       setTimeout(() => setAnimate(false), 300);

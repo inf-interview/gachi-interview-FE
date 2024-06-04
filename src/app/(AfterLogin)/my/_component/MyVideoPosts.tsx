@@ -2,18 +2,30 @@ import { useQuery } from "@tanstack/react-query";
 import getMyVideos from "../_lib/getMyVideos";
 import VideoCard from "../../videos/_component/VideoCard";
 import { Video } from "@/model/Video";
-import { useGetInterviews } from "../../videos/_lib/queries/useInterviewQuery";
+import { useRecoilValue } from "recoil";
+import { accessTokenState, userIdState } from "@/store/auth";
 
-export default function MyVideoPosts({ tabParams }: { tabParams: string | undefined }) {
-  // const { data } = useQuery<Video[], Object, Video[], [string, string]>({
-  //   queryKey: ["interviews", "my"],
-  //   queryFn: ({ page, sortType }: any) => getMyVideos({ page, sortType }),
-  //   staleTime: 60 * 1000,
-  //   gcTime: 300 * 1000,
-  // });
-  const sortType = "like";
-  const page = 1;
-  const { data } = useGetInterviews({ sortType: sortType, page });
+export default function MyVideoPosts() {
+  const accessToken = useRecoilValue(accessTokenState);
+  const userId = useRecoilValue(userIdState);
 
-  return data?.content?.map((video) => <VideoCard key={video.videoId} video={video} />);
+  const { data, error, isLoading } = useQuery<Video[], Object, Video[], [string, string]>({
+    queryKey: ["my", "videos"],
+    queryFn: () => getMyVideos({ accessToken, userId }),
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading videos</div>;
+
+  const videos = Array.isArray(data) ? data : [];
+
+  return (
+    <>
+      {videos.length > 0 ? (
+        videos.map((video) => <VideoCard key={video.videoId} video={video} />)
+      ) : (
+        <div>아직 등록된 인터뷰 영상이 없습니다🥲</div>
+      )}
+    </>
+  );
 }

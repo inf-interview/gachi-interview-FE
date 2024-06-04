@@ -1,4 +1,4 @@
-import customFetcher from "@/utils/customFetcher";
+import customFetcher from "@/lib/utills/customFetcher";
 
 interface postWorkbookProps {
   userId: number;

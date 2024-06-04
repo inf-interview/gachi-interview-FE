@@ -9,6 +9,9 @@ export interface MyComment {
   userId: number;
   username: string;
   content: string;
+  category: string;
+  postId: string;
+  videoId: string;
 }
 
 export default function MyComments() {
