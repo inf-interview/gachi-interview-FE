@@ -7,7 +7,7 @@ import deleteComment, { DeleteCommentProps as RequestDeleteComment } from "../ap
 type ResponseGetComments = {
   commentId: number;
   userId: number;
-  userName: string;
+  username: string;
   content: string;
   createdAt: string;
   image: string;
