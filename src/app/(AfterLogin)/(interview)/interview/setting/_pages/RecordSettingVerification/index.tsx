@@ -39,7 +39,6 @@ const RecordSettingVerification = ({ setStep }: RecordSettingVerificationProps) 
 
   useEffect(() => {
     if (validateInterviewOption()) {
-      setStep(1);
       router.push("/interview/record");
     }
   }, []);
