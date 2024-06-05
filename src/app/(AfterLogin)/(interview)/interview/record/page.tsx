@@ -10,9 +10,8 @@ import useRecord from "./_lib/hook/useRecord";
 const RecordPage = () => {
   const [script, setScript] = useState<{
     questionId: number;
-    answerId: number;
     showAnswer: boolean;
-  }>({ questionId: 0, answerId: 0, showAnswer: false });
+  }>({ questionId: 0, showAnswer: false });
 
   const { questionList, startRecordHandler, stopRecordHandler, time, videoRef, isRecording } =
     useRecord();
@@ -48,7 +47,7 @@ const RecordPage = () => {
           playsInline
         />
         {script.showAnswer && (
-          <AnswerViewer answerId={script.answerId} questionList={questionList} />
+          <AnswerViewer questionId={script.questionId} questionList={questionList} />
         )}
       </div>
 
