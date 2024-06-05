@@ -1,7 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import getInterviews, { getInterviewsProps as RequestGetInterviews } from "../api/getInterviews";
 import getInterview, { getInterviewProps as RequestGetInterview } from "../api/getInterview";
+import patchInterview, { PatchInterviewProps } from "../api/patchInterview";
 import postLike, { postLikeProps } from "../api/postLike";
+import deletePost, { DeletePostProps } from "../api/deletePost";
 
 type ResponseGetInterviews = {
   content: {
@@ -36,6 +38,7 @@ type ResponseGetInterview = {
   numOfLike: number;
   tags: string[];
   exposure: boolean;
+  liked: boolean;
 };
 
 export const useGetInterview = (videoId: RequestGetInterview) => {
@@ -45,26 +48,60 @@ export const useGetInterview = (videoId: RequestGetInterview) => {
   });
 };
 
-interface RequestPostLike extends postLikeProps {
-  queryKeyPrefix: string[];
-}
+type ResponsePostLike = {
+  numOfLike: number;
+  liked: boolean;
+};
 
 export const usePostLike = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<null, Error, RequestPostLike>({
+  return useMutation<ResponsePostLike, Error, postLikeProps>({
     mutationFn: (data) => postLike(data),
-    onMutate: async (data) => {
-      const queryKey = [...data.queryKeyPrefix, data.id];
-      await queryClient.cancelQueries({ queryKey });
-      const previousData = queryClient.getQueryData(queryKey);
-      queryClient.setQueryData(queryKey, (old: any) => {
-        return {
-          ...old,
-          numOfLike: old.numOfLike + 1,
-        };
+    onSuccess: async (data, variables) => {
+      const videoId = variables.id;
+      const currentData = queryClient.getQueryData<ResponseGetInterview>([
+        "interview",
+        videoId.toString(),
+      ]);
+      queryClient.setQueryData<ResponseGetInterview>(["interview", videoId.toString()], {
+        ...currentData!,
+        numOfLike: data.numOfLike,
+        liked: data.liked,
       });
-      return { previousData };
+    },
+  });
+};
+
+export const usePatchInterview = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<null, Error, PatchInterviewProps>({
+    mutationFn: (data) => patchInterview(data),
+    onSuccess: async (data, variables) => {
+      const videoId = variables.videoId;
+      const currentData = queryClient.getQueryData<ResponseGetInterview>([
+        "interview",
+        videoId.toString(),
+      ]);
+      queryClient.setQueryData<ResponseGetInterview>(["interview", videoId.toString()], {
+        ...currentData!,
+        ...variables,
+        videoId: parseInt(videoId),
+      });
+    },
+  });
+};
+
+export const useDeleteInterview = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<null, Error, DeletePostProps>({
+    mutationFn: (data) => deletePost(data),
+    onSuccess: async (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["interview", variables.videoId.toString()],
+      });
     },
   });
 };

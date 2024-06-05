@@ -16,7 +16,7 @@ interface CommentProps {
   comment: {
     commentId: number;
     userId: number;
-    userName: string;
+    username: string;
     content: string;
     createdAt: string;
     image: string;
@@ -88,7 +88,7 @@ const Comment = ({ comment, videoId }: CommentProps) => {
           alt="프로필 이미지"
         />
         <div className="flex flex-col ml-4">
-          <span className="font-bold">{comment.userName}</span>
+          <span className="font-bold">{comment.username}</span>
           <span className="text-gray-500">{formatRelativeTime(comment.createdAt)}</span>
         </div>
 

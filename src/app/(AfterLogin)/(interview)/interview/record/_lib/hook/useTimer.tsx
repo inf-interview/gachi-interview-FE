@@ -10,6 +10,11 @@ const useTimer = ({ endSeconds, onStop, onTimeChange }: useTimerProps) => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const timer = useRef<NodeJS.Timeout | null>(null);
+  const onStopRef = useRef(onStop);
+
+  useEffect(() => {
+    onStopRef.current = onStop;
+  }, [onStop]);
 
   const clearTimer = () => {
     if (timer.current) {
@@ -25,10 +30,10 @@ const useTimer = ({ endSeconds, onStop, onTimeChange }: useTimerProps) => {
         innerTime++;
         setTime(innerTime);
         onTimeChange && onTimeChange(innerTime);
-        if (innerTime === endSeconds) {
+        if (innerTime >= endSeconds) {
           clearTimer();
           setIsRunning(false);
-          onStop();
+          onStopRef.current();
         }
       }, 1000);
     }
