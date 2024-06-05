@@ -25,6 +25,7 @@ const QuestionList = ({ workbookId, onSelect, interviewOption }: QuestionListPro
   const openAddQuestionModalHandler = () =>
     openModal(
       <AddQuestionModal
+        disableBackdropClick={true}
         closeModal={closeModal}
         // TODO: 인라인 함수 제거
         onSubmit={(questionContent, answerContent) => {
@@ -52,11 +53,14 @@ const QuestionList = ({ workbookId, onSelect, interviewOption }: QuestionListPro
           answer={question.answerContent}
           onSelect={onSelect}
           checked={interviewOption.questions.includes(question)}
+          workbookId={workbookId}
         />
       ))}
       <li className="px-4 py-4 flex flex-col items-center justify-center border-b transition-colors hover:bg-muted/50 group">
         {questionList?.length === 0 && (
-          <label className="text-gray-500">등록된 질문이 없습니다. 버튼을 눌러 추가해주세요.</label>
+          <label className="text-gray-500 text-sm">
+            등록된 질문이 없습니다. 버튼을 눌러 추가해주세요.
+          </label>
         )}
         <Button variant="outline" onClick={openAddQuestionModalHandler}>
           질문 & 답변 추가.
