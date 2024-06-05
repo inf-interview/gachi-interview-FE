@@ -66,6 +66,7 @@ const QuestionSelectionSection = ({ workbookId, questionTitle }: QuestionSelecti
           questions={questions}
           questionTitle={workbookId ? questionTitle : "질문 세트가 없어요."}
           onSelect={selectAllQuestions}
+          workbookId={workbookId}
         />
         {workbookId && (
           <QuestionList

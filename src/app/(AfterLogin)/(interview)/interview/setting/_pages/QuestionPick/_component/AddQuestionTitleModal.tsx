@@ -5,6 +5,7 @@ import { useState } from "react";
 interface AddQuestionTitleModalProps {
   closeModal: () => void;
   onSubmit: (title: string) => void;
+  disableBackdropClick?: boolean;
 }
 
 const AddQuestionTitleModal = ({ closeModal, onSubmit }: AddQuestionTitleModalProps) => {
