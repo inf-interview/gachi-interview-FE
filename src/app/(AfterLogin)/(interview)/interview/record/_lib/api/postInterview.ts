@@ -19,7 +19,7 @@ const postInterview = async ({
   tags,
 }: postInterviewProps) => {
   try {
-    const { response } = await customFetcher(`/interview/complete`, {
+    const { response, data } = await customFetcher(`/interview/complete`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,8 @@ const postInterview = async ({
         tags,
       }),
     });
-    return response;
+
+    return data;
   } catch (error) {
     console.error(error);
     throw new Error("Failed to fetch data");
