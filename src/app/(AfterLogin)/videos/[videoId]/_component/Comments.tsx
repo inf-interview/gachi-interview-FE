@@ -3,6 +3,7 @@
 import { useGetCommentsQuery } from "../../_lib/queries/useCommentQuery";
 import CreateComment from "./CreateComment";
 import Comment from "./Comment";
+import Loading from "@/app/(AfterLogin)/_component/Loading";
 
 interface CommentsProps {
   videoId: string;
@@ -11,8 +12,8 @@ interface CommentsProps {
 const Comments = ({ videoId }: CommentsProps) => {
   const { data: comments, isLoading } = useGetCommentsQuery(videoId);
 
-  // TODO: Loading, Error 컴포넌트 추가
-  if (isLoading) return <div>Loading...</div>;
+  // TODO: Error 컴포넌트 추가
+  if (isLoading) return <Loading />;
   if (!comments) return <CreateComment videoId={videoId} />;
 
   // TODO: userId 수정

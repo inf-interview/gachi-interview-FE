@@ -35,7 +35,13 @@ const QuestionPick = () => {
   };
 
   if (questionList.length === 0) {
-    return <AddQuestionTitleModal closeModal={closeModal} onSubmit={submitHandler} />;
+    return (
+      <AddQuestionTitleModal
+        disableBackdropClick
+        closeModal={closeModal}
+        onSubmit={submitHandler}
+      />
+    );
   }
 
   return (

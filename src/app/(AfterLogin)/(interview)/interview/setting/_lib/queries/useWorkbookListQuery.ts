@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import getWorkbookList from "../api/getWorkbookList";
 import postWorkbook from "../api/postWorkbook";
+import deleteWorkbook, { DeleteWorkbookRequest } from "../api/deleteWorkbook";
 
 type ResponseWorkbookList = {
   listId: number;
@@ -34,6 +35,23 @@ export const usePostWorkbookMutation = () => {
     onError: (error) => {
       console.log(error);
       throw new Error("Failed to post workbook");
+    },
+  });
+};
+
+export const useDeleteWorkbookMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation<Response, Error, DeleteWorkbookRequest>({
+    mutationKey: ["workbookList"],
+    mutationFn: (data) => deleteWorkbook(data),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: ["workbookList"],
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+      throw new Error("Failed to delete workbook");
     },
   });
 };

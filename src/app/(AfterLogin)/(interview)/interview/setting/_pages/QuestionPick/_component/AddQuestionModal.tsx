@@ -5,6 +5,7 @@ import { useState } from "react";
 interface AddQuestionModalProps {
   closeModal: () => void;
   onSubmit: (question: string, answer: string) => void;
+  disableBackdropClick?: boolean;
 }
 
 const AddQuestionModal = ({ closeModal, onSubmit }: AddQuestionModalProps) => {
@@ -15,6 +16,11 @@ const AddQuestionModal = ({ closeModal, onSubmit }: AddQuestionModalProps) => {
   const validate = () => {
     if (questionContent === "") {
       setError("질문은 필수입니다.");
+      return false;
+    }
+
+    if (questionContent.length > 999) {
+      setError("질문은 1000자 이내로 입력해주세요.");
       return false;
     }
     return true;
@@ -32,7 +38,6 @@ const AddQuestionModal = ({ closeModal, onSubmit }: AddQuestionModalProps) => {
 
   return (
     <Modal
-      disableBackdropClick={true}
       header="질문 & 답변 추가"
       footer={
         <>

@@ -9,7 +9,6 @@ interface ControllerProps {
   setScript: Dispatch<
     React.SetStateAction<{
       questionId: number;
-      answerId: number;
       showAnswer: boolean;
     }>
   >;
@@ -56,7 +55,6 @@ const Controller = ({
     const nextIdx = currentIdx + 1;
     setScript({
       questionId: questionList[nextIdx].questionId,
-      answerId: questionList[nextIdx].answerId,
       showAnswer: false,
     });
   };
@@ -65,7 +63,6 @@ const Controller = ({
     if (questionList.length > 0) {
       setScript({
         questionId: questionList[0].questionId,
-        answerId: questionList[0].answerId,
         showAnswer: false,
       });
     } else {

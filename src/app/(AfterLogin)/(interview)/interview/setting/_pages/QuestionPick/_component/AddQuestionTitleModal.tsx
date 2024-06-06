@@ -5,6 +5,7 @@ import { useState } from "react";
 interface AddQuestionTitleModalProps {
   closeModal: () => void;
   onSubmit: (title: string) => void;
+  disableBackdropClick?: boolean;
 }
 
 const AddQuestionTitleModal = ({ closeModal, onSubmit }: AddQuestionTitleModalProps) => {
@@ -18,6 +19,11 @@ const AddQuestionTitleModal = ({ closeModal, onSubmit }: AddQuestionTitleModalPr
   const validate = () => {
     if (title.length === 0) {
       setError("질문 세트의 제목을 입력해주세요.");
+      return false;
+    }
+
+    if (title.length > 50) {
+      setError("질문 세트의 제목은 50자 이내로 입력해주세요.");
       return false;
     }
     setError("");
