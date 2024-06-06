@@ -1,4 +1,4 @@
-import customFetcher from "@/utils/customFetcher";
+import customFetcher from "@/lib/utils/customFetcher";
 
 const getWorkbookList = async () => {
   try {

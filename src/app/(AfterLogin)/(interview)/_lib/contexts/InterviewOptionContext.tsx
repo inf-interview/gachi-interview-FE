@@ -3,6 +3,7 @@ import React, { createContext, useState, useContext } from "react";
 export type QuestionType = {
   questionId: number;
   questionContent: string;
+  answerId: number;
   answerContent: string;
 };
 

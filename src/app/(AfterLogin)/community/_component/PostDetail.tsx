@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Post } from "@/model/Post";
 import { AiOutlineLike, AiOutlineShareAlt } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
-import { formatRelativeTime } from "@/lib/utills/days";
+import { formatRelativeTime } from "@/lib/utils/days";
 import { Button } from "@/components/ui/button";
 import "./PostDetail.css";
 import Image from "next/image";
@@ -12,9 +12,10 @@ import { useRecoilValue } from "recoil";
 import { accessTokenState, userIdState } from "@/store/auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postLike from "../_lib/postLike";
+import { toast } from "react-toastify";
 
 export default function PostDetail({ post }: { post: Post }) {
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(post.liked);
   const [animate, setAnimate] = useState(false);
   const accessToken = useRecoilValue(accessTokenState);
   const userId = useRecoilValue(userIdState);
@@ -22,30 +23,17 @@ export default function PostDetail({ post }: { post: Post }) {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: (params: { userId: number; postId: string; accessToken: string }) => {
-      console.log("mutationFn called with params:", params);
-      return postLike(params);
-    },
-    // onMutate: async () => {
-    //   const queryKey = ["community", postId, "like"];
-    //   await queryClient.cancelQueries({ queryKey });
-    //   const previousData = queryClient.getQueryData(queryKey);
-    //   queryClient.setQueryData(queryKey, (old: any) => {
-    //     return {
-    //       ...old,
-    //       numOfLike: old.numOfLike + 1,
-    //     };
-    //   });
-    //   return { previousData };
-    // },
+    mutationFn: (params: { userId: number; postId: string; accessToken: string }) =>
+      postLike(params),
     onMutate: async () => {
       const queryKey = ["community", post.category, postId.toString()];
       await queryClient.cancelQueries({ queryKey });
       const previousData = queryClient.getQueryData(queryKey);
-      queryClient.setQueryData(queryKey, (old: { numOfLike: number }) => {
+      queryClient.setQueryData(queryKey, (old: { numOfLike: number; liked: boolean }) => {
         return {
           ...old,
           numOfLike: old.numOfLike,
+          liked: old.liked,
         };
       });
       return { previousData };
@@ -53,27 +41,22 @@ export default function PostDetail({ post }: { post: Post }) {
     onSuccess: (data) => {
       queryClient.setQueryData(
         ["community", post.category, postId.toString()],
-        (old: { numOfLike: number }) => ({
+        (old: { numOfLike: number; liked: boolean }) => ({
           ...old,
           numOfLike: data.numOfLike,
+          liked: data.liked,
         }),
       );
     },
-    // onSettled: () => {
-    //   queryClient.invalidateQueries({ queryKey: ["community", postId, "like"] });
-    // },
   });
 
   const handleLike = () => {
-    console.log("handleLike called");
     if (!isLiked) {
-      console.log("Before mutate:", { userId, postId, accessToken });
       mutate({
         userId,
         postId,
         accessToken,
       });
-      console.log("After mutate");
       setIsLiked(true);
       setAnimate(true);
       setTimeout(() => setAnimate(false), 300);
@@ -84,6 +67,18 @@ export default function PostDetail({ post }: { post: Post }) {
         accessToken,
       });
       setIsLiked(false);
+    }
+  };
+
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.info("클립보드에 복사되었습니다.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } catch (e) {
+      toast.error("복사에 실패하였습니다.");
     }
   };
 
@@ -136,7 +131,11 @@ export default function PostDetail({ post }: { post: Post }) {
                   {post.numOfLike}
                 </span>
               </Button>
-              <Button variant="outline" className="ml-2">
+              <Button
+                variant="outline"
+                className="ml-2"
+                onClick={() => handleCopyClipBoard(window.location.href)}
+              >
                 <AiOutlineShareAlt className="mr-2" />
                 공유
               </Button>

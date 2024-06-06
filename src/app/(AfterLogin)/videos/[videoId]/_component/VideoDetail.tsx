@@ -8,7 +8,7 @@ import {
   usePatchInterview,
   usePostLike,
 } from "../../_lib/queries/useInterviewQuery";
-import { formatRelativeTime } from "@/lib/utills/days";
+import { formatRelativeTime } from "@/lib/utils/days";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import "@/app/(AfterLogin)/community/_component/PostDetail.css";

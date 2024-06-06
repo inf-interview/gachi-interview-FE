@@ -1,4 +1,4 @@
-import customFetcher from "@/utils/customFetcher";
+import customFetcher from "@/lib/utils/customFetcher";
 
 export default async function getMyComments({
   userId,
@@ -19,6 +19,7 @@ export default async function getMyComments({
     if (!response?.ok) {
       throw new Error("Failed to fetch data");
     }
+    console.log("mycomment data", data);
 
     return await data;
   } catch (error) {

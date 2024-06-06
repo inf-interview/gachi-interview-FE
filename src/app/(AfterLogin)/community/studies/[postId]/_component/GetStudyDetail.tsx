@@ -12,8 +12,6 @@ export default function GetStudyDetail({ postId }: { postId: string }) {
   const { data: post } = useQuery<Post, Object, Post, [_1: string, _2: string, _3: string]>({
     queryKey: ["community", "studies", postId],
     queryFn: ({ queryKey }) => getStudyDetail({ queryKey, accessToken }),
-    staleTime: 60 * 1000,
-    gcTime: 300 * 1000,
   });
 
   if (!post) return null;

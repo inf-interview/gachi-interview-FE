@@ -1,6 +1,6 @@
 import customFetcher from "@/lib/utils/customFetcher";
 
-export default async function getMyVideos({
+export default async function getMyFeedbacks({
   userId,
   accessToken,
 }: {
@@ -8,7 +8,7 @@ export default async function getMyVideos({
   accessToken: string;
 }) {
   try {
-    const { response, data } = await customFetcher(`/user/${userId}/videos`, {
+    const { response, data } = await customFetcher(`/user/${userId}/feedbacks`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -19,8 +19,8 @@ export default async function getMyVideos({
     if (!response?.ok) {
       throw new Error("Failed to fetch data");
     }
+    console.log("my feedback data", data);
 
-    console.log("My video data", data, typeof data);
     return await data;
   } catch (error) {
     throw new Error("Failed to fetch data");

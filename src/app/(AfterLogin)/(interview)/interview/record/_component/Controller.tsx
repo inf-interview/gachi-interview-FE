@@ -68,7 +68,7 @@ const Controller = ({
     } else {
       router.push("/");
     }
-  }, [questionList]);
+  }, [questionList, setScript, router]);
 
   return (
     <div className="flex flex-row items-center mt-2">

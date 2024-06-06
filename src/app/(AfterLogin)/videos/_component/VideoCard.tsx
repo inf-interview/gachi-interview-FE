@@ -1,25 +1,12 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatRelativeTime } from "@/lib/utills/days";
+import { formatRelativeTime } from "@/lib/utils/days";
+import { Video } from "@/model/Video";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AiOutlineLike } from "react-icons/ai";
 
-interface VideoCardProps {
-  video: {
-    videoId: number;
-    userId: number;
-    videoTitle: string;
-    videoLink: string;
-    thumbnailLink: string;
-    numOfLike: number;
-    time: string;
-    tags: string[];
-    userName: string;
-  };
-}
-
-const VideoCard = ({ video }: VideoCardProps) => {
+const VideoCard = ({ video }: { video: Video }) => {
   const router = useRouter();
   const [showAllTags, setShowAllTags] = useState(false);
   const MAX_TAGS_TO_SHOW = 3;
