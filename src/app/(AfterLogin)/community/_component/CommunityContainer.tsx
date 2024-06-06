@@ -61,12 +61,12 @@ export default function CommunityContainer() {
         </Link>
       </div>
       <TabsContent value="reviews">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div>
           <InterviewReview tabParams={tabParams} sortType={sortType} page={page} />
         </div>
       </TabsContent>
       <TabsContent value="studies">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div>
           <GetStudy tabParams={tabParams} sortType={sortType} page={page} />
         </div>
       </TabsContent>

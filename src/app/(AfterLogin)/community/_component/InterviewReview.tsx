@@ -6,6 +6,7 @@ import PostCard from "./PostCard";
 import { PostContent } from "@/model/Post";
 import { useRecoilValue } from "recoil";
 import { accessTokenState } from "@/store/auth";
+import NoData from "../../_component/NoData";
 
 export default function InterviewReview({
   tabParams,
@@ -30,11 +31,15 @@ export default function InterviewReview({
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
 
-  if (data?.content?.length == 0) {
-    return <div>등록된 게시글이 없습니다🥲</div>;
+  if (data?.content?.length === 0) {
+    return <NoData message="게시글이 아직 등록되지 않았네요...😰" />;
   }
 
-  return data?.content?.map((post) => (
-    <PostCard key={post.postId} post={post} tabParams={tabParams} />
-  ));
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {data?.content?.map((post) => (
+        <PostCard key={post.postId} post={post} tabParams={tabParams} />
+      ))}
+    </div>
+  );
 }

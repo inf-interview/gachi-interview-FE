@@ -52,27 +52,27 @@ export default function MyContainer() {
           </Button>
         </div>
         <TabsContent value="videos">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
             <MyVideoPosts />
           </div>
         </TabsContent>
         <TabsContent value="reviews">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
             <MyInterviewReviewPosts tabParams={tabParams} />
           </div>
         </TabsContent>
         <TabsContent value="studies">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
             <MyGetStudyPosts tabParams={tabParams} />
           </div>
         </TabsContent>
         <TabsContent value="comments">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
             <MyComments />
           </div>
         </TabsContent>
         <TabsContent value="feedbacks">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
             <MyFeedbacks />
           </div>
         </TabsContent>
