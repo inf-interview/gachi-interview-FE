@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { formatRelativeTime } from "@/lib/utills/days";
+import { formatRelativeTime } from "@/lib/utils/days";
 import { useState } from "react";
 import {
   useDeleteCommentMutation,

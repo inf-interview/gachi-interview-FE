@@ -1,7 +1,7 @@
 import Modal from "@/components/Modal";
 import { useModal } from "@/components/Modal/useModal";
 import { Button } from "@/components/ui/button";
-import { localDownload } from "@/lib/utills/record";
+import { localDownload } from "@/lib/utils/record";
 import { useRouter } from "next/navigation";
 
 interface UploadCompletionModalProps {

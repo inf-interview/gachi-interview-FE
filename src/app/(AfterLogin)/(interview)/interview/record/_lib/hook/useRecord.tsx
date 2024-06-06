@@ -1,5 +1,5 @@
 import { useInterviewOption } from "@/app/(AfterLogin)/(interview)/_lib/contexts/InterviewOptionContext";
-import { getSupportedMimeTypes } from "@/lib/utills/media";
+import { getSupportedMimeTypes } from "@/lib/utils/media";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useTimer from "./useTimer";
 import {
@@ -8,7 +8,7 @@ import {
   startRecording,
   stopRecording,
   getThumbnailImages,
-} from "@/lib/utills/record";
+} from "@/lib/utils/record";
 import useSpeech from "./useSpeech";
 import { useModal } from "@/components/Modal/useModal";
 import { getPutCommandObject } from "../uploadVideo";

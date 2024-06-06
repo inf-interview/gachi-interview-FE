@@ -1,5 +1,5 @@
 import { useModal } from "@/components/Modal/useModal";
-import { formatRelativeTime } from "@/lib/utills/days";
+import { formatRelativeTime } from "@/lib/utils/days";
 import { Comment as IComment } from "@/model/Comment";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent, useState, useRef } from "react";
@@ -41,7 +41,7 @@ export default function Comment({ comment, postId }: { comment: IComment; postId
     onMutate: async (removedComment) => {
       const previousData = queryClient.getQueryData(["community", postId, "comments"]);
       if (!previousData) return;
-      
+
       queryClient.setQueryData(["community", postId, "comments"], (old: IComment[]) => {
         return old.filter(
           (comment: { commentId: number }) => comment.commentId !== removedComment.commentId,

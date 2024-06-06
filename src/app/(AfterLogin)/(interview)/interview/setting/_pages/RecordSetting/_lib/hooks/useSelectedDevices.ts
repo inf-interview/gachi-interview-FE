@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMedia, closeMedia } from "@/lib/utills/media";
+import { getMedia, closeMedia } from "@/lib/utils/media";
 import { useInterviewOption } from "../../../../../../_lib/contexts/InterviewOptionContext";
 
 export const useSelectedDevices = () => {
