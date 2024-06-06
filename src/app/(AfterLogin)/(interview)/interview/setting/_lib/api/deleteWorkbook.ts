@@ -1,4 +1,4 @@
-import customFetcher from "@/utils/customFetcher";
+import customFetcher from "@/lib/utils/customFetcher";
 
 export interface DeleteWorkbookRequest {
   userId: number;
