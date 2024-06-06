@@ -6,6 +6,7 @@ import customFetcher from "@/lib/utils/customFetcher";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { formatRelativeTime } from "@/lib/utils/days";
+import NoData from "../_component/NoData";
 
 type alertsData = {
   content: string;
@@ -58,7 +59,7 @@ export default function Alerts() {
           </article>
         ))
       ) : (
-        <div>아직 알림이 없습니다🥲</div>
+        <NoData message="알림이 아직은 도착한게 없네요...😰" />
       )}
     </section>
   );

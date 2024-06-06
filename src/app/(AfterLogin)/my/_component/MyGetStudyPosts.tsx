@@ -4,6 +4,7 @@ import getMyStudies from "../_lib/getMyStudies";
 import PostCard from "../../community/_component/PostCard";
 import { useRecoilValue } from "recoil";
 import { accessTokenState, userIdState } from "@/store/auth";
+import NoData from "../../_component/NoData";
 
 export default function MyGetStudyPosts({ tabParams }: { tabParams: string | undefined }) {
   const accessToken = useRecoilValue(accessTokenState);
@@ -16,13 +17,15 @@ export default function MyGetStudyPosts({ tabParams }: { tabParams: string | und
 
   const posts = Array.isArray(data) ? data : [];
 
+  if (posts.length === 0) {
+    return <NoData message="내가 등록한 게시글이 없네요...🥲" />;
+  }
+
   return (
-    <>
-      {posts.length > 0 ? (
-        posts.map((post) => <PostCard key={post.postId} post={post} tabParams={tabParams} />)
-      ) : (
-        <div>아직 등록한 게시글이 없습니다🥲</div>
-      )}
-    </>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {posts.map((post) => (
+        <PostCard key={post.postId} post={post} tabParams={tabParams} />
+      ))}
+    </div>
   );
 }
