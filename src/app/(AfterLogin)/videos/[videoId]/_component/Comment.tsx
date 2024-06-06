@@ -122,7 +122,7 @@ const Comment = ({ comment, videoId }: CommentProps) => {
           </div>
         </form>
       ) : (
-        <p className="mt-4">{comment.content}</p>
+        <p className="mt-4 whitespace-pre-wrap">{comment.content}</p>
       )}
       <hr className="mt-4" />
     </div>

@@ -4,6 +4,8 @@ import VideoCard from "./_component/VideoCard";
 import { useGetInterviews } from "./_lib/queries/useInterviewQuery";
 import { useState } from "react";
 import debounce from "./_lib/utills/debounce";
+import NoData from "../_component/NoData";
+import Loading from "../_component/Loading";
 
 const Videos = () => {
   // TODO: infinite scroll 구현
@@ -21,11 +23,11 @@ const Videos = () => {
   // debounce 사용, Memoization 사용
 
   if (!videoList) {
-    return <div>loading...</div>;
+    return <Loading />;
   }
 
   if (videoList.content?.length === 0) {
-    return <div>데이터가 없습니다.</div>;
+    return <NoData />;
   }
 
   const handleFilterTag = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +39,10 @@ const Videos = () => {
     if (!filterTag) return true;
     return video.tags.includes(filterTag);
   });
+
+  if (!filteredVideoList) {
+    return <NoData />;
+  }
 
   return (
     <div>
@@ -55,6 +61,8 @@ const Videos = () => {
           <option value="like">인기순</option>
         </select>
       </div>
+
+      {filteredVideoList.length === 0 && <NoData />}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {filteredVideoList.map((video) => (

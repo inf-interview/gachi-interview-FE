@@ -1,7 +1,5 @@
-import {
-  QuestionType,
-  useInterviewOption,
-} from "../../../../../_lib/contexts/InterviewOptionContext";
+import Loading from "@/app/(AfterLogin)/_component/Loading";
+import { useInterviewOption } from "../../../../../_lib/contexts/InterviewOptionContext";
 import { useGetQuestionsQuery } from "../../../_lib/queries/useQuestions";
 import QuestionList from "./QuestionList";
 import QuestionListHeader from "./QuestionListHeader";
@@ -56,7 +54,7 @@ const QuestionSelectionSection = ({ workbookId, questionTitle }: QuestionSelecti
     });
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
 
   return (
     <div className="flex-col w-full ml-2">
@@ -65,6 +63,7 @@ const QuestionSelectionSection = ({ workbookId, questionTitle }: QuestionSelecti
           questions={questions}
           questionTitle={workbookId ? questionTitle : "질문 세트가 없어요."}
           onSelect={selectAllQuestions}
+          workbookId={workbookId}
         />
         {workbookId && (
           <QuestionList

@@ -11,11 +11,26 @@ type StartRecordingProps = {
   setRecordedBlobs: React.Dispatch<React.SetStateAction<Blob[]>>;
 };
 
-const ffmpeg = new FFmpeg();
+// next.js가 node.js 환경에서 실행되기 때문에 node에서의 사용을 지원하지 않는 ffmpeg을 사용하기 위해 브라우저에서 사용할 수 있도록 설정
+const initializeFFmpegInstance = async (logs = false) => {
+  const ffmpeg = new FFmpeg();
 
-ffmpeg.on("log", ({ message }) => {
-  console.log(message);
-});
+  const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/umd";
+
+  if (!ffmpeg.loaded) {
+    await ffmpeg.load({
+      coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
+      wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
+      workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, "text/javascript"),
+    });
+  }
+
+  if (logs)
+    ffmpeg.on("log", ({ message }) => {
+      console.log(message);
+    });
+  return ffmpeg;
+};
 
 export const startRecording = ({
   media,
@@ -132,6 +147,8 @@ export const getThumbnailImages = async (blobs: Blob, videoDuration: number): Pr
 
 export const EncodingWebmToMp4 = async (blob: Blob) => {
   console.time("EncodingWebmToMp4");
+
+  const ffmpeg = await initializeFFmpegInstance();
 
   const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/umd";
 

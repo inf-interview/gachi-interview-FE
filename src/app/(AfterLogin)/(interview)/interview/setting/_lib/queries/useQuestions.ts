@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import getQuestions from "../api/getQuestions";
 import postQuestion from "../api/postQuestion";
+import deleteQuestion, { DeleteQuestionRequest } from "../api/deleteQuestion";
 
 // TODO: 타입 디렉토리로 분리
 
@@ -38,6 +39,19 @@ export const usePostQuestionsMutation = () => {
   return useMutation<Response, Error, RequestPostQuestions>({
     mutationKey: ["questions"],
     mutationFn: (data) => postQuestion(data),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: ["questions"],
+      });
+    },
+  });
+};
+
+export const useDeleteQuestionMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation<Response, Error, DeleteQuestionRequest>({
+    mutationKey: ["questions"],
+    mutationFn: (data) => deleteQuestion(data),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: ["questions"],
