@@ -1,4 +1,4 @@
-import customFetcher from "@/lib/utills/customFetcher";
+import customFetcher from "@/lib/utils/customFetcher";
 
 export type getInterviewProps = string;
 const getInterview = async (videoId: getInterviewProps) => {

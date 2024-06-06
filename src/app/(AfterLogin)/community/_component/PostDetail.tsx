@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Post } from "@/model/Post";
 import { AiOutlineLike, AiOutlineShareAlt } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
-import { formatRelativeTime } from "@/lib/utills/days";
+import { formatRelativeTime } from "@/lib/utils/days";
 import { Button } from "@/components/ui/button";
 import "./PostDetail.css";
 import Image from "next/image";

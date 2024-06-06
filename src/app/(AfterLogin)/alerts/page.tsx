@@ -2,10 +2,10 @@
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { accessTokenState, userIdState } from "@/store/auth";
-import customFetcher from "@/lib/utills/customFetcher";
+import customFetcher from "@/lib/utils/customFetcher";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { formatRelativeTime } from "@/lib/utills/days";
+import { formatRelativeTime } from "@/lib/utils/days";
 
 type alertsData = {
   content: string;

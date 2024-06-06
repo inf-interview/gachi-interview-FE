@@ -1,4 +1,4 @@
-import customFetcher from "@/lib/utills/customFetcher";
+import customFetcher from "@/lib/utils/customFetcher";
 
 export interface postLikeProps {
   userId: number;

@@ -3,7 +3,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
 import { Badge } from "@/components/ui/badge";
 import { Post } from "@/model/Post";
-import { formatRelativeTime } from "@/lib/utills/days";
+import { formatRelativeTime } from "@/lib/utils/days";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
