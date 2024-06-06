@@ -4,20 +4,10 @@ import getInterview, { getInterviewProps as RequestGetInterview } from "../api/g
 import patchInterview, { PatchInterviewProps } from "../api/patchInterview";
 import postLike, { postLikeProps } from "../api/postLike";
 import deletePost, { DeletePostProps } from "../api/deletePost";
+import { Video } from "@/model/Video";
 
 type ResponseGetInterviews = {
-  content: {
-    userId: number;
-    userName: string;
-    videoId: number;
-    videoLink: string;
-    videoTitle: string;
-    thumbnailLink: string;
-    time: string;
-    updateTime: string | null;
-    numOfLike: number;
-    tags: string[];
-  }[];
+  content: Video[];
 };
 
 export const useGetInterviews = ({ sortType, page }: RequestGetInterviews) => {
