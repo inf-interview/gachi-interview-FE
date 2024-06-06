@@ -4,6 +4,7 @@ import getMyReviews from "./_lib/getMyReviews";
 import getMyStudies from "./_lib/getMyStudies";
 import getMyComments from "./_lib/getMyComments";
 import getMyVideos from "./_lib/getMyVideos";
+import getMyFeedbacks from "./_lib/getMyFeedbacks";
 
 export default function Page() {
   const queryClient = new QueryClient();
@@ -17,8 +18,9 @@ export default function Page() {
     queryKey: ["community", "studies", "my"],
     queryFn: () => getMyStudies,
   });
-  queryClient.prefetchQuery({ queryKey: ["my", "comments"], queryFn: () => getMyComments });
   queryClient.prefetchQuery({ queryKey: ["my", "videos"], queryFn: () => getMyVideos });
+  queryClient.prefetchQuery({ queryKey: ["my", "comments"], queryFn: () => getMyComments });
+  queryClient.prefetchQuery({ queryKey: ["my", "feedbacks"], queryFn: () => getMyFeedbacks });
 
   return (
     <HydrationBoundary state={dehydratedState}>

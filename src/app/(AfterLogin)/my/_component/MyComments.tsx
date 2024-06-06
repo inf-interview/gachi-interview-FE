@@ -11,7 +11,6 @@ export interface MyComment {
   content: string;
   category: string;
   postId: string;
-  videoId: string;
 }
 
 export default function MyComments() {

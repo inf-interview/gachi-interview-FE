@@ -8,6 +8,7 @@ import MyGetStudyPosts from "./MyGetStudyPosts";
 import MyVideoPosts from "./MyVideoPosts";
 import { MdLogout } from "react-icons/md";
 import MyComments from "./MyComments";
+import MyFeedbacks from "./MyFeedbacks";
 
 export default function MyContainer() {
   const tabParams = useSearchParams().get("tab") || undefined;
@@ -40,6 +41,9 @@ export default function MyContainer() {
               <TabsTrigger value="comments" onClick={() => handleTabClick("comments")}>
                 MY 댓글
               </TabsTrigger>
+              <TabsTrigger value="feedbacks" onClick={() => handleTabClick("feedbacks")}>
+                MY 피드백
+              </TabsTrigger>
             </TabsList>
           </div>
           <Button onClick={handleLogout} className="rounded-3xl" variant="outline">
@@ -65,6 +69,11 @@ export default function MyContainer() {
         <TabsContent value="comments">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <MyComments />
+          </div>
+        </TabsContent>
+        <TabsContent value="feedbacks">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <MyFeedbacks />
           </div>
         </TabsContent>
       </Tabs>
