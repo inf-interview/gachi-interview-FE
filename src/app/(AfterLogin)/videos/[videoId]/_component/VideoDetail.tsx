@@ -139,7 +139,7 @@ const VideoDetail = ({ videoId }: VideoDetailProps) => {
               </Badge>
             ))}
           </div>
-          <div className="flex items-center w-full justify-center">
+          <div className="flex items-center w-full justify-center mt-4">
             <Button
               variant="outline"
               onClick={handleLike}
