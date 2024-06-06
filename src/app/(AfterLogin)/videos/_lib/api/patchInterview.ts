@@ -1,4 +1,4 @@
-import customFetcher from "@/utils/customFetcher";
+import customFetcher from "@/lib/utills/customFetcher";
 
 export interface PatchInterviewProps {
   userId: number;

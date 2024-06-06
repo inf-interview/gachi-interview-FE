@@ -14,5 +14,15 @@ export default function MyInterviewReviewPosts({ tabParams }: { tabParams: strin
     queryFn: ({ queryKey }) => getMyReviews({ queryKey, userId, accessToken }),
   });
 
-  return data?.map((post) => <PostCard key={post.postId} post={post} tabParams={tabParams} />);
+  const posts = Array.isArray(data) ? data : [];
+
+  return (
+    <>
+      {posts.length > 0 ? (
+        posts.map((post) => <PostCard key={post.postId} post={post} tabParams={tabParams} />)
+      ) : (
+        <div>아직 등록한 게시글이 없습니다🥲</div>
+      )}
+    </>
+  );
 }

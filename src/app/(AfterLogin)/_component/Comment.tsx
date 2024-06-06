@@ -1,8 +1,8 @@
 import { useModal } from "@/components/Modal/useModal";
 import { formatRelativeTime } from "@/lib/utills/days";
-import { Comment as CommentType } from "@/model/Comment";
+import { Comment as IComment } from "@/model/Comment";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useRef } from "react";
 import patchComment from "../community/_lib/patchComment";
 import { Button } from "@/components/ui/button";
 import { PiPencil } from "react-icons/pi";
@@ -12,7 +12,7 @@ import deleteComment from "../community/_lib/deleteComment";
 import { useRecoilValue } from "recoil";
 import { userIdState } from "@/store/auth";
 
-export default function Comment({ comment, postId }: { comment: CommentType; postId: string }) {
+export default function Comment({ comment, postId }: { comment: IComment; postId: string }) {
   const [isEditing, setIsEditing] = useState(false);
   const { openModal, closeModal } = useModal();
   const [editedComment, setEditedComment] = useState(comment.content);
@@ -41,18 +41,14 @@ export default function Comment({ comment, postId }: { comment: CommentType; pos
     onMutate: async (removedComment) => {
       const previousData = queryClient.getQueryData(["community", postId, "comments"]);
       if (!previousData) return;
-      queryClient.setQueryData(["community", postId, "comments"], (old: CommentType[]) => {
+      
+      queryClient.setQueryData(["community", postId, "comments"], (old: IComment[]) => {
         return old.filter(
           (comment: { commentId: number }) => comment.commentId !== removedComment.commentId,
         );
       });
       return { previousData };
     },
-    // onSuccess: () => {
-    //   queryClient.invalidateQueries({
-    //     queryKey: ["community", postId, "comments"],
-    //   });
-    // },
   });
 
   const handleDeleteComment = () => {
@@ -97,11 +93,13 @@ export default function Comment({ comment, postId }: { comment: CommentType; pos
   };
 
   return (
-    <div className="flex flex-col my-5 p-4 border-b border-gray-300">
+    <div
+      id={comment.commentId.toString()}
+      className="flex flex-col my-5 p-4 border-b border-gray-300 comment"
+    >
       <div className="flex items-center">
         <img
           className="w-10 h-10 rounded-full object-cover"
-          // src="https://file.mk.co.kr/meet/neds/2020/03/image_readtop_2020_256728_15839167074119784.jpg"
           src={comment.image}
           alt="프로필 이미지"
         />

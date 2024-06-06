@@ -1,16 +1,14 @@
 import customFetcher from "@/lib/utills/customFetcher";
 
-export default async function getStudyDetail({
-  queryKey,
+export default async function getMyFeedbacks({
+  userId,
   accessToken,
 }: {
-  queryKey: [_1: string, _2: string, _3: string];
+  userId: number;
   accessToken: string;
 }) {
-  const [_1, _2, postId] = queryKey;
-
   try {
-    const { response, data } = await customFetcher(`/board/${postId}`, {
+    const { response, data } = await customFetcher(`/user/${userId}/feedbacks`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -21,6 +19,7 @@ export default async function getStudyDetail({
     if (!response?.ok) {
       throw new Error("Failed to fetch data");
     }
+    console.log("my feedback data", data);
 
     return await data;
   } catch (error) {
