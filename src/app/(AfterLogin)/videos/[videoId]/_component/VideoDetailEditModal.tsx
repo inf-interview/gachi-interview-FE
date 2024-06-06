@@ -25,8 +25,6 @@ const VideoDetailEditModal = ({ video, onSubmit }: VideoDetailEditModalProps) =>
   const handleAddTags = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing) return; // 한글 두번 호출 방지
     if (e.key === "Enter" && tagsInput.trim()) {
-      console.log(e);
-
       e.preventDefault();
       setTags([...tags, tagsInput.trim()]);
       setTagsInput("");
