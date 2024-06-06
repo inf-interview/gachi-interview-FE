@@ -36,7 +36,7 @@ const RecordPage = () => {
 
   return (
     <div>
-      <div className="relative w-full h-full transform scale-x-[-1] bg-black rounded-b-lg">
+      <div className="relative w-full h-full transform scale-x-[-1] bg-black rounded-lg">
         <Timer seconds={time} />
         <QuestionViewer questionId={script.questionId} questionList={questionList} />
         <video
