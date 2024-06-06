@@ -12,6 +12,7 @@ import { useRecoilValue } from "recoil";
 import { accessTokenState, userIdState } from "@/store/auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postLike from "../_lib/postLike";
+import { toast } from "react-toastify";
 
 export default function PostDetail({ post }: { post: Post }) {
   const [isLiked, setIsLiked] = useState(post.liked);
@@ -69,6 +70,18 @@ export default function PostDetail({ post }: { post: Post }) {
     }
   };
 
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.info("클립보드에 복사되었습니다.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } catch (e) {
+      toast.error("복사에 실패하였습니다.");
+    }
+  };
+
   return (
     <div className="flex-col">
       <div className="px-6 pt-4 pb-2 mb-5 border border-gray-300 rounded-md">
@@ -118,7 +131,11 @@ export default function PostDetail({ post }: { post: Post }) {
                   {post.numOfLike}
                 </span>
               </Button>
-              <Button variant="outline" className="ml-2">
+              <Button
+                variant="outline"
+                className="ml-2"
+                onClick={() => handleCopyClipBoard(window.location.href)}
+              >
                 <AiOutlineShareAlt className="mr-2" />
                 공유
               </Button>

@@ -24,7 +24,7 @@ export default function MyVideoPosts() {
       {videos.length > 0 ? (
         videos.map((video) => <VideoCard key={video.videoId} video={video} />)
       ) : (
-        <div>아직 등록된 인터뷰 영상이 없습니다🥲</div>
+        <div>아직 등록한 인터뷰 영상이 없습니다🥲</div>
       )}
     </>
   );

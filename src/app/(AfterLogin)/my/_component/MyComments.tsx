@@ -18,10 +18,20 @@ export default function MyComments() {
   const accessToken = useRecoilValue(accessTokenState);
   const userId = useRecoilValue(userIdState);
 
-  const { data: comments } = useQuery<MyComment[]>({
+  const { data } = useQuery<MyComment[]>({
     queryKey: ["my", "comments"],
     queryFn: () => getMyComments({ userId, accessToken }),
   });
 
-  return comments?.map((comment) => <CommentCard key={comment.commentId} comment={comment} />);
+  const comments = Array.isArray(data) ? data : [];
+
+  return (
+    <>
+      {comments.length > 0 ? (
+        comments.map((comment) => <CommentCard key={comment.commentId} comment={comment} />)
+      ) : (
+        <div>아직 등록한 댓글이 없습니다🥲</div>
+      )}
+    </>
+  );
 }
