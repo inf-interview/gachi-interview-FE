@@ -41,6 +41,7 @@ export default function Comment({ comment, postId }: { comment: IComment; postId
     onMutate: async (removedComment) => {
       const previousData = queryClient.getQueryData(["community", postId, "comments"]);
       if (!previousData) return;
+      
       queryClient.setQueryData(["community", postId, "comments"], (old: IComment[]) => {
         return old.filter(
           (comment: { commentId: number }) => comment.commentId !== removedComment.commentId,

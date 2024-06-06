@@ -4,16 +4,14 @@ export interface postLikeProps {
   userId: number;
   id: string;
   type: "video" | "board";
-  accessToken: string;
 }
 
-const postLike = async ({ userId, id, type, accessToken }: postLikeProps) => {
+const postLike = async ({ userId, id, type }: postLikeProps) => {
   try {
     const { response, data } = await customFetcher(`/${type}/${id}/like`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         userId,
