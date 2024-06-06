@@ -1,5 +1,8 @@
 import Loading from "@/app/(AfterLogin)/_component/Loading";
-import { useInterviewOption } from "../../../../../_lib/contexts/InterviewOptionContext";
+import {
+  useInterviewOption,
+  QuestionType,
+} from "../../../../../_lib/contexts/InterviewOptionContext";
 import { useGetQuestionsQuery } from "../../../_lib/queries/useQuestions";
 import QuestionList from "./QuestionList";
 import QuestionListHeader from "./QuestionListHeader";

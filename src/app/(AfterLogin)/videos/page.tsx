@@ -3,7 +3,7 @@
 import VideoCard from "./_component/VideoCard";
 import { useGetInterviews } from "./_lib/queries/useInterviewQuery";
 import { useState } from "react";
-import debounce from "./_lib/utills/debounce";
+import debounce from "./_lib/utils/debounce";
 import NoData from "../_component/NoData";
 import Loading from "../_component/Loading";
 
