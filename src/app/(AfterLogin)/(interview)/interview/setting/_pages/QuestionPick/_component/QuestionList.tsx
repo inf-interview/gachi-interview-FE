@@ -9,6 +9,7 @@ import AddQuestionModal from "./AddQuestionModal";
 import { useModal } from "@/components/Modal/useModal";
 import { useRecoilValue } from "recoil";
 import { userIdState } from "@/store/auth";
+import Loading from "@/app/(AfterLogin)/_component/Loading";
 
 interface QuestionListProps {
   workbookId: number;
@@ -40,8 +41,7 @@ const QuestionList = ({ workbookId, onSelect, interviewOption }: QuestionListPro
       />,
     );
 
-  // TODO: 로딩 상태 처리
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
 
   return (
     <ul>

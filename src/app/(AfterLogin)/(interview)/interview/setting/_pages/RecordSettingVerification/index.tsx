@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useInterviewOption } from "../../../../_lib/contexts/InterviewOptionContext";
 import { useEffect } from "react";
 import { useErrorModal } from "@/components/Modal/useModal";
+import Loading from "@/app/(AfterLogin)/_component/Loading";
 
 interface RecordSettingVerificationProps {
   setStep: (step: number) => void;
@@ -43,7 +44,7 @@ const RecordSettingVerification = ({ setStep }: RecordSettingVerificationProps) 
     }
   }, []);
 
-  return <div className="flex items-center justify-center w-full h-full">로딩중...</div>;
+  return <Loading />;
 };
 
 export default RecordSettingVerification;

@@ -19,6 +19,7 @@ import VideoDetailEditModal from "./VideoDetailEditModal";
 import { VideoData } from "./VideoDetailEditModal";
 import Modal from "@/components/Modal";
 import { useRouter } from "next/navigation";
+import Loading from "@/app/(AfterLogin)/_component/Loading";
 
 interface VideoDetailProps {
   videoId: string;
@@ -59,9 +60,9 @@ const VideoDetail = ({ videoId }: VideoDetailProps) => {
     }
   }, [isDeleteSuccess]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
-  // TODO: Loading, Error 컴포넌트 추가
+  // TODO: Error 컴포넌트 추가
   if (!videoData) return null;
 
   const openEditModal = () => {
@@ -114,7 +115,6 @@ const VideoDetail = ({ videoId }: VideoDetailProps) => {
     );
   };
 
-  // TODO: 본인의 비디오인 경우 수정, 삭제 버튼 추가
   return (
     <>
       <div className="flex justify-center w-full">

@@ -1,3 +1,4 @@
+import Loading from "@/app/(AfterLogin)/_component/Loading";
 import { useInterviewOption } from "../../../../../_lib/contexts/InterviewOptionContext";
 import { useGetQuestionsQuery } from "../../../_lib/queries/useQuestions";
 import QuestionList from "./QuestionList";
@@ -55,8 +56,7 @@ const QuestionSelectionSection = ({ workbookId, questionTitle }: QuestionSelecti
     });
   };
 
-  // TODO: 로딩 컴포넌트 구현
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
 
   // TODO: header부분을 QuestionList와 추상화 레벨 맞추면 좋을 것 같다.
   return (
