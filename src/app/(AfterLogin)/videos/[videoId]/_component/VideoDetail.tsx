@@ -49,7 +49,7 @@ const VideoDetail = ({ videoId }: VideoDetailProps) => {
 
   useEffect(() => {
     if (isModifySuccess) {
-      closeDialog();
+      openDialog(`성공적으로 수정되었습니다.😁`);
     }
   }, [isModifySuccess]);
 
