@@ -18,6 +18,11 @@ const AddQuestionModal = ({ closeModal, onSubmit }: AddQuestionModalProps) => {
       setError("질문은 필수입니다.");
       return false;
     }
+
+    if (questionContent.length > 999) {
+      setError("질문은 1000자 이내로 입력해주세요.");
+      return false;
+    }
     return true;
   };
 

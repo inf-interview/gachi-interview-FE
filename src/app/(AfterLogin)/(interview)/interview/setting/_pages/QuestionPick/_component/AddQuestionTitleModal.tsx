@@ -21,6 +21,11 @@ const AddQuestionTitleModal = ({ closeModal, onSubmit }: AddQuestionTitleModalPr
       setError("질문 세트의 제목을 입력해주세요.");
       return false;
     }
+
+    if (title.length > 50) {
+      setError("질문 세트의 제목은 50자 이내로 입력해주세요.");
+      return false;
+    }
     setError("");
     return true;
   };
