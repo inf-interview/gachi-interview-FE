@@ -1,5 +1,4 @@
-import customFetcher from "@/utils/customFetcher";
-
+import customFetcher from "@/lib/utils/customFetcher";
 export interface PostFeedbackRequest {
   videoId: number;
   content: string;
