@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useInterviewOption } from "../../../../_lib/contexts/InterviewOptionContext";
 import { useEffect } from "react";
 import { useErrorModal } from "@/components/Modal/useModal";
-
 interface RecordSettingVerificationProps {
   setStep: (step: number) => void;
 }
@@ -38,13 +37,23 @@ const RecordSettingVerification = ({ setStep }: RecordSettingVerificationProps) 
   };
 
   useEffect(() => {
-    if (validateInterviewOption()) {
-      setStep(1);
-      router.push("/interview/record");
-    }
+    const timer = setTimeout(() => {
+      if (validateInterviewOption()) {
+        router.push("/interview/record");
+      }
+    }, 3000);
+
+    return () => clearTimeout(timer);
   }, []);
 
-  return <div className="flex items-center justify-center w-full h-full">로딩중...</div>;
+  return (
+    <div className="pt-24 pr-48">
+      <div className="flex flex-col items-center justify-start h-screen">
+        <span className="loader"></span>
+        <div className="text-xl font-semibold mt-8">화면을 준비 중 입니다...</div>
+      </div>
+    </div>
+  );
 };
 
 export default RecordSettingVerification;

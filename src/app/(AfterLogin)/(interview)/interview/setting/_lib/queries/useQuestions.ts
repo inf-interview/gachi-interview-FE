@@ -8,6 +8,7 @@ export type ResponseQuestions = {
   questionId: number;
   questionContent: string;
   answerContent: string;
+  answerId: number;
 }[];
 
 export const useGetQuestionsQuery = ({ workbookId }: { workbookId: number }) => {

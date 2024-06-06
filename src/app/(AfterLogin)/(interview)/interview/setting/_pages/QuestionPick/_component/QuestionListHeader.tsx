@@ -25,7 +25,7 @@ const QuestionListHeader = ({
         value="all"
       />
       <label htmlFor="all" className="ml-12 text-gray-500 cursor-pointer">
-        {questionTitle}
+        {questionTitle} (모두 선택)
       </label>
     </header>
   );
