@@ -4,8 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReviewPostForm from "./_component/ReviewPostForm";
 import StudyPostForm from "./_component/StudyPostForm";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function Page() {
+const CommunityContainer = () => {
   const tabParams = useSearchParams().get("tab") || undefined;
   const router = useRouter();
 
@@ -30,5 +31,13 @@ export default function Page() {
         <StudyPostForm />
       </TabsContent>
     </Tabs>
+  );
+};
+
+export default function Page() {
+  return (
+    <Suspense>
+      <CommunityContainer />
+    </Suspense>
   );
 }
