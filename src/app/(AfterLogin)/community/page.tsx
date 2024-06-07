@@ -2,6 +2,7 @@ import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query
 import getReviews from "./_lib/getReviews";
 import getStudies from "./_lib/getStudies";
 import CommunityContainer from "./_component/CommunityContainer";
+import { Suspense } from "react";
 
 export default function Page() {
   const queryClient = new QueryClient();
@@ -18,7 +19,9 @@ export default function Page() {
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <CommunityContainer />
+      <Suspense>
+        <CommunityContainer />
+      </Suspense>
     </HydrationBoundary>
   );
 }

@@ -5,6 +5,7 @@ import getMyStudies from "./_lib/getMyStudies";
 import getMyComments from "./_lib/getMyComments";
 import getMyVideos from "./_lib/getMyVideos";
 import getMyFeedbacks from "./_lib/getMyFeedbacks";
+import { Suspense } from "react";
 
 export default function Page() {
   const queryClient = new QueryClient();
@@ -24,7 +25,9 @@ export default function Page() {
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <MyContainer />
+      <Suspense>
+        <MyContainer />
+      </Suspense>
     </HydrationBoundary>
   );
 }
