@@ -12,7 +12,7 @@ const Videos = () => {
   const page = 1;
   // TODO: sortType 백엔드랑 맞추기 like, new?
   const [sortType, setSortType] = useState<"new" | "like">("new");
-  const { data: videoList } = useGetInterviews({ sortType: sortType, page });
+  const { data: videoList, isLoading } = useGetInterviews({ sortType: sortType, page });
   const [filterTag, setFilterTag] = useState<string>("");
 
   const handleSortType = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -22,12 +22,8 @@ const Videos = () => {
   // TODO: Filter tag 구현
   // debounce 사용, Memoization 사용
 
-  if (!videoList) {
+  if (isLoading || !videoList) {
     return <Loading />;
-  }
-
-  if (videoList.content?.length === 0) {
-    return <NoData />;
   }
 
   const handleFilterTag = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,10 +35,6 @@ const Videos = () => {
     if (!filterTag) return true;
     return video.tags.includes(filterTag);
   });
-
-  if (!filteredVideoList) {
-    return <NoData />;
-  }
 
   return (
     <div>
@@ -63,7 +55,6 @@ const Videos = () => {
       </div>
 
       {filteredVideoList.length === 0 && <NoData />}
-
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {filteredVideoList.map((video) => (
           <VideoCard key={video.videoId} video={video} />
