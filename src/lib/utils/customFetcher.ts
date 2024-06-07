@@ -8,6 +8,8 @@ const originalRequest = async (url: string, config: RequestInit) => {
     let response = await fetch(url, config);
     let data = null;
 
+    console.log(url);
+
     if (response.ok && response.headers.get("Content-Type")?.includes("application/json")) {
       console.log("response.json()");
       data = await response.json();
