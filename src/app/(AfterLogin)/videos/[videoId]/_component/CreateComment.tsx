@@ -40,7 +40,7 @@ const CreateComment = ({ videoId }: CreateCommentProps) => {
         value={comment}
         onChange={handleComment}
         // TODO: placeholder 수정
-        placeholder="이영재님, 피드백을 작성해보세요."
+        placeholder="피드백을 작성해보세요. 😁"
         className={`w-full ${
           focus ? "h-32" : "h-14 overflow-hidden"
         } mt-4 p-4 rounded-lg border border-gray-300`}
