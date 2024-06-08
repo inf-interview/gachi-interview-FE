@@ -29,7 +29,8 @@ self.addEventListener("push", async (event) => {
   console.log("push");
   console.log(event);
   try {
-    const res = await fetch(`http://52.78.111.188:8080/alert`, {
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+    const res = await fetch(`${BASE_URL}/alert`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
