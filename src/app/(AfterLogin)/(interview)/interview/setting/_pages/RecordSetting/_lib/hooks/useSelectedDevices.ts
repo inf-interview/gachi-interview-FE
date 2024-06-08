@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMedia, closeMedia } from "@/lib/utils/media";
+import { getMedia, getAudioOnlyMedia, closeMedia } from "@/lib/utils/media";
 import { useInterviewOption } from "../../../../../../_lib/contexts/InterviewOptionContext";
 
 export const useSelectedDevices = () => {
@@ -33,6 +33,18 @@ export const useSelectedDevices = () => {
     });
   };
 
+  const handleAudioOnly = () => {
+    closeMedia(mediaOption.media);
+    getAudioOnlyMedia(selectedAudioDevice).then((media) => {
+      if (media) {
+        setMediaOption({
+          ...mediaOption,
+          media,
+        });
+      }
+    });
+  };
+
   const handleReloadRecording = () => {
     closeMedia(mediaOption.media);
     getMedia(selectedAudioDevice, selectedCameraDevice).then((media) => {
@@ -55,5 +67,6 @@ export const useSelectedDevices = () => {
     handleAudioDeviceChange,
     handleCameraDeviceChange,
     handleReloadRecording,
+    handleAudioOnly,
   };
 };
