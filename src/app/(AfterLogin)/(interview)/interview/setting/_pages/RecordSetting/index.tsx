@@ -12,6 +12,7 @@ const RecordSetting = () => {
     handleReloadRecording,
     selectedAudioDevice,
     selectedCameraDevice,
+    handleAudioOnly,
   } = useSelectedDevices();
   const { audioDevices, cameraDevices } = useMediaDevices();
   const videoRef = useVideoRef();
@@ -33,12 +34,25 @@ const RecordSetting = () => {
           ref={videoRef}
         />
       </div>
+      {cameraDevices.length === 0 && (
+        <div>
+          <span>카메라가 없으신가요? </span>
+          <button className="text-blue-500" onClick={handleAudioOnly}>
+            오디오만 녹화하기
+          </button>
+        </div>
+      )}
       <div className="w-full flex flex-col md:flex-row mt-4 md:justify-center">
         <select
           className="border border-gray-300 rounded-md p-2 text-sm"
           value={selectedCameraDevice}
           onChange={(e) => handleCameraDeviceChange(e.target.value)}
         >
+          {cameraDevices.length === 0 && (
+            <option value="" disabled>
+              카메라 장치가 없습니다.
+            </option>
+          )}
           {cameraDevices.map((device) => (
             <option key={device.deviceId} value={device.deviceId}>
               {device.label || `Camera Device ${device.deviceId}`}
@@ -52,6 +66,11 @@ const RecordSetting = () => {
             handleAudioDeviceChange(e.target.value);
           }}
         >
+          {audioDevices.length === 0 && (
+            <option value="" disabled>
+              마이크 장치가 없습니다.
+            </option>
+          )}
           {audioDevices.map((device) => (
             <option key={device.deviceId} value={device.deviceId}>
               {device.label || `Audio Device ${device.deviceId}`}

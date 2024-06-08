@@ -90,6 +90,28 @@ export const localDownload = async (blob: Blob, fileName?: string) => {
   document.body.removeChild(a);
 };
 
+const createTempThumbnail = async (): Promise<Blob> => {
+  const canvas = document.createElement("canvas");
+  canvas.width = 640;
+  canvas.height = 360;
+  const context = canvas.getContext("2d");
+  if (!context) {
+    throw new Error("캔버스 컨텍스트를 가져올 수 없습니다.");
+  }
+
+  context.fillStyle = "black";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  return new Promise<Blob>((resolve) => {
+    canvas.toBlob((thumbnailBlob) => {
+      if (!thumbnailBlob) {
+        throw new Error("썸네일 이미지를 생성할 수 없습니다.");
+      }
+      resolve(thumbnailBlob);
+    }, "image/png");
+  });
+};
+
 export const getThumbnailImage = async (blob: Blob, time?: number): Promise<Blob> => {
   return new Promise((resolve, reject) => {
     const video = document.createElement("video");
@@ -98,35 +120,64 @@ export const getThumbnailImage = async (blob: Blob, time?: number): Promise<Blob
 
     video.onloadedmetadata = () => {
       if (!video.videoWidth || !video.videoHeight) {
-        reject(new Error("비디오의 메타데이터를 로드하는 중에 오류가 발생했습니다."));
+        console.error("비디오의 메타데이터를 로드하는 중에 오류가 발생했습니다.");
+        console.log("임시 썸네일 생성");
+        createTempThumbnail().then(resolve).catch(reject);
         return;
       }
 
       video.currentTime = time || 1;
-      video.onseeked = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const context = canvas.getContext("2d");
-        if (!context) {
-          reject(new Error("캔버스 컨텍스트를 가져올 수 없습니다."));
+    };
+
+    video.onseeked = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const context = canvas.getContext("2d");
+      if (!context) {
+        reject(new Error("캔버스 컨텍스트를 가져올 수 없습니다."));
+        return;
+      }
+
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob((thumbnailBlob) => {
+        if (!thumbnailBlob) {
+          reject(new Error("썸네일 이미지를 생성할 수 없습니다."));
           return;
         }
+        resolve(thumbnailBlob);
+      }, "image/png");
+    };
 
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    video.onerror = () => {
+      console.error("비디오를 로드하는 중에 오류가 발생했습니다.");
+      createTempThumbnail().then(resolve).catch(reject);
+    };
 
-        canvas.toBlob((thumbnailBlob) => {
-          if (!thumbnailBlob) {
-            reject(new Error("썸네일 이미지를 생성할 수 없습니다."));
-            return;
-          }
-          resolve(thumbnailBlob);
-        }, "image/png");
-      };
+    video.onseeked = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const context = canvas.getContext("2d");
+      if (!context) {
+        reject(new Error("캔버스 컨텍스트를 가져올 수 없습니다."));
+        return;
+      }
 
-      video.onerror = () => {
-        reject(new Error("비디오를 로드하는 중에 오류가 발생했습니다."));
-      };
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob((thumbnailBlob) => {
+        if (!thumbnailBlob) {
+          reject(new Error("썸네일 이미지를 생성할 수 없습니다."));
+          return;
+        }
+        resolve(thumbnailBlob);
+      }, "image/png");
+    };
+
+    video.onerror = () => {
+      reject(new Error("비디오를 로드하는 중에 오류가 발생했습니다."));
     };
   });
 };

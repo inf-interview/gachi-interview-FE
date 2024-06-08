@@ -30,6 +30,23 @@ export const getMedia = async (
   }
 };
 
+export const getAudioOnlyMedia = async (audioDeviceId?: string): Promise<MediaStream | null> => {
+  try {
+    const media = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: { exact: true },
+        noiseSuppression: { exact: true },
+        autoGainControl: { exact: true },
+        deviceId: audioDeviceId ? { exact: audioDeviceId } : undefined,
+      },
+    });
+
+    return media;
+  } catch (error) {
+    throw new Error();
+  }
+};
+
 export const getSupportedMimeTypes = () => {
   let selectedMimeType = "video/webm; codecs=h264";
   if (MediaRecorder.isTypeSupported("video/webm; codecs=vp9")) {

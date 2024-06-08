@@ -73,8 +73,11 @@ const useRecord = () => {
       const fileNames = "interview-" + new Date().getTime() + "-" + userId;
       if (recordedBlobs.length === 0) return;
       const blob = new Blob(recordedBlobs, { type: getSupportedMimeTypes() });
+      console.log("blob", blob);
       const thumbnails = await getThumbnailImages(blob, time);
+      console.log("thumbnails", thumbnails);
       const encodingPromise = EncodingWebmToMp4(blob);
+      console.log("encodingPromise", encodingPromise);
 
       const handleModalSubmit = async (metadata: {
         title: string;
