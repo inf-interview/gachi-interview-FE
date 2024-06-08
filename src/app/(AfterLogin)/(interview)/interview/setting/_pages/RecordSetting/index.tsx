@@ -34,12 +34,14 @@ const RecordSetting = () => {
           ref={videoRef}
         />
       </div>
-      <div>
-        <span>카메라가 없으신가요? </span>
-        <button className="text-blue-500" onClick={handleAudioOnly}>
-          오디오만 녹화하기
-        </button>
-      </div>
+      {!cameraDevices.length && (
+        <div>
+          <span>카메라가 없으신가요? </span>
+          <button className="text-blue-500" onClick={handleAudioOnly}>
+            오디오만 녹화하기
+          </button>
+        </div>
+      )}
       <div className="w-full flex flex-col md:flex-row mt-4 md:justify-center">
         <select
           className="border border-gray-300 rounded-md p-2 text-sm"
