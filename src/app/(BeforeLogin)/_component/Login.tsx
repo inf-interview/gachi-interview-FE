@@ -11,14 +11,14 @@ const Lottie = dynamic(() => import("react-lottie-player"), { ssr: false });
 
 export default function Login() {
   return (
-    <div className="flex justify-center items-center">
-      <div className="flex-col">
+    <div className="flex justify-center items-center flex-wrap">
+      <div className="flex-col mt-16">
         <p className="font-bold text-3xl my-10">
-          같이 면접 준비하는 서비스 <br />
-          같이 면접 <br />
+          <span className="text-[#9EEAEA]">같이</span> 면접 준비하는 서비스 <br />
+          같이 <span className="text-[#9EEAEA]">면접</span> <br />
         </p>
         <Link href={KAKAO_AUTH_URL}>
-          <Button className="w-[350px] h-[70px] rounded-full bg-[#FEE500] text-black text-xl">
+          <Button className="w-max-[350px] w-full h-[70px] rounded-full bg-[#FEE500] text-black text-xl">
             <RiKakaoTalkFill className="mr-2" />
             Kakao로 시작하기
           </Button>
