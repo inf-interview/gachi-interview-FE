@@ -43,7 +43,8 @@ export default function Auth2Redirect() {
     if (code && fcmToken) {
       const kakaoLogin = async () => {
         try {
-          const res = await fetch(`http://52.78.111.188:8080/user/kakao/login?code=${code}`, {
+          const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+          const res = await fetch(`${BASE_URL}/user/kakao/login?code=${code}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json;charset=utf-8",
@@ -61,7 +62,7 @@ export default function Auth2Redirect() {
             if (fcmToken) {
               console.log("kakaoLogin 안의 fcmToken:", fcmToken);
               try {
-                const tokenRes = await fetch(`http://52.78.111.188:8080/user/fcm/token`, {
+                const tokenRes = await fetch(`${BASE_URL}/user/fcm/token`, {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json;charset=utf-8",
