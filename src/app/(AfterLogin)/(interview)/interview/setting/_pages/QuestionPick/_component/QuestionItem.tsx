@@ -63,7 +63,7 @@ const QuestionItem = ({
         <div className="flex flex-col w-full">
           <label className="text-gray-500">Q.</label>
           <textarea
-            className="text-gray-700 text-sm bg-gray-100 p-2 rounded-md break-words resize-none focu"
+            className="text-gray-700 text-sm bg-gray-100 p-2 rounded-md break-words resize-none"
             value={content}
             readOnly
           />

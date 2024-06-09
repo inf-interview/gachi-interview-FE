@@ -53,7 +53,13 @@ export default function PostCard({
         <div className="flex">
           <div className="flex items-center flex-1">
             {post.image ? (
-              <img src={post.image} alt="프로필이미지" className="w-5 h-5 rounded-full" />
+              <img
+                src={post.image}
+                alt="프로필이미지"
+                className="rounded-full"
+                width={20}
+                height={20}
+              />
             ) : null}
             <p className="text-gray-600 text-sm">
               {post.userName ? (

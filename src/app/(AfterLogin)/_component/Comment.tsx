@@ -101,7 +101,7 @@ export default function Comment({ comment, postId }: { comment: IComment; postId
         <img
           className="w-10 h-10 rounded-full object-cover"
           src={comment.image}
-          alt="프로필 이미지"
+          alt="프로필이미지"
         />
         <div className="flex flex-col ml-4">
           <span className="font-bold">{comment.username}</span>

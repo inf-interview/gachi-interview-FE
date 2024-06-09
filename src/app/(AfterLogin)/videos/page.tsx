@@ -1,5 +1,12 @@
 "use client";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import VideoCard from "./_component/VideoCard";
 import { useGetInterviews } from "./_lib/queries/useInterviewQuery";
 import { useEffect, useState } from "react";
@@ -21,8 +28,8 @@ const Videos = () => {
     }
   }, [videoList]);
 
-  const handleSortType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortType(e.target.value as "new" | "like");
+  const handleSortType = (value: string) => {
+    setSortType(value as "new" | "like");
   };
 
   const handleFilterChange = (filteredList: (Video | Post)[]) => {
@@ -41,14 +48,17 @@ const Videos = () => {
     <div>
       <div className="flex justify-between items-center w-full mb-2" style={{ gap: "1rem" }}>
         <FilterTag originalList={videoList.content} onFilterChange={handleFilterChange} />
-        <select
-          className="flex h-10 w-32 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-          defaultValue="최신순"
-          onChange={handleSortType}
-        >
-          <option value="new">최신순</option>
-          <option value="like">인기순</option>
-        </select>
+        <div className="flex-grow w-32">
+          <Select onValueChange={handleSortType}>
+            <SelectTrigger>
+              <SelectValue placeholder="최신순" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="new">최신순</SelectItem>
+              <SelectItem value="like">인기순</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {filteredVideoList.length === 0 && <NoData />}

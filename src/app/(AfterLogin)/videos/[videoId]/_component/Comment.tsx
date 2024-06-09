@@ -83,9 +83,8 @@ const Comment = ({ comment, videoId }: CommentProps) => {
       <div className="flex items-center">
         <img
           className="w-10 h-10 rounded-full object-cover"
-          // TODO: 이미지 경로 수정
           src={comment.image}
-          alt="프로필 이미지"
+          alt="프로필이미지"
         />
         <div className="flex flex-col ml-4">
           <span className="font-bold">{comment.username}</span>
@@ -110,7 +109,7 @@ const Comment = ({ comment, videoId }: CommentProps) => {
           <textarea
             value={editedComment}
             onChange={(e) => setEditedComment(e.target.value)}
-            className="w-full h-20 mt-4 p-4 rounded-lg border border-gray-300"
+            className="w-full resize-none h-20 mt-4 p-4 rounded-lg border border-gray-300"
           />
           <div className="flex justify-end gap-2 mt-2">
             <Button onClick={() => setIsEditing(false)} variant="outline">

@@ -112,7 +112,7 @@ export default function StudyPostForm() {
           onChange={handleContent}
           value={content}
           required
-          className="p-2 border border-gray-300 rounded-md mb-4 h-80 focus:outline-none"
+          className="p-2 resize-none border border-gray-300 rounded-md mb-4 h-80 focus:outline-none"
         />
         <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
           등록

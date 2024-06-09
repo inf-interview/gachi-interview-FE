@@ -20,6 +20,7 @@ import { VideoData } from "./VideoDetailEditModal";
 import Modal from "@/components/Modal";
 import { useRouter } from "next/navigation";
 import Loading from "@/app/(AfterLogin)/_component/Loading";
+import { toast } from "react-toastify";
 
 interface VideoDetailProps {
   videoId: string;
@@ -37,14 +38,23 @@ const VideoDetail = ({ videoId }: VideoDetailProps) => {
   const router = useRouter();
 
   const handleLike = () => {
-    likeMutate({
-      userId,
-      id: videoId,
-      type: "video",
-    });
-    setIsLiked(true);
-    setAnimate(true);
-    setTimeout(() => setAnimate(false), 300);
+    if (!isLiked) {
+      likeMutate({
+        userId,
+        id: videoId,
+        type: "video",
+      });
+      setIsLiked(true);
+      setAnimate(true);
+      setTimeout(() => setAnimate(false), 300);
+    } else {
+      likeMutate({
+        userId,
+        id: videoId,
+        type: "video",
+      });
+      setIsLiked(false);
+    }
   };
 
   useEffect(() => {
@@ -64,6 +74,18 @@ const VideoDetail = ({ videoId }: VideoDetailProps) => {
   if (error) return <div>Error: {error.message}</div>;
   // TODO: Error 컴포넌트 추가
   if (!videoData) return null;
+
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.info("클립보드에 복사되었습니다.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } catch (e) {
+      toast.error("복사에 실패하였습니다.");
+    }
+  };
 
   const openEditModal = () => {
     const handleModify = (video: VideoData) => {
@@ -156,7 +178,11 @@ const VideoDetail = ({ videoId }: VideoDetailProps) => {
                 {videoData.numOfLike}
               </span>
             </Button>
-            <Button variant="outline" className="ml-2">
+            <Button
+              variant="outline"
+              className="ml-2"
+              onClick={() => handleCopyClipBoard(window.location.href)}
+            >
               <AiOutlineShareAlt className="mr-2" />
               공유
             </Button>
