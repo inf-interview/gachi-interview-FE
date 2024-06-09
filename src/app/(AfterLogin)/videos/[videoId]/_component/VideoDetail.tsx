@@ -78,12 +78,12 @@ const VideoDetail = ({ videoId }: VideoDetailProps) => {
   const handleCopyClipBoard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      toast.info("클립보드에 복사되었습니다.", {
+      toast.info("클립보드에 주소가 복사되었습니다!", {
         position: "top-right",
         autoClose: 3000,
       });
     } catch (e) {
-      toast.error("복사에 실패하였습니다.");
+      toast.error("주소 복사에 실패하였습니다.");
     }
   };
 

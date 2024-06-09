@@ -20,6 +20,7 @@ export default function EditPostForm({ post }: { post: Post }) {
   const { openDialogWithBack, closeModal } = useModal();
   const accessToken = useRecoilValue(accessTokenState);
   const userId = useRecoilValue(userIdState);
+  const isSubmitDisabled = tags.length === 0;
 
   const postData = useMutation({
     mutationKey: ["community", post.postId.toString()],
@@ -113,13 +114,28 @@ export default function EditPostForm({ post }: { post: Post }) {
           />
         </div>
         <textarea
-          placeholder={`[면접 후기 내용 작성 가이드]\n\n - 면접 질문\n - 면접 답변 혹은 면접 느낌\n - 발표 시기`}
+          placeholder={
+            category === "reviews"
+              ? `[면접 후기 내용 작성 가이드]\n\n - 면접 질문\n - 면접 답변 혹은 면접 느낌\n - 발표 시기`
+              : `[스터디 모집 글 내용 작성 가이드]\n\n - 구체적인 스터디 내용\n - 모집 인원\n - 스터디 진행 방식`
+          }
           onChange={handleContent}
           value={content}
           required
           className="p-2 resize-none border border-gray-300 rounded-md mb-4 h-80 focus:outline-none"
         />
-        <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+        {!title && <p className="text-sm text-red-500 pl-2 mb-2">제목을 입력해주세요.</p>}
+        {!content && <p className="text-sm text-red-500 pl-2 mb-2">내용을 입력해주세요.</p>}
+        {isSubmitDisabled && (
+          <p className="text-sm text-red-500 pl-2 mb-4">태그를 하나 이상 추가해주세요.</p>
+        )}
+        <button
+          type="submit"
+          className={`bg-black text-white font-bold py-2 px-4 rounded ${
+            isSubmitDisabled || !title || !content ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={isSubmitDisabled || !title || !content}
+        >
           수정 완료
         </button>
       </form>

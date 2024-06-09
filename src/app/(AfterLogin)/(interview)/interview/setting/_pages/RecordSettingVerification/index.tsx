@@ -42,7 +42,7 @@ const RecordSettingVerification = ({ setStep }: RecordSettingVerificationProps) 
       if (validateInterviewOption()) {
         router.push("/interview/record");
       }
-    }, 3000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);

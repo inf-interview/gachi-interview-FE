@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CommentForm from "@/app/(AfterLogin)/_component/CommentForm";
 import { Badge } from "@/components/ui/badge";
 import { Post } from "@/model/Post";
@@ -19,16 +19,25 @@ import Modal from "@/components/Modal";
 import { useModal } from "@/components/Modal/useModal";
 import deletePost from "../_lib/deletePost";
 import { useRouter } from "next/navigation";
+import { convertLinks } from "../_lib/convertLinks";
+import DOMPurify from "dompurify";
 
 export default function PostDetail({ post }: { post: Post }) {
   const [isLiked, setIsLiked] = useState(post.liked);
   const [animate, setAnimate] = useState(false);
+  const [convertedContent, setConvertedContent] = useState("");
   const { openModal, closeModal } = useModal();
   const router = useRouter();
   const accessToken = useRecoilValue(accessTokenState);
   const userId = useRecoilValue(userIdState);
-  const postId = post.postId;
   const queryClient = useQueryClient();
+  const postId = post.postId;
+  const content = post.content;
+
+  useEffect(() => {
+    const sanitizedContent = DOMPurify.sanitize(convertLinks(content));
+    setConvertedContent(sanitizedContent);
+  }, [content]);
 
   const { mutate } = useMutation({
     mutationFn: (params: { userId: number; postId: string; accessToken: string }) =>
@@ -95,7 +104,7 @@ export default function PostDetail({ post }: { post: Post }) {
   const handleCopyClipBoard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      toast.info("클립보드에 복사되었습니다.", {
+      toast.info("클립보드에 주소가 복사되었습니다!", {
         position: "top-right",
         autoClose: 3000,
       });
@@ -140,7 +149,10 @@ export default function PostDetail({ post }: { post: Post }) {
         <span className="text-2xl font-bold">{post.postTitle}</span>
         <hr className="mt-2" />
         <div className="flex">
-          <p className="my-5 pb-8 whitespace-pre-line">{post.content}</p>
+          <div
+            className="my-5 pb-8 whitespace-pre-line"
+            dangerouslySetInnerHTML={{ __html: convertedContent }}
+          />
           {post.userId == userId && (
             <div className="flex justify-end mt-2 ml-auto">
               <Button
@@ -171,17 +183,13 @@ export default function PostDetail({ post }: { post: Post }) {
         ))}
         <div className="flex my-3">
           <div className="flex items-center flex-1 mt-2">
-            {post.image ? (
-              <img src={post.image} alt="프로필이미지" className="w-5 h-5 rounded-full" />
-            ) : (
-              <Image
-                src="data:image/jpeg;base64,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"
-                alt="프로필이미지"
-                className="rounded-full"
-                width={20}
-                height={20}
-              />
-            )}
+            <img
+              src={post.image}
+              alt="프로필이미지"
+              className="rounded-full"
+              width={20}
+              height={20}
+            />
             <p className="text-gray-600 text-sm ml-2">
               <span className="font-semibold">{post.userName}</span> •{" "}
               {formatRelativeTime(post.time.toLocaleString())}
