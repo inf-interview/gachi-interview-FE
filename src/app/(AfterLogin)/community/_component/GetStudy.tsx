@@ -7,6 +7,7 @@ import getStudies from "../_lib/getStudies";
 import { useRecoilValue } from "recoil";
 import { accessTokenState } from "@/store/auth";
 import NoData from "../../_component/NoData";
+import Loading from "../../_component/Loading";
 
 export default function GetStudy({
   tabParams,
@@ -28,7 +29,7 @@ export default function GetStudy({
     queryFn: ({ queryKey }) => getStudies({ queryKey, sortType, page, accessToken }),
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error</div>;
 
   if (data?.content?.length === 0) {

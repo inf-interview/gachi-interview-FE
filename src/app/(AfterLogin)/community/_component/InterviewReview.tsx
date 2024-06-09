@@ -7,6 +7,7 @@ import { PostContent } from "@/model/Post";
 import { useRecoilValue } from "recoil";
 import { accessTokenState } from "@/store/auth";
 import NoData from "../../_component/NoData";
+import Loading from "../../_component/Loading";
 
 export default function InterviewReview({
   tabParams,
@@ -28,7 +29,7 @@ export default function InterviewReview({
     queryFn: ({ queryKey }) => getReviews({ queryKey, sortType, page, accessToken }),
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error</div>;
 
   if (data?.content?.length === 0) {

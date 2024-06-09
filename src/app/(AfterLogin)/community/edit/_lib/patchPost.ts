@@ -1,22 +1,35 @@
 import customFetcher from "@/lib/utils/customFetcher";
 
-export interface postLikeProps {
+export default async function patchPost({
+  title,
+  content,
+  tags,
+  category,
+  accessToken,
+  userId,
+  postId,
+}: {
+  title: string;
+  content: string;
+  tags: string[];
+  category: string;
+  accessToken: string;
   userId: number;
   postId: string;
-  accessToken: string;
-}
-
-export default async function postLike({ userId, postId, accessToken }: postLikeProps) {
+}) {
   try {
-    const { response, data } = await customFetcher(`/board/${postId}/like`, {
-      method: "POST",
+    const { response, data } = await customFetcher(`/board/${postId}/edit`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         userId,
-        postId,
+        postTitle: title,
+        content,
+        tag: tags,
+        category,
       }),
     });
 
@@ -26,7 +39,6 @@ export default async function postLike({ userId, postId, accessToken }: postLike
 
     return await data;
   } catch (error) {
-    console.error(error);
     throw new Error("Failed to fetch data");
   }
 }

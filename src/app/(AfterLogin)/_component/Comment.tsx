@@ -3,7 +3,6 @@ import { formatRelativeTime } from "@/lib/utils/days";
 import { Comment as IComment } from "@/model/Comment";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent, useState, useRef } from "react";
-import patchComment from "../community/_lib/patchComment";
 import { Button } from "@/components/ui/button";
 import { PiPencil } from "react-icons/pi";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -11,6 +10,7 @@ import Modal from "@/components/Modal";
 import deleteComment from "../community/_lib/deleteComment";
 import { useRecoilValue } from "recoil";
 import { userIdState } from "@/store/auth";
+import patchComment from "../community/_lib/patchComment";
 
 export default function Comment({ comment, postId }: { comment: IComment; postId: string }) {
   const [isEditing, setIsEditing] = useState(false);

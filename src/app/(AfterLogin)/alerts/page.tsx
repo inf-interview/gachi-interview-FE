@@ -59,7 +59,7 @@ export default function Alerts() {
           </article>
         ))
       ) : (
-        <NoData message="알림이 아직은 도착한게 없네요...😰" />
+        <NoData message="아직은 도착한 알림이 없네요...😰" />
       )}
     </section>
   );

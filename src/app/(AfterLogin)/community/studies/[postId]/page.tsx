@@ -1,8 +1,8 @@
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
-import getStudyDetail from "./_lib/getStudyDetail";
 import GetStudyDetail from "./_component/GetStudyDetail";
 import Comments from "@/app/(AfterLogin)/_component/Comments";
 import getComments from "../../_lib/getComments";
+import getPostDetail from "../../_lib/getPostDetail";
 
 export default async function Page({
   params,
@@ -16,8 +16,8 @@ export default async function Page({
   const dehydratedState = dehydrate(queryClient);
 
   await queryClient.prefetchQuery({
-    queryKey: ["community", "studies", postId],
-    queryFn: () => getStudyDetail,
+    queryKey: ["community", postId],
+    queryFn: () => getPostDetail,
   });
 
   await queryClient.prefetchQuery({

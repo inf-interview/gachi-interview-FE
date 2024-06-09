@@ -13,10 +13,18 @@ import { accessTokenState, userIdState } from "@/store/auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postLike from "../_lib/postLike";
 import { toast } from "react-toastify";
+import { PiPencil } from "react-icons/pi";
+import { RiDeleteBinLine } from "react-icons/ri";
+import Modal from "@/components/Modal";
+import { useModal } from "@/components/Modal/useModal";
+import deletePost from "../_lib/deletePost";
+import { useRouter } from "next/navigation";
 
 export default function PostDetail({ post }: { post: Post }) {
   const [isLiked, setIsLiked] = useState(post.liked);
   const [animate, setAnimate] = useState(false);
+  const { openModal, closeModal } = useModal();
+  const router = useRouter();
   const accessToken = useRecoilValue(accessTokenState);
   const userId = useRecoilValue(userIdState);
   const postId = post.postId;
@@ -26,7 +34,7 @@ export default function PostDetail({ post }: { post: Post }) {
     mutationFn: (params: { userId: number; postId: string; accessToken: string }) =>
       postLike(params),
     onMutate: async () => {
-      const queryKey = ["community", post.category, postId.toString()];
+      const queryKey = ["community", postId.toString()];
       await queryClient.cancelQueries({ queryKey });
       const previousData = queryClient.getQueryData(queryKey);
       queryClient.setQueryData(queryKey, (old: { numOfLike: number; liked: boolean }) => {
@@ -40,13 +48,27 @@ export default function PostDetail({ post }: { post: Post }) {
     },
     onSuccess: (data) => {
       queryClient.setQueryData(
-        ["community", post.category, postId.toString()],
+        ["community", postId.toString()],
         (old: { numOfLike: number; liked: boolean }) => ({
           ...old,
           numOfLike: data.numOfLike,
           liked: data.liked,
         }),
       );
+    },
+  });
+
+  const removePost = useMutation({
+    mutationKey: ["community", postId],
+    mutationFn: (removedPost: { userId: number; postId: string }) => deletePost(removedPost),
+    onMutate: async (removedPost) => {
+      const previousData = queryClient.getQueryData(["community", postId]);
+      if (!previousData) return;
+
+      queryClient.setQueryData(["community", postId], (old: Post[]) => {
+        return old.filter((post: { postId: string }) => post.postId !== removedPost.postId);
+      });
+      return { previousData };
     },
   });
 
@@ -82,12 +104,62 @@ export default function PostDetail({ post }: { post: Post }) {
     }
   };
 
+  const handleDeletePost = () => {
+    removePost.mutate({
+      userId,
+      postId,
+    });
+    closeModal();
+    router.push(`/community?tab=${post.category}`);
+  };
+
+  const handleOpenDeleteModal = () => {
+    openModal(
+      <Modal
+        header="게시글 삭제"
+        disableBackdropClick={false}
+        footer={
+          <div className="flex justify-end gap-2">
+            <Button onClick={closeModal} variant="outline">
+              취소
+            </Button>
+            <Button onClick={handleDeletePost} variant="destructive">
+              삭제
+            </Button>
+          </div>
+        }
+      >
+        <p>정말로 삭제하시겠습니까?</p>
+      </Modal>,
+    );
+  };
+
   return (
     <div className="flex-col">
       <div className="px-6 pt-4 pb-2 mb-5 border border-gray-300 rounded-md">
         <span className="text-2xl font-bold">{post.postTitle}</span>
         <hr className="mt-2" />
-        <p className="my-5 pb-8 whitespace-pre">{post.content}</p>
+        <div className="flex">
+          <p className="my-5 pb-8 whitespace-pre-line">{post.content}</p>
+          {post.userId == userId && (
+            <div className="flex justify-end mt-2 ml-auto">
+              <Button
+                onClick={() =>
+                  router.push(`/community/edit?tab=${post.category}&id=${post.postId}`)
+                }
+                variant="link"
+                className="text-gray-600"
+              >
+                <PiPencil />
+                수정
+              </Button>
+              <Button onClick={handleOpenDeleteModal} variant="link" className="text-red-500">
+                <RiDeleteBinLine />
+                삭제
+              </Button>
+            </div>
+          )}
+        </div>
         {post.tag.map((tag, index) => (
           <Badge
             key={index}
