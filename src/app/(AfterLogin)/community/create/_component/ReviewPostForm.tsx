@@ -101,6 +101,7 @@ export default function ReviewPostForm() {
           <input
             type="text"
             value={newTag}
+            required
             onChange={handleNewTagChange}
             onKeyDown={handleNewTagKeyDown}
             placeholder="태그 작성 후 엔터키를 눌러주세요 (태그 클릭 시 삭제)"

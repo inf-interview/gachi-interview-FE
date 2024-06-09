@@ -108,6 +108,7 @@ const VideoMetadataModal = ({ thumbnails, onSubmit }: VideoMetadataModalProps) =
           type="text"
           placeholder="태그를 입력하세요. (쉼표로 구분)"
           value={metadata.tags.join(",")}
+          required
           onChange={handleTagsChange}
         />
 
