@@ -1,19 +1,15 @@
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
-import getReviews from "./_lib/getReviews";
-import getStudies from "./_lib/getStudies";
 import CommunityContainer from "./_component/CommunityContainer";
+import getBoards from "./_lib/getBoards";
 
-export default function Page() {
+export default function Page({ searchParams }: { searchParams: { tab: string } }) {
+  const category = searchParams.tab;
   const queryClient = new QueryClient();
   const dehydratedState = dehydrate(queryClient);
 
   queryClient.prefetchQuery({
-    queryKey: ["community", "reviews", "new", 1],
-    queryFn: () => getReviews,
-  });
-  queryClient.prefetchQuery({
-    queryKey: ["community", "studies", "new", 1],
-    queryFn: () => getStudies,
+    queryKey: ["community", category, "new", 1],
+    queryFn: () => getBoards,
   });
 
   return (
