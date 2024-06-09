@@ -79,7 +79,7 @@ const Comment = ({ comment, videoId }: CommentProps) => {
   };
 
   return (
-    <div className="flex flex-col mt-4">
+    <div id={comment.commentId.toString()} className="flex flex-col px-4 py-2 comment">
       <div className="flex items-center">
         <img
           className="w-10 h-10 rounded-full object-cover"
