@@ -1,5 +1,5 @@
 #!/bin/sh
 cd ../
 mkdir output
-cp -R ./inf-interview/gachi-myeonjeob-FE/* ./output
-cp -R ./output ./inf-interview/gachi-myeonjeob-FE/
+cp -R ./gachi-myeonjeob-FE/* ./output
+cp -R ./output ./gachi-myeonjeob-FE/
