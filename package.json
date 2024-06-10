@@ -6,22 +6,62 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "mock": "npx tsx watch ./src/mocks/http.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.563.0",
+    "@aws-sdk/s3-request-presigner": "^3.563.0",
+    "@ffmpeg/ffmpeg": "^0.12.6",
+    "@ffmpeg/util": "^0.12.1",
+    "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-separator": "^1.0.3",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "@tanstack/react-query": "^5.29.2",
+    "@types/dom-speech-recognition": "^0.0.4",
+    "aws-sdk": "^2.1607.0",
+    "axios": "^1.6.8",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "dompurify": "^3.1.5",
+    "firebase": "^10.11.0",
+    "lottie-web": "^5.12.2",
+    "lucide-react": "^0.365.0",
+    "next": "14.1.4",
+    "next-auth": "^5.0.0-beta.16",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.1.4"
+    "react-icons": "^5.0.1",
+    "react-lottie-player": "^2.0.0",
+    "react-toastify": "^10.0.5",
+    "recoil": "^0.7.7",
+    "tailwind-merge": "^2.2.2",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@mswjs/http-middleware": "^0.10.0",
+    "@tanstack/react-query-devtools": "^5.29.2",
+    "@types/cors": "^2.8.17",
+    "@types/dompurify": "^3.0.5",
+    "@types/express": "^4.17.21",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "cors": "^2.8.5",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.4",
+    "eslint-config-prettier": "^9.1.0",
+    "express": "^4.19.2",
+    "msw": "2.1",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.1.4"
+    "typescript": "^5"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
