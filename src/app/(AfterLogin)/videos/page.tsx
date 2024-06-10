@@ -19,7 +19,7 @@ import { Post } from "@/model/Post";
 const Videos = () => {
   const page = 1;
   const [sortType, setSortType] = useState<"new" | "like">("new");
-  const { data: videoList } = useGetInterviews({ sortType: sortType, page });
+  const { data: videoList, isLoading } = useGetInterviews({ sortType: sortType, page });
   const [filteredVideoList, setFilteredVideoList] = useState<Video[]>(videoList?.content || []);
 
   useEffect(() => {
