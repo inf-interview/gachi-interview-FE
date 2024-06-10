@@ -1,6 +1,6 @@
 import customFetcher from "@/lib/utils/customFetcher";
 
-export default async function getStudies({
+export default async function getBoards({
   queryKey,
   sortType,
   page,

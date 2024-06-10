@@ -1,6 +1,6 @@
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
 import InterviewReviewDetail from "./_component/InterviewReviewDetail";
-import getReviewDetail from "./_lib/getReviewDetail";
+import getPostDetail from "../../_lib/getPostDetail";
 import getComments from "../../_lib/getComments";
 import Comments from "@/app/(AfterLogin)/_component/Comments";
 
@@ -16,8 +16,8 @@ export default async function Page({
   const dehydratedState = dehydrate(queryClient);
 
   await queryClient.prefetchQuery({
-    queryKey: ["community", "reviews", postId],
-    queryFn: () => getReviewDetail,
+    queryKey: ["community", postId],
+    queryFn: () => getPostDetail,
   });
 
   await queryClient.prefetchQuery({

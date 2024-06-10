@@ -5,6 +5,7 @@ import { Video } from "@/model/Video";
 import { useRecoilValue } from "recoil";
 import { accessTokenState, userIdState } from "@/store/auth";
 import NoData from "../../_component/NoData";
+import Loading from "../../_component/Loading";
 
 export default function MyVideoPosts() {
   const accessToken = useRecoilValue(accessTokenState);
@@ -15,7 +16,7 @@ export default function MyVideoPosts() {
     queryFn: () => getMyVideos({ accessToken, userId }),
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error loading videos</div>;
 
   const videos = Array.isArray(data) ? data : [];

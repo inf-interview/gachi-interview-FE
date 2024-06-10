@@ -26,7 +26,7 @@ export default function AfterLoginLayout({ children }: { children: ReactNode }) 
   ];
 
   const handleBackClick = () => {
-    if (pathname.startsWith("/community/create")) {
+    if (pathname.startsWith("/community/create") || pathname.startsWith("/community/edit")) {
       openModal(
         <Modal
           header="글 작성을 종료하시겠습니까?"

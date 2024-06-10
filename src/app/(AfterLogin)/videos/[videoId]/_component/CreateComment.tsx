@@ -39,16 +39,17 @@ const CreateComment = ({ videoId }: CreateCommentProps) => {
       <textarea
         value={comment}
         onChange={handleComment}
-        // TODO: placeholder 수정
-        placeholder="피드백을 작성해보세요. 😁"
-        className={`w-full ${
+        placeholder="영상에 대한 피드백을 자유롭게 작성해보세요."
+        className={`w-full resize-none ${
           focus ? "h-32" : "h-14 overflow-hidden"
         } mt-4 p-4 rounded-lg border border-gray-300`}
         onFocus={handleFocus}
       />
       {focus && (
         <div className="flex justify-end mt-2 gap-2">
-          <Button onClick={handleFocus}>취소</Button>
+          <Button onClick={handleFocus} variant="outline">
+            취소
+          </Button>
           <Button type="submit">등록</Button>
         </div>
       )}

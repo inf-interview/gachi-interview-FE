@@ -19,6 +19,7 @@ export default function StudyPostForm() {
   const { openDialogWithBack } = useModal();
   const accessToken = useRecoilValue(accessTokenState);
   const userId = useRecoilValue(userIdState);
+  const isSubmitDisabled = tags.length === 0;
 
   const postData = useMutation({
     mutationKey: ["community", category, "new", 1],
@@ -112,9 +113,20 @@ export default function StudyPostForm() {
           onChange={handleContent}
           value={content}
           required
-          className="p-2 border border-gray-300 rounded-md mb-4 h-80 focus:outline-none"
+          className="p-2 resize-none border border-gray-300 rounded-md mb-4 h-80 focus:outline-none"
         />
-        <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
+        {!title && <p className="text-sm text-red-500 pl-2 mb-2">제목을 입력해주세요.</p>}
+        {!content && <p className="text-sm text-red-500 pl-2 mb-2">내용을 입력해주세요.</p>}
+        {isSubmitDisabled && (
+          <p className="text-sm text-red-500 pl-2 mb-4">태그를 하나 이상 추가해주세요.</p>
+        )}
+        <button
+          type="submit"
+          className={`bg-black text-white font-bold py-2 px-4 rounded ${
+            isSubmitDisabled || !title || !content ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={isSubmitDisabled || !title || !content}
+        >
           등록
         </button>
       </form>

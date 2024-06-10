@@ -66,7 +66,7 @@ const AddQuestionModal = ({ closeModal, onSubmit }: AddQuestionModalProps) => {
         placeholder="예시 답변을 입력해주세요."
         value={answerContent}
         onChange={(e) => setAnswer(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded-md mt-4 h-80"
+        className="w-full resize-none p-2 border border-gray-300 rounded-md mt-4 h-80"
       />
     </Modal>
   );

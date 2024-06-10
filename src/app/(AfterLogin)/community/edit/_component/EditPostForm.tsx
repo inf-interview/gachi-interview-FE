@@ -1,18 +1,19 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
-import postBoard from "../_lib/postBoard";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useModal } from "@/components/Modal/useModal";
 import { useRecoilValue } from "recoil";
 import { accessTokenState, userIdState } from "@/store/auth";
+import { Post } from "@/model/Post";
+import patchPost from "../_lib/patchPost";
 
-export default function ReviewPostForm() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+export default function EditPostForm({ post }: { post: Post }) {
+  const [title, setTitle] = useState(post.postTitle);
+  const [content, setContent] = useState(post.content);
+  const [tags, setTags] = useState<string[]>(post.tag);
   const [newTag, setNewTag] = useState("");
   const category = useSearchParams().get("tab");
   const queryClient = useQueryClient();
@@ -22,20 +23,21 @@ export default function ReviewPostForm() {
   const isSubmitDisabled = tags.length === 0;
 
   const postData = useMutation({
-    mutationKey: ["community", category, "new", 1],
-    mutationFn: (newPost: {
+    mutationKey: ["community", post.postId.toString()],
+    mutationFn: (updatedPost: {
       title: string;
       content: string;
       tags: string[];
       category: string;
       accessToken: string;
       userId: number;
-    }) => postBoard(newPost),
+      postId: string;
+    }) => patchPost(updatedPost),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["community", category, "new", 1],
+        queryKey: ["community", post?.postId.toString()],
       });
-      openDialogWithBack("게시글이 등록되었습니다.");
+      openDialogWithBack("게시글이 수정되었습니다.");
     },
   });
 
@@ -50,6 +52,7 @@ export default function ReviewPostForm() {
       category,
       accessToken,
       userId,
+      postId: post.postId,
     });
   };
 
@@ -79,7 +82,9 @@ export default function ReviewPostForm() {
 
   return (
     <>
-      <p className="text-3xl font-bold mt-8">면접 후기 작성</p>
+      <p className="text-3xl font-bold mt-8">
+        {post.category === "reviews" ? "면접 후기 수정" : "스터디 모집 수정"}
+      </p>
       <form onSubmit={onSubmit} className="flex flex-col w-full mt-2">
         <input
           type="text"
@@ -90,7 +95,7 @@ export default function ReviewPostForm() {
           className="p-2 border border-gray-300 rounded-md mb-4 text-lg focus:outline-none"
         />
         <div className="mb-4">
-          {tags.map((tag, index) => (
+          {tags?.map((tag, index) => (
             <Badge
               key={index}
               className="mr-1 cursor-pointer bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -109,7 +114,11 @@ export default function ReviewPostForm() {
           />
         </div>
         <textarea
-          placeholder={`[면접 후기 내용 작성 가이드]\n\n - 면접 질문\n - 면접 답변 혹은 면접 느낌\n - 발표 시기`}
+          placeholder={
+            category === "reviews"
+              ? `[면접 후기 내용 작성 가이드]\n\n - 면접 질문\n - 면접 답변 혹은 면접 느낌\n - 발표 시기`
+              : `[스터디 모집 글 내용 작성 가이드]\n\n - 구체적인 스터디 내용\n - 모집 인원\n - 스터디 진행 방식`
+          }
           onChange={handleContent}
           value={content}
           required
@@ -127,7 +136,7 @@ export default function ReviewPostForm() {
           }`}
           disabled={isSubmitDisabled || !title || !content}
         >
-          등록
+          수정 완료
         </button>
       </form>
     </>

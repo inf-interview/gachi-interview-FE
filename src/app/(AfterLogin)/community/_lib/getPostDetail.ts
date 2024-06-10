@@ -1,13 +1,13 @@
 import customFetcher from "@/lib/utils/customFetcher";
 
-export default async function getReviewDetail({
+export default async function getPostDetail({
   queryKey,
   accessToken,
 }: {
-  queryKey: [string, string, string];
+  queryKey: [_1: string, _2: string];
   accessToken: string;
 }) {
-  const [_1, _2, postId] = queryKey;
+  const [_1, postId] = queryKey;
 
   try {
     const { response, data } = await customFetcher(`/board/${postId}`, {
