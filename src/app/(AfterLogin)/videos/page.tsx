@@ -36,7 +36,7 @@ const Videos = () => {
     setFilteredVideoList(filteredList as Video[]);
   };
 
-  if (!videoList) {
+  if (isLoading || !videoList) {
     return <Loading />;
   }
 
@@ -62,7 +62,6 @@ const Videos = () => {
       </div>
 
       {filteredVideoList.length === 0 && <NoData />}
-
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {filteredVideoList.map((video) => (
           <VideoCard key={video.videoId} video={video} />

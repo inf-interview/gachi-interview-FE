@@ -5,6 +5,7 @@ export const useMediaDevices = () => {
   const [cameraDevices, setCameraDevices] = useState<MediaDeviceInfo[]>([]);
 
   useEffect(() => {
+    // 미디어 디바이스 목록을 가져옵니다.
     navigator.mediaDevices.enumerateDevices().then((devices) => {
       const audioInputDevices = devices.filter((device) => device.kind === "audioinput");
       const videoInputDevices = devices.filter((device) => device.kind === "videoinput");

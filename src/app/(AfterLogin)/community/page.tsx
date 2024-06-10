@@ -1,6 +1,7 @@
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
 import CommunityContainer from "./_component/CommunityContainer";
 import getBoards from "./_lib/getBoards";
+import { Suspense } from "react";
 
 export default function Page({ searchParams }: { searchParams: { tab: string } }) {
   const category = searchParams.tab;
@@ -14,7 +15,9 @@ export default function Page({ searchParams }: { searchParams: { tab: string } }
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <CommunityContainer />
+      <Suspense>
+        <CommunityContainer />
+      </Suspense>
     </HydrationBoundary>
   );
 }
