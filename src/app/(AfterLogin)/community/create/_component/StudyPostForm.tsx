@@ -14,12 +14,13 @@ export default function StudyPostForm() {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
+  const [errors, setErrors] = useState({ title: false, content: false, tags: false });
+
   const category = useSearchParams().get("tab");
   const queryClient = useQueryClient();
   const { openDialogWithBack } = useModal();
   const accessToken = useRecoilValue(accessTokenState);
   const userId = useRecoilValue(userIdState);
-  const isSubmitDisabled = tags.length === 0;
 
   const postData = useMutation({
     mutationKey: ["community", category, "new", 1],
@@ -43,6 +44,18 @@ export default function StudyPostForm() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const newErrors = {
+      title: !title,
+      content: !content,
+      tags: tags.length === 0,
+    };
+    setErrors(newErrors);
+
+    if (newErrors.title || newErrors.content || newErrors.tags) {
+      return;
+    }
+
     postData.mutate({
       title,
       content,
@@ -86,7 +99,6 @@ export default function StudyPostForm() {
           placeholder="제목에 핵심 내용을 요약해 보세요"
           onChange={handleTitle}
           value={title}
-          required
           className="p-2 border border-gray-300 rounded-md mb-4 text-lg focus:outline-none"
         />
         <div className="mb-4">
@@ -112,21 +124,14 @@ export default function StudyPostForm() {
           placeholder={`[스터디 모집 글 내용 작성 가이드]\n\n - 구체적인 스터디 내용\n - 모집 인원\n - 스터디 진행 방식`}
           onChange={handleContent}
           value={content}
-          required
           className="p-2 resize-none border border-gray-300 rounded-md mb-4 h-80 focus:outline-none"
         />
-        {!title && <p className="text-sm text-red-500 pl-2 mb-2">제목을 입력해주세요.</p>}
-        {!content && <p className="text-sm text-red-500 pl-2 mb-2">내용을 입력해주세요.</p>}
-        {isSubmitDisabled && (
+        {errors.title && <p className="text-sm text-red-500 pl-2 mb-2">제목을 입력해주세요.</p>}
+        {errors.content && <p className="text-sm text-red-500 pl-2 mb-2">내용을 입력해주세요.</p>}
+        {errors.tags && (
           <p className="text-sm text-red-500 pl-2 mb-4">태그를 하나 이상 추가해주세요.</p>
         )}
-        <button
-          type="submit"
-          className={`bg-black text-white font-bold py-2 px-4 rounded ${
-            isSubmitDisabled || !title || !content ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={isSubmitDisabled || !title || !content}
-        >
+        <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
           등록
         </button>
       </form>

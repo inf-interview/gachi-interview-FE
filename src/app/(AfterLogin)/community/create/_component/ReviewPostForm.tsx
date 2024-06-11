@@ -14,12 +14,13 @@ export default function ReviewPostForm() {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
+  const [errors, setErrors] = useState({ title: false, content: false, tags: false });
+
   const category = useSearchParams().get("tab");
   const queryClient = useQueryClient();
   const { openDialogWithBack, closeModal } = useModal();
   const accessToken = useRecoilValue(accessTokenState);
   const userId = useRecoilValue(userIdState);
-  const isSubmitDisabled = tags.length === 0;
 
   const postData = useMutation({
     mutationKey: ["community", category, "new", 1],
@@ -43,6 +44,18 @@ export default function ReviewPostForm() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const newErrors = {
+      title: !title,
+      content: !content,
+      tags: tags.length === 0,
+    };
+    setErrors(newErrors);
+
+    if (newErrors.title || newErrors.content || newErrors.tags) {
+      return;
+    }
+
     postData.mutate({
       title,
       content,
@@ -55,10 +68,12 @@ export default function ReviewPostForm() {
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
+    if (errors.title) setErrors((prev) => ({ ...prev, title: false }));
   };
 
   const handleContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
+    if (errors.content) setErrors((prev) => ({ ...prev, content: false }));
   };
 
   const handleNewTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +85,7 @@ export default function ReviewPostForm() {
       e.preventDefault();
       setTags([...tags, newTag.trim()]);
       setNewTag("");
+      if (errors.tags) setErrors((prev) => ({ ...prev, tags: false }));
     }
   };
 
@@ -86,7 +102,6 @@ export default function ReviewPostForm() {
           placeholder="제목에 핵심 내용을 요약해 보세요"
           onChange={handleTitle}
           value={title}
-          required
           className="p-2 border border-gray-300 rounded-md mb-4 text-lg focus:outline-none"
         />
         <div className="mb-4">
@@ -112,21 +127,14 @@ export default function ReviewPostForm() {
           placeholder={`[면접 후기 내용 작성 가이드]\n\n - 면접 질문\n - 면접 답변 혹은 면접 느낌\n - 발표 시기`}
           onChange={handleContent}
           value={content}
-          required
           className="p-2 resize-none border border-gray-300 rounded-md mb-4 h-80 focus:outline-none"
         />
-        {!title && <p className="text-sm text-red-500 pl-2 mb-2">제목을 입력해주세요.</p>}
-        {!content && <p className="text-sm text-red-500 pl-2 mb-2">내용을 입력해주세요.</p>}
-        {isSubmitDisabled && (
+        {errors.title && <p className="text-sm text-red-500 pl-2 mb-2">제목을 입력해주세요.</p>}
+        {errors.content && <p className="text-sm text-red-500 pl-2 mb-2">내용을 입력해주세요.</p>}
+        {errors.tags && (
           <p className="text-sm text-red-500 pl-2 mb-4">태그를 하나 이상 추가해주세요.</p>
         )}
-        <button
-          type="submit"
-          className={`bg-black text-white font-bold py-2 px-4 rounded ${
-            isSubmitDisabled || !title || !content ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={isSubmitDisabled || !title || !content}
-        >
+        <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
           등록
         </button>
       </form>
