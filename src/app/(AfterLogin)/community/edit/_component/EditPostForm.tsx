@@ -1,7 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useModal } from "@/components/Modal/useModal";
@@ -15,6 +15,8 @@ export default function EditPostForm({ post }: { post: Post }) {
   const [content, setContent] = useState(post.content);
   const [tags, setTags] = useState<string[]>(post.tag);
   const [newTag, setNewTag] = useState("");
+  const [errors, setErrors] = useState({ title: false, content: false, tags: false });
+
   const category = useSearchParams().get("tab");
   const queryClient = useQueryClient();
   const { openDialogWithBack, closeModal } = useModal();
@@ -45,6 +47,18 @@ export default function EditPostForm({ post }: { post: Post }) {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const newErrors = {
+      title: !title,
+      content: !content,
+      tags: tags.length === 0,
+    };
+    setErrors(newErrors);
+
+    if (newErrors.title || newErrors.content || newErrors.tags) {
+      return;
+    }
+
     postData.mutate({
       title,
       content,
@@ -91,7 +105,6 @@ export default function EditPostForm({ post }: { post: Post }) {
           placeholder="제목에 핵심 내용을 요약해 보세요"
           onChange={handleTitle}
           value={title}
-          required
           className="p-2 border border-gray-300 rounded-md mb-4 text-lg focus:outline-none"
         />
         <div className="mb-4">
@@ -121,21 +134,14 @@ export default function EditPostForm({ post }: { post: Post }) {
           }
           onChange={handleContent}
           value={content}
-          required
           className="p-2 resize-none border border-gray-300 rounded-md mb-4 h-80 focus:outline-none"
         />
-        {!title && <p className="text-sm text-red-500 pl-2 mb-2">제목을 입력해주세요.</p>}
-        {!content && <p className="text-sm text-red-500 pl-2 mb-2">내용을 입력해주세요.</p>}
-        {isSubmitDisabled && (
+        {errors.title && <p className="text-sm text-red-500 pl-2 mb-2">제목을 입력해주세요.</p>}
+        {errors.content && <p className="text-sm text-red-500 pl-2 mb-2">내용을 입력해주세요.</p>}
+        {errors.tags && (
           <p className="text-sm text-red-500 pl-2 mb-4">태그를 하나 이상 추가해주세요.</p>
         )}
-        <button
-          type="submit"
-          className={`bg-black text-white font-bold py-2 px-4 rounded ${
-            isSubmitDisabled || !title || !content ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={isSubmitDisabled || !title || !content}
-        >
+        <button type="submit" className="bg-black text-white font-bold py-2 px-4 rounded">
           수정 완료
         </button>
       </form>

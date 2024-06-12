@@ -25,7 +25,7 @@ export default async function postComment({
       console.error("Failed to fetch data", response?.status);
       throw new Error("Failed to fetch data");
     }
-    console.log("postComment data", data);
+
     return await data;
   } catch (error) {
     console.error("Failed to post comment:", error);

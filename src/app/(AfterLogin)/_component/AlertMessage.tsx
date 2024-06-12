@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function AlertMessage() {
   useEffect(() => {
-    // requestPermission();
     onMessage(messaging, (payload) => {
       toast.info(payload.notification?.body);
     });
