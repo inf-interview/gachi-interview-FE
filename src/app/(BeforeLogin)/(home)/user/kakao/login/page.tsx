@@ -1,5 +1,5 @@
-import Auth2Redirect from "@/app/(BeforeLogin)/_component/auth2Redirect";
+import KakaoAuth2Redirect from "@/app/(BeforeLogin)/_component/kakaoAuth2Redirect";
 
 export default function Page() {
-  return <Auth2Redirect />;
+  return <KakaoAuth2Redirect />;
 }

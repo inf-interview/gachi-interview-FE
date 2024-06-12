@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { FaPen } from "react-icons/fa";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import InterviewReview from "./InterviewReview";
 import GetStudy from "./GetStudy";
 import { useEffect, useState } from "react";
@@ -24,9 +24,7 @@ import { accessTokenState } from "@/store/auth";
 import Loading from "../../_component/Loading";
 import { Video } from "@/model/Video";
 
-export default function CommunityContainer() {
-  const tabParams = useSearchParams().get("tab") || undefined;
-  const category = tabParams as string;
+export default function CommunityContainer({ category }: { category: string }) {
   const router = useRouter();
   const accessToken = useRecoilValue(accessTokenState);
   const page = 1;
@@ -65,7 +63,7 @@ export default function CommunityContainer() {
   if (error) return <div>Error</div>;
 
   return (
-    <Tabs defaultValue={tabParams}>
+    <Tabs defaultValue={category}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center w-full">
           <TabsList className="mr-4">
@@ -89,7 +87,7 @@ export default function CommunityContainer() {
             </Select>
           </div>
         </div>
-        <Link href={`/community/create?tab=${tabParams}`}>
+        <Link href={`/community/create?tab=${category}`}>
           <Button className="rounded-3xl">
             <FaPen className="mr-2" />
             글쓰기
@@ -99,7 +97,7 @@ export default function CommunityContainer() {
       <TabsContent value="reviews">
         <div>
           <InterviewReview
-            tabParams={tabParams}
+            tabParams={category}
             boardList={boardList}
             filteredBoardList={filteredBoardList}
           />
@@ -108,7 +106,7 @@ export default function CommunityContainer() {
       <TabsContent value="studies">
         <div>
           <GetStudy
-            tabParams={tabParams}
+            tabParams={category}
             boardList={boardList}
             filteredBoardList={filteredBoardList}
           />

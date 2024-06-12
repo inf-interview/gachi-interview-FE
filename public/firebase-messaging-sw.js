@@ -24,21 +24,3 @@ messaging.onBackgroundMessage((payload) => {
   };
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
-
-self.addEventListener("push", async (event) => {
-  console.log("push");
-  console.log(event);
-  try {
-    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-    const res = await fetch(`${BASE_URL}/alert`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return await res.json();
-  } catch (error) {
-    console.error("Failed to fetch data:", error);
-    throw new Error("Failed to fetch data");
-  }
-});
