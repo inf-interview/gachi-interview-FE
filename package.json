@@ -24,6 +24,7 @@
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "cookies-next": "^4.2.1",
     "dompurify": "^3.1.5",
     "firebase": "^10.11.0",
     "lottie-web": "^5.12.2",

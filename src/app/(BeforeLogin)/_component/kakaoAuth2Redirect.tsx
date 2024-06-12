@@ -6,8 +6,9 @@ import { getToken } from "firebase/messaging";
 import { messaging } from "@/firebase";
 import { useSetRecoilState } from "recoil";
 import { accessTokenState, refreshTokenState, userIdState } from "@/store/auth";
+import { setCookie } from "cookies-next";
 
-export default function Auth2Redirect() {
+export default function KakaoAuth2Redirect() {
   const [code, setCode] = useState<string | null>(null);
   const [fcmToken, setFcmToken] = useState<string | null>(null);
   const setAccessToken = useSetRecoilState(accessTokenState);
@@ -47,14 +48,15 @@ export default function Auth2Redirect() {
           const res = await fetch(`${BASE_URL}/user/kakao/login?code=${code}`, {
             method: "GET",
             headers: {
-              "Content-Type": "application/json;charset=utf-8",
+              "Content-Type": "application/json",
             },
           });
 
           if (res.status === 201) {
             console.log("로그인 성공");
             const data = await res.json();
-            console.log("res", data);
+
+            setCookie("accessToken", data.accessToken, { secure: true });
             setAccessToken(data.accessToken);
             setRefreshToken(data.refreshToken);
             setUserId(data.userId);
@@ -65,7 +67,7 @@ export default function Auth2Redirect() {
                 const tokenRes = await fetch(`${BASE_URL}/user/fcm/token`, {
                   method: "POST",
                   headers: {
-                    "Content-Type": "application/json;charset=utf-8",
+                    "Content-Type": "application/json",
                     Authorization: `Bearer ${data.accessToken}`,
                   },
                   body: JSON.stringify({ fcmToken }),

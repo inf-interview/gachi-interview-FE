@@ -16,7 +16,7 @@ export default function Page({ searchParams }: { searchParams: { tab: string } }
   return (
     <HydrationBoundary state={dehydratedState}>
       <Suspense>
-        <CommunityContainer />
+        <CommunityContainer category={category} />
       </Suspense>
     </HydrationBoundary>
   );

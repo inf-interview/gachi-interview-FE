@@ -9,6 +9,7 @@ import MyVideoPosts from "./MyVideoPosts";
 import { MdLogout } from "react-icons/md";
 import MyComments from "./MyComments";
 import MyFeedbacks from "./MyFeedbacks";
+import { deleteCookie } from "cookies-next";
 
 export default function MyContainer() {
   const tabParams = useSearchParams().get("tab") || undefined;
@@ -20,6 +21,7 @@ export default function MyContainer() {
 
   const handleLogout = () => {
     localStorage.clear();
+    deleteCookie("accessToken");
     router.push("/");
   };
 
