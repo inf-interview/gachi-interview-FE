@@ -12,7 +12,7 @@ import { useGetInterviews } from "./_lib/queries/useInterviewQuery";
 import { useEffect, useState } from "react";
 import NoData from "../_component/NoData";
 import Loading from "../_component/Loading";
-import FilterTag from "../_component/FilterTag";
+import FilterTag from "../_component/Search";
 import { Video } from "@/model/Video";
 import { Post } from "@/model/Post";
 

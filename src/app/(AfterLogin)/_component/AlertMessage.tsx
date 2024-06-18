@@ -12,6 +12,10 @@ export default function AlertMessage() {
   const userId = useRecoilValue(userIdState);
 
   useEffect(() => {
+    if (!messaging) {
+      return;
+    }
+
     onMessage(messaging, (payload) => {
       const message = payload.notification?.body;
       const match = message?.match(/.*\((\d+)\)$/);
