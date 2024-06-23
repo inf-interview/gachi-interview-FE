@@ -91,6 +91,7 @@ const AddQuestionTitleModal = ({ onSubmit }: AddQuestionTitleModalProps) => {
       title,
       job: newJob,
     });
+    setJob({ MajorCategory: "", name: "" });
     isAIExample && setIsAIExample(false);
   };
 
