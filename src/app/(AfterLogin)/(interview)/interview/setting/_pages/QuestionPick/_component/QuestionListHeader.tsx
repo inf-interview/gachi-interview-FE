@@ -67,8 +67,8 @@ const QuestionListHeader = ({
         id="all"
         value="all"
       />
-      <label htmlFor="all" className="ml-12 text-gray-500 cursor-pointer">
-        {questionTitle} (모두 선택)
+      <label htmlFor="all" className="ml-7 text-gray-500 cursor-pointer">
+        {questionTitle} <sub>(모두 선택)</sub>
       </label>
 
       <div className="flex-grow flex items-center justify-end">
