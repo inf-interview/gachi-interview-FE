@@ -24,7 +24,7 @@ const QuestionItem = ({
   workbookId,
 }: QuestionItemProps) => {
   const { openModal, closeModal } = useModal();
-  const { mutate, isSuccess } = useDeleteQuestionMutation();
+  const { mutate } = useDeleteQuestionMutation();
   const userId = useRecoilValue(userIdState);
 
   const openDeleteModal = () => {

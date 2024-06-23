@@ -56,6 +56,7 @@ const QuestionListHeader = ({
   };
 
   if (!questions) return null;
+  console.log(questions);
 
   return (
     <header className="group px-4 py-3 flex flex-row items-center border-b transition-colors hover:bg-muted/50">
