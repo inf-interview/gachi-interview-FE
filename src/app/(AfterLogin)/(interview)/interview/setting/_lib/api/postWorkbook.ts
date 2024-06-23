@@ -20,7 +20,7 @@ const postWorkbook = async ({ userId, title, job }: postWorkbookProps) => {
       }),
     });
 
-    return data;
+    return data ? null : JSON.parse(data);
   } catch (error) {
     console.error(error);
     throw new Error("Failed to fetch data");
