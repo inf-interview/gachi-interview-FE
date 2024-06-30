@@ -21,7 +21,7 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.GACHI_MYEONJEOB_SECRET }}
         with:
           source-directory: 'output'
-          destination-github-username: 'Lee-Young-Jae'
+          destination-github-username: 'inf-interview'
           destination-repository-name: 'gachi-interview-FE'
           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
           commit-message: ${{ github.event.commits[0].message }}
