@@ -1,18 +1,15 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import SelectQuestionSection from "./_component/SelectQuestionSection";
+import { useEffect, useState } from "react";
 import {
   useDeleteWorkbookMutation,
   useGetWorkbookListQuery,
   usePostWorkbookMutation,
 } from "../../_lib/queries/useWorkbookListQuery";
-import { Vacation } from "./_component/SelectWorkbookSection";
 import AddQuestionTitleModal from "./_component/Modals/AddQuestionTitleModal";
 import { useModal } from "@/components/Modal/useModal";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userIdState } from "@/store/auth";
-import Modal from "@/components/Modal";
 import { Button } from "@/components/ui/button";
 import {
   useDeleteQuestionMutation,
@@ -23,62 +20,14 @@ import { AiOutlineDelete } from "react-icons/ai";
 import Loading from "@/app/(AfterLogin)/_component/Loading";
 import { interviewOptionState } from "@/app/(AfterLogin)/(interview)/_lib/atoms/interviewState";
 import AddQuestionModal from "./_component/Modals/AddQuestionModal";
+import DeleteDialog from "./_component/Modals/DeleteDialog";
+import CreateWorkbookFailModal from "./_component/Modals/CreateWorkbookFailModal";
+
 const QuestionPick = () => {
   return <WorkbookList />;
 };
 
 export default QuestionPick;
-
-// 워크북/질문 삭제 Dialog
-interface DeleteDialogProps {
-  title: string;
-  message: string | React.ReactNode;
-  onClose: () => void;
-  onDelete: () => void;
-}
-
-const DeleteDialog = ({ title, message, onClose, onDelete }: DeleteDialogProps) => (
-  <Modal
-    header={title}
-    footer={
-      <>
-        <Button variant="secondary" onClick={onClose}>
-          취소
-        </Button>
-        <Button variant="destructive" onClick={onDelete}>
-          삭제
-        </Button>
-      </>
-    }
-  >
-    <p>{message}</p>
-  </Modal>
-);
-
-// 생성 실패 모달
-const CreateWorkbookFailModal = ({ onClose }: { onClose: () => void }) => (
-  <Modal
-    header="질문지 생성 실패 - 휴식 중인 AI"
-    footer={
-      <button className="btn btn-primary" onClick={onClose}>
-        확인
-      </button>
-    }
-  >
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center w-full h-full overflow-hidden">
-          휴식 중인 AI를 불러오는 중...
-        </div>
-      }
-    >
-      <Vacation />
-    </Suspense>
-    <p>같이면접 질문/답변 AI가 잠시 휴식중이에요... 😅</p> <br />
-    <p>아쉽지만 내일 다시 요청해주시면 더 좋은 결과를 보내드릴게요!</p>
-    <sub>직접 질문/답변을 입력하시는 건 언제든 가능해요!!</sub>
-  </Modal>
-);
 
 const WorkbookList = () => {
   const [selectedWorkbookId, setSelectedWorkbookId] = useState<number | null>(null);
