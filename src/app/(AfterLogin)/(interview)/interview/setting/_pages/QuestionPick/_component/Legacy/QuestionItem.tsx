@@ -1,7 +1,7 @@
 import Modal from "@/components/Modal";
 import { useModal } from "@/components/Modal/useModal";
 import { AiOutlineDelete } from "react-icons/ai";
-import { useDeleteQuestionMutation } from "../../../_lib/queries/useQuestions";
+import { useDeleteQuestionMutation } from "../../../../_lib/queries/useQuestions";
 import { interviewOptionState } from "@/app/(AfterLogin)/(interview)/_lib/atoms/interviewState";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { userIdState } from "@/store/auth";
