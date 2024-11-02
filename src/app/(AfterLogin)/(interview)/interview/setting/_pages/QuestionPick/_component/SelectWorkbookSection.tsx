@@ -3,7 +3,7 @@ import {
   useGetWorkbookListQuery,
   usePostWorkbookMutation,
 } from "../../../_lib/queries/useWorkbookListQuery";
-import AddQuestionTitleModal from "./AddQuestionTitleModal";
+import AddQuestionTitleModal from "./Modals/AddQuestionTitleModal";
 import { useRecoilValue } from "recoil";
 import { userIdState } from "@/store/auth";
 import { Suspense, useEffect } from "react";
